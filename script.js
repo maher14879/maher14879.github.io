@@ -53,10 +53,10 @@ let mousePosition = { x: 0, y: 0 };
 let deltaPosition = { x: 0, y: 0 };
 
 document.addEventListener('mousemove', (event) => {
-    if (Math.abs(event.clientX - mousePosition.x) < 10) {
+    if (Math.abs(event.clientX - mousePosition.x) < 100) {
         deltaPosition.x = event.clientX - mousePosition.x;
     }
-    if (Math.abs(event.clientY - mousePosition.y) < 10) {
+    if (Math.abs(event.clientY - mousePosition.y) < 100) {
         deltaPosition.y = event.clientY - mousePosition.y;
     }
 

@@ -23,23 +23,19 @@ class Dot {
     add_pos(x, y) {
         this.posX -= x * this.scale;
         this.posY -= y * this.scale;
-
-        if (this.posY > window.innerHeight - 1) {
+    
+        if (this.posY >= window.innerHeight) {
             this.posY = 0;
+        } else if (this.posY < 0) {
+            this.posY = window.innerHeight - 1;
         }
-
-        if (this.posY < 1) {
-            this.posY = window.innerHeight;
-        }
-
-        if (this.posX > window.innerWidth - 1) {
+    
+        if (this.posX >= window.innerWidth) {
             this.posX = 0;
+        } else if (this.posX < 0) {
+            this.posX = window.innerWidth - 1;
         }
-
-        if (this.posX < 1) {
-            this.posX = window.innerWidth;
-        }
-
+    
         this.updatePosition();
     }
 }

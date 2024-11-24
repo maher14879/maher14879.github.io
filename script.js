@@ -65,7 +65,7 @@ document.addEventListener('mousemove', (event) => {
 
     dots.forEach(
         dot => {
-            dot.add_pos(deltaPosition.x * 0.3, deltaPosition.y * 0.3);
+            dot.add_pos(deltaPosition.x * 0.3, 0);
         }
     );
 }

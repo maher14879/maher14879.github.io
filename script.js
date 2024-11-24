@@ -29,11 +29,12 @@ class Dot {
 
 function createRandomDot() {
     const randomX = Math.random() * window.innerWidth;
-    const dot = new Dot(randomX, 0);
+    const randomY = Math.random() * window.innerHeight;
+    const dot = new Dot(randomX, randomY);
     dots.push(dot);
 }
 const dots = [];
-for (let i = 0; i < 50; i++) {createRandomDot();}
+for (let i = 0; i < 60; i++) {createRandomDot();}
 
 let mousePosition = { x: 0, y: 0 };
 let deltaPosition = { x: 0, y: 0 };
@@ -59,11 +60,11 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(0, dot.scale);
-        if (dot.posY > window.innerHeight) {
+        dot.add_pos(0, dot.scale * 20);
+        if (dot.posY + 10 > window.innerHeight) {
             dot.posY = 0;
         }
-        if (dot.posX > window.innerWidth) {
+        if (10 + dot.posX > window.innerWidth) {
             dot.posX = 0;
         }
         if (dot.posX < 0) {

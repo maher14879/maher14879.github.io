@@ -43,11 +43,13 @@
         a {
             color: limegreen;
             text-decoration: none;
-            font-size: calc(1.2rem + 1vw);
-            padding: 10px 20px;
+            font-size: calc(1rem + 0.5vw); /* Reduced font size */
+            padding: 8px 16px; /* Reduced padding for smaller buttons */
             border: 2px solid limegreen;
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
+            display: inline-block; /* Ensures buttons size correctly with content */
+            line-height: 1.2; /* Reduces internal spacing for text */
         }
 
         a:hover {

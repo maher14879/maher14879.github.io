@@ -22,7 +22,7 @@ class Dot {
 
     add_pos(x, y) {
         this.posX += x;
-        this.posY += y + this.scale * 30;
+        this.posY += y;
         this.updatePosition();
     }
 }
@@ -49,13 +49,22 @@ document.addEventListener('mousemove', (event) => {
     mousePosition.x = event.clientX;
     mousePosition.y = event.clientY;
 
+    dots.forEach(
+        dot => {
+            dot.add_pos(deltaPosition.x, deltaPosition.y);
+        }
+    );
+}
+);
+
+
+function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(deltaPosition.x, deltaPosition.y);
+        dot.add_pos(0, dot.speed);
         if (dot.posY > window.innerHeight) {
-            dot.remove();
-            dots = dots.filter(d => d !== dot);
-            dots.push(createRandomDot());
+            dot.posY = 0;
         }
     });
-
-});
+    requestAnimationFrame(animateDots);
+}
+animateDots();

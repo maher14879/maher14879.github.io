@@ -63,6 +63,12 @@ function animateDots() {
         if (dot.posY > window.innerHeight) {
             dot.posY = 0;
         }
+        if (dot.posX > window.innerWidth) {
+            dot.posX = 0;
+        }
+        if (dot.posX < 0) {
+            dot.posX = window.innerWidth;
+        }
     });
     requestAnimationFrame(animateDots);
 }

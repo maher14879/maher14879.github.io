@@ -7,7 +7,7 @@ class Dot {
         this.dot.style.height = `${this.scale * 5}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
-        this.dot.style.boxShadow = `0 0 5px 1px ${color}, 0 0 10px 3px ${color}`;
+        this.dot.style.boxShadow = `0 0 5px 1px ${color}, 0 0 5px 1px ${color}`;
         this.dot.style.width = `${this.scale * 5 + 1}px`; 
         this.dot.style.height = `${this.scale * 5 + 1}px`;
 
@@ -38,10 +38,6 @@ class Dot {
         } else if (this.posX <= 0) {
             this.posX = window.innerWidth - 1;
         }
-
-        const a = 1 / (abs(this.posY - window.innerHeight) + abs(this.posX - window.innerWidth))
-
-        this.dot.style.boxShadow = `0 0 ${a * 2}px ${a * 0.5}px ${color}, 0 0 ${a * 4}px ${a * 1}px ${color}`;
     
         this.updatePosition();
     }

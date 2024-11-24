@@ -1,5 +1,4 @@
-const rgbaColor = `rgba(${parseInt(color.substring(1, 3), 16)}, ${parseInt(color.substring(3, 5), 16)}, ${parseInt(color.substring(5, 7), 16)}, 0.3)`;
-const boxShadow = `0 0 7px 1px ${rgbaColor}, 0 0 7px 1px ${rgbaColor}`;
+const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 
 class Dot {
     constructor(x, y, color = 'white') {

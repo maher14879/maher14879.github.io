@@ -8,13 +8,13 @@
     dot.style.pointerEvents = 'none';
     document.body.appendChild(dot);
 
-    let dotX = window.innerWidth / 2;
-    let dotY = window.innerHeight / 2;
+    let dotX = (1 - Math.random()) * window.innerWidth;
+    let dotY = (1 - Math.random()) * window.innerHeight;
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
 
-    const speed = 0.05;  // Adjust speed of movement
+    const speed = 0.0005;  // Adjust speed of movement
 
     function updateDotPosition() {
         const dx = mouseX - dotX;

@@ -27,15 +27,13 @@ class Dot {
     }
 }
 
-function generateRandomDots(numDots) {
-    for (let i = 0; i < numDots; i++) {
-        const randomX = Math.random() * window.innerWidth;
-        const dot = new Dot(randomX, 0);
-        dots.push(dot);
-    }
+function createRandomDot() {
+    const randomX = Math.random() * window.innerWidth;
+    const dot = new Dot(randomX, 0);
+    dots.push(dot);
 }
-
-const dots = generateRandomDots(100);
+const dots = [];
+for (let i = 0; i < 20; i++) {createRandomDot();}
 
 let mousePosition = { x: 0, y: 0 };
 let deltaPosition = { x: 0, y: 0 };

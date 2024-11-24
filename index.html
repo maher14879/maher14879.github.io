@@ -33,16 +33,22 @@
         }
 
         h1::after {
-            content: '|';
+            content: "maher_el_youssef";
             display: inline-block;
-            animation: blink 0.6s step-end infinite;
+            animation: typing 5s steps(15, end) infinite, blink 0.6s step-end infinite;
         }
-
+        
+        @keyframes typing {
+            0%, 20% { content: "maher_el_youssef"; }
+            25%, 45% { content: "my_music"; }
+            50%, 70% { content: "video_game_projects"; }
+            75%, 95% { content: "work_experience"; }
+        }
+        
         @keyframes blink {
-            50% {
-                opacity: 0;
-            }
+            50% { opacity: 0; }
         }
+        
 
         .links {
             display: flex;

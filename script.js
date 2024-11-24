@@ -1,3 +1,6 @@
+const rgbaColor = `rgba(${parseInt(color.substring(1, 3), 16)}, ${parseInt(color.substring(3, 5), 16)}, ${parseInt(color.substring(5, 7), 16)}, 0.3)`;
+const boxShadow = `0 0 7px 1px ${rgbaColor}, 0 0 7px 1px ${rgbaColor}`;
+
 class Dot {
     constructor(x, y, color = 'white') {
         this.scale = Math.random() ** 2
@@ -7,8 +10,7 @@ class Dot {
         this.dot.style.height = `${this.scale * 5 + 1}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
-        const rgbaColor = `rgba(${parseInt(color.substring(1, 3), 16)}, ${parseInt(color.substring(3, 5), 16)}, ${parseInt(color.substring(5, 7), 16)}, 0.3)`; // Adjust alpha to 0.3 for less intensity
-        this.dot.style.boxShadow = `0 0 3px 1px ${rgbaColor}, 0 0 3px 1px ${rgbaColor}`;
+        this.dot.style.boxShadow = boxShadow
 
         this.posX = x;
         this.posY = y;
@@ -63,7 +65,7 @@ document.addEventListener('mousemove', (event) => {
 
     dots.forEach(
         dot => {
-            dot.add_pos(deltaPosition * 0.1, 0);
+            dot.add_pos(deltaPosition * 0.3, 0);
         }
     );
 }
@@ -71,7 +73,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(0, -5);
+        dot.add_pos(0, -2);
     });
     requestAnimationFrame(animateDots);
 }

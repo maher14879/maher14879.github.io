@@ -72,4 +72,5 @@ function animateDots() {
     });
     requestAnimationFrame(animateDots);
 }
+
 animateDots();

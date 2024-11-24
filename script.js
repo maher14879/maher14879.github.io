@@ -1,10 +1,10 @@
 class Dot {
-    constructor(x, y, size = 20, color = 'white') {
-        // Create the dot element
+    constructor(x, y, color = 'white') {
+        this.scale = Math.random()
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
-        this.dot.style.width = `${size}px`;
-        this.dot.style.height = `${size}px`;
+        this.dot.style.width = `${this.scale * 5}px`;
+        this.dot.style.height = `${this.scale * 5}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
 
@@ -20,9 +20,9 @@ class Dot {
         this.dot.style.top = `${this.posY}px`;
     }
 
-    moveTo(x, y) {
-        this.posX = x;
-        this.posY = y;
+    add_pos(x, y) {
+        this.posX += x;
+        this.posY += y;
         this.updatePosition();
     }
 }
@@ -38,8 +38,16 @@ function generateRandomDots(numDots) {
 generateRandomDots(10);
 
 let mousePosition = { x: 0, y: 0 };
+let deltaPosition = { x: 0, y: 0 };
 
 document.addEventListener('mousemove', (event) => {
+    if (Math.abs(event.clientX - mousePosition.x < 10)) {
+        deltaPosition.x = event.clientX - mousePosition.x;
+    }
+    if (Math.abs(event.clientY - mousePosition.y) < 10) {
+        deltaPosition.y = event.clientY - mousePosition.y;
+    }
+
     mousePosition.x = event.clientX;
     mousePosition.y = event.clientY;
 

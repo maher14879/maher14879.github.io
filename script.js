@@ -25,14 +25,14 @@ class Dot {
         this.posY -= y * this.scale;
     
         if (this.posY >= window.innerHeight) {
-            this.posY = 0;
-        } else if (this.posY < 0) {
+            this.posY = 1;
+        } else if (this.posY <= 0) {
             this.posY = window.innerHeight - 1;
         }
     
         if (this.posX >= window.innerWidth) {
-            this.posX = 0;
-        } else if (this.posX < 0) {
+            this.posX = 1;
+        } else if (this.posX <= 0) {
             this.posX = window.innerWidth - 1;
         }
     

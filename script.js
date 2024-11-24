@@ -38,6 +38,10 @@ class Dot {
         } else if (this.posX <= 0) {
             this.posX = window.innerWidth - 1;
         }
+
+        const a = 1 / (abs(this.posY - window.innerHeight) + abs(this.posX - window.innerWidth))
+
+        this.dot.style.boxShadow = `0 0 ${a * 2}px ${a * 0.5}px ${color}, 0 0 ${a * 4}px ${a * 1}px ${color}`;
     
         this.updatePosition();
     }

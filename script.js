@@ -1,40 +1,80 @@
-(function() {
-    const dot = document.createElement('div');
-    dot.style.position = 'absolute';
-    dot.style.width = '20px';
-    dot.style.height = '20px';
-    dot.style.backgroundColor = 'white';
-    dot.style.borderRadius = '50%';
-    dot.style.pointerEvents = 'none';
-    document.body.appendChild(dot);
+class MovingDot {
+    constructor() {
+        this.dot = document.createElement('div');
+        this.dot.style.position = 'absolute';
+        this.dot.style.width = '20px';
+        this.dot.style.height = '20px';
+        this.dot.style.backgroundColor = 'white';
+        this.dot.style.borderRadius = '50%';
+        this.dot.style.pointerEvents = 'none';
+        document.body.appendChild(this.dot);
 
-    let dotX = (1 - Math.random()) * window.innerWidth;
-    let dotY = (1 - Math.random()) * window.innerHeight;
+        this.dotX = (1 - Math.random()) * window.innerWidth;
+        this.dotY = (1 - Math.random()) * window.innerHeight;
 
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
+        this.mouseX = window.innerWidth / 2;
+        this.mouseY = window.innerHeight / 2;
 
-    const speed = 0.0005;  // Adjust speed of movement
+        this.lastMouseX = this.mouseX;
+        this.lastMouseY = this.mouseY;
 
-    function updateDotPosition() {
-        const dx = mouseX - dotX;
-        const dy = mouseY - dotY;
+        this.jump = 5; // How much the dot moves in response to mouse movement
+        this.deltaMouse = { x: 0, y: 0 };
 
-        dotX += dx * speed;
-        dotY += dy * speed;
+        this.inactiveLimit = 1000; // Time limit before reset
+        this.lastMoveTime = Date.now();
 
-        dot.style.left = `${dotX - dot.offsetWidth / 2}px`;
-        dot.style.top = `${dotY - dot.offsetHeight / 2}px`;
-
-        requestAnimationFrame(updateDotPosition);
+        this.updateDotPosition();
     }
 
-    // Update mouse position
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
+    updateDotPosition() {
+        // Only update dot position if the mouse has moved
+        if (this.deltaMouse.x !== 0 || this.deltaMouse.y !== 0) {
+            // Move the dot based on the mouse movement delta
+            this.dotX += this.deltaMouse.x * 0.1; // Slight movement
+            this.dotY += this.deltaMouse.y * 0.1; // Slight movement
+        }
 
-    // Start the animation loop
-    updateDotPosition();
-})();
+        this.dot.style.left = `${this.dotX - this.dot.offsetWidth / 2}px`;
+        this.dot.style.top = `${this.dotY - this.dot.offsetHeight / 2}px`;
+
+        requestAnimationFrame(this.updateDotPosition.bind(this)); // Keep updating position
+    }
+
+    setMousePosition(x, y) {
+        // Calculate the delta movement of the mouse
+        this.deltaMouse.x = x - this.lastMouseX;
+        this.deltaMouse.y = y - this.lastMouseY;
+
+        this.lastMouseX = x;
+        this.lastMouseY = y;
+
+        // Reset the dot position after some time if the mouse stops moving
+        const deltaTime = Date.now() - this.lastMoveTime;
+        if (deltaTime > this.inactiveLimit) {
+            this.resetDotPositions();
+        }
+
+        this.lastMoveTime = Date.now();
+    }
+
+    resetDotPositions() {
+        // Reset dot position when mouse is too stationary
+        this.dotX = (1 - Math.random()) * window.innerWidth;
+        this.dotY = (1 - Math.random()) * window.innerHeight;
+    }
+}
+
+// Create multiple dots
+const dots = [];
+for (let i = 0; i < 5; i++) {
+    dots.push(new MovingDot());
+}
+
+// Update the mouse position for all dots
+document.addEventListener('mousemove', (e) => {
+    dots.forEach(dot => {
+        dot.setMousePosition(e.clientX, e.clientY);
+    });
+});
+

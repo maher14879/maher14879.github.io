@@ -35,7 +35,7 @@ class Dot {
         if (dot.posX < 0) {
             dot.posX = window.innerWidth;
         }
-        
+
         this.updatePosition();
     }
 }
@@ -73,7 +73,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(0, dot.scale);
+        dot.add_pos(0, -dot.scale);
     });
     requestAnimationFrame(animateDots);
 }

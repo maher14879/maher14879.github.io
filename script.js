@@ -22,7 +22,7 @@ class Dot {
 
     add_pos(x, y) {
         this.posX += x;
-        this.posY += y + this.scale;
+        this.posY += y + this.scale * 30;
         this.updatePosition();
     }
 }
@@ -33,13 +33,13 @@ function createRandomDot() {
     dots.push(dot);
 }
 const dots = [];
-for (let i = 0; i < 20; i++) {createRandomDot();}
+for (let i = 0; i < 50; i++) {createRandomDot();}
 
 let mousePosition = { x: 0, y: 0 };
 let deltaPosition = { x: 0, y: 0 };
 
 document.addEventListener('mousemove', (event) => {
-    if (Math.abs(event.clientX - mousePosition.x < 10)) {
+    if (Math.abs(event.clientX - mousePosition.x) < 10) {
         deltaPosition.x = event.clientX - mousePosition.x;
     }
     if (Math.abs(event.clientY - mousePosition.y) < 10) {

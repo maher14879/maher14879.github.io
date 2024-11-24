@@ -7,8 +7,8 @@
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
-            background-color: #180505;
-            color: rgb(29, 0, 0);
+            background-color: #000000; /* Terminal black */
+            color: #00ff00; /* Bright green terminal text */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,56 +18,39 @@
         }
 
         .content {
-            text-align: center;
+            text-align: left; /* Terminal alignment */
             max-width: 600px;
             width: 100%;
+            padding: 20px; /* Terminal-like spacing */
+            background: #101010; /* Slightly lighter black for terminal window effect */
+            border: 2px solid #00ff00; /* Bright green border */
+            box-shadow: 0 0 10px #00ff00; /* Glow effect */
         }
 
         h1 {
-            font-size: 30px;
-            color: #fff;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
+            font-size: 24px; /* Smaller font for terminal look */
+            color: #00ff00; /* Bright green */
+            margin-bottom: 10px;
+            text-transform: lowercase; /* Terminal-like lowercase */
         }
 
         .links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            font-size: 16px;
-            margin: 0 auto;
-            line-height: 1.5;
+            gap: 5px; /* Closer spacing for terminal-like appearance */
         }
 
         a {
-            color: rgb(255, 255, 255);
+            color: #00ff00; /* Terminal green */
             text-decoration: none;
-            font-size: 16px;
+            font-size: 14px; /* Smaller terminal font */
             position: relative;
-            transition: all 0.3s ease;
-        }
-
-        a::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: rgb(20, 0, 0);
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
+            font-weight: bold;
         }
 
         a:hover {
-            color: #00ff00;
-        }
-
-        a:hover::before {
-            transform: scaleX(1.1);
-            transform-origin: bottom left;
+            color: #33ff33; /* Slightly lighter green for hover */
+            text-shadow: 0 0 5px #00ff00; /* Glow effect on hover */
         }
     </style>
 </head>
@@ -75,11 +58,11 @@
     <div class="content">
         <h1>maher_el_youssef</h1>
         <div class="links">
-            <a href="my_music.html"> my_music</a>
-            <a href="video_game_projects.html"> video_game_projects</a>
-            <a href="work_experience.html"> work_experience</a>
-            <a href="personal_writing.html"> personal_writing</a>
-            <a href="contact_information.html"> contact_information</a>
+            <a href="my_music.html">my_music</a>
+            <a href="video_game_projects.html">video_game_projects</a>
+            <a href="work_experience.html">work_experience</a>
+            <a href="personal_writing.html">personal_writing</a>
+            <a href="contact_information.html">contact_information</a>
         </div>
     </div>
     <script src="script.js"></script>

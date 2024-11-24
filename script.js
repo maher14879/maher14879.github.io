@@ -24,19 +24,19 @@ class Dot {
         this.posX -= x * this.scale;
         this.posY -= y * this.scale;
 
-        if (this.posY > window.innerHeight) {
+        if (this.posY > window.innerHeight - 1) {
             this.posY = 0;
         }
 
-        if (this.posY < 0) {
+        if (this.posY < 1) {
             this.posY = window.innerHeight;
         }
 
-        if (this.posX > window.innerWidth) {
+        if (this.posX > window.innerWidth - 1) {
             this.posX = 0;
         }
 
-        if (this.posX < 0) {
+        if (this.posX < 1) {
             this.posX = window.innerWidth;
         }
 
@@ -69,7 +69,7 @@ document.addEventListener('mousemove', (event) => {
 
     dots.forEach(
         dot => {
-            dot.add_pos(deltaPosition.x, deltaPosition.y);
+            dot.add_pos(deltaPosition.x * 0.1, deltaPosition.y * 0.1);
         }
     );
 }
@@ -77,8 +77,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        const downY = dot.scale * (-10)
-        dot.add_pos(0, downY);
+        dot.add_pos(0, -1);
     });
     requestAnimationFrame(animateDots);
 }

@@ -57,10 +57,9 @@ document.addEventListener('mousemove', (event) => {
 }
 );
 
-
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(0, dot.speed);
+        dot.add_pos(0, dot.scale);
         if (dot.posY > window.innerHeight) {
             dot.posY = 0;
         }

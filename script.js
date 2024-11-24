@@ -1,6 +1,6 @@
 class Dot {
     constructor(x, y, color = 'white') {
-        this.scale = Math.random()
+        this.scale = Math.random() ** 2
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
         this.dot.style.width = `${this.scale * 5}px`;
@@ -73,7 +73,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(0, -1);
+        dot.add_pos(0, -3);
     });
     requestAnimationFrame(animateDots);
 }

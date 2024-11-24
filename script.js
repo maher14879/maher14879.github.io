@@ -21,8 +21,8 @@ class Dot {
     }
 
     add_pos(x, y) {
-        this.posX += x;
-        this.posY += y;
+        this.posX -= x * this.scale;
+        this.posY -= y * this.scale;
         this.updatePosition();
     }
 }

@@ -24,16 +24,16 @@ class Dot {
         this.posX -= x * this.scale;
         this.posY -= y * this.scale;
 
-        if (dot.posY > window.innerHeight) {
-            dot.posY = 0;
+        if (this.posY > window.innerHeight) {
+            this.posY = 0;
         }
 
-        if (dot.posX > window.innerWidth) {
-            dot.posX = 0;
+        if (this.posX > window.innerWidth) {
+            this.posX = 0;
         }
 
-        if (dot.posX < 0) {
-            dot.posX = window.innerWidth;
+        if (this.posX < 0) {
+            this.posX = window.innerWidth;
         }
 
         this.updatePosition();

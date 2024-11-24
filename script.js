@@ -31,11 +31,12 @@ function generateRandomDots(numDots) {
     for (let i = 0; i < numDots; i++) {
         const randomX = Math.random() * window.innerWidth;
         const randomY = Math.random() * window.innerHeight;
-        new Dot(randomX, randomY);
+        const dot = new Dot(randomX, randomY);
+        dots.push(dot);
     }
 }
 
-generateRandomDots(10);
+const dots = generateRandomDots(10);
 
 let mousePosition = { x: 0, y: 0 };
 let deltaPosition = { x: 0, y: 0 };
@@ -50,5 +51,9 @@ document.addEventListener('mousemove', (event) => {
 
     mousePosition.x = event.clientX;
     mousePosition.y = event.clientY;
+
+    dots.forEach(dot => {
+        dot.add_pos(deltaPosition.x, deltaPosition.y);
+    });
 
 });

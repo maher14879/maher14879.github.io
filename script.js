@@ -1,57 +1,49 @@
-class StarParticle {
-    constructor(player) {
-        // Create the particle (a simple dot)
-        this.scale = Math.random() * 100 + 10;  // Random scale between 10 and 100
-        this.player = player;
-
-        // Create a div for the particle
+class Dot {
+    constructor(x, y, size = 20, color = 'white') {
+        // Create the dot element
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
-        this.dot.style.width = `${this.scale / 20}px`;
-        this.dot.style.height = `${this.scale / 20}px`;
-        this.dot.style.backgroundColor = 'white';
-        this.dot.style.borderRadius = '50%';
-        this.dot.style.pointerEvents = 'none';
+        this.dot.style.width = `${size}px`;
+        this.dot.style.height = `${size}px`;
+        this.dot.style.backgroundColor = color;
+        this.dot.style.borderRadius = '50%';  // Make it round
+        this.dot.style.pointerEvents = 'none';  // Don't interfere with mouse events
+
+        // Set initial position
+        this.posX = x;
+        this.posY = y;
+
+        // Append the dot to the document body
         document.body.appendChild(this.dot);
 
-        // Initial position
-        this.pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        // Update position
         this.updatePosition();
     }
 
-    // Method to update position based on mouse position
+    // Method to update the position of the dot
     updatePosition() {
-        // Move the particle according to the mouse, scaled by 'scale'
-        this.pos.x = this.player.mouseX - this.scale / 40;
-        this.pos.y = this.player.mouseY - this.scale / 40;
+        this.dot.style.left = `${this.posX}px`;
+        this.dot.style.top = `${this.posY}px`;
+    }
 
-        this.dot.style.left = `${this.pos.x}px`;
-        this.dot.style.top = `${this.pos.y}px`;
+    // Method to move the dot to a new position
+    moveTo(x, y) {
+        this.posX = x;
+        this.posY = y;
+        this.updatePosition();
     }
 }
 
-let player = { mouseX: window.innerWidth / 2, mouseY: window.innerHeight / 2 };
-
-// Update mouse position on move
-document.addEventListener('mousemove', (e) => {
-    player.mouseX = e.clientX;
-    player.mouseY = e.clientY;
-});
-
-// Create and track particles
-let particles = [];
-for (let i = 0; i < 5; i++) {
-    particles.push(new StarParticle(player));
+function generateRandomDots(numDots) {
+    for (let i = 0; i < numDots; i++) {
+        // Generate random position within the window dimensions
+        const randomX = Math.random() * window.innerWidth;
+        const randomY = Math.random() * window.innerHeight;
+        
+        // Create a new dot at the random position
+        new Dot(randomX, randomY);
+    }
 }
 
-// Update particles
-function updateParticles() {
-    particles.forEach(particle => {
-        particle.updatePosition();
-    });
-
-    requestAnimationFrame(updateParticles);
-}
-
-// Start updating particles
-updateParticles();
+// Generate 10 random dots
+generateRandomDots(10);

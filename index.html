@@ -53,6 +53,12 @@
     </style>
 </head>
 <body>
+    <!-- Audio Player -->
+    <audio id="background-music" autoplay loop>
+        <source src="assets\music\orthonormal.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
     <!-- Canvas for animation -->
     <canvas id="background"></canvas>
 
@@ -73,12 +79,12 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const fontSize = 18;
 
         let columns = canvas.width / fontSize;
         let drops = [];
-        
+
         // Initialize drops
         for (let i = 0; i < columns; i++) {
             drops.push(0);

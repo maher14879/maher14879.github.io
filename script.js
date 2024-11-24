@@ -1,4 +1,4 @@
-const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
+const boxShadow = `0 0 7px 7px grey, 0 0 7px 7px grey`;
 
 class Dot {
     constructor(x, y, color = 'white') {

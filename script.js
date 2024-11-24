@@ -7,7 +7,7 @@ class Dot {
         this.dot.style.height = `${this.scale * 5}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
-        this.dot.style.boxShadow = `0 0 20px 5px ${color}, 0 0 40px 10px ${color}`;
+        this.dot.style.boxShadow = `0 0 5px 1px ${color}, 0 0 10px 3px ${color}`;
         this.dot.style.width = `${this.scale * 5 + 1}px`; 
         this.dot.style.height = `${this.scale * 5 + 1}px`;
 

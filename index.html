@@ -35,7 +35,7 @@
         h1::after {
             content: "MAHER EL YOUSSEF";
             display: inline-block;
-            animation: typing 5s steps(15, end) infinite, blink 0.6s step-end infinite;
+            animation: typing 5s steps(15, end) infinite, blink 0.3s step-end infinite;
         }
         
         @keyframes typing {
@@ -50,12 +50,18 @@
             40%, 45% { content: "MAHER EL_YOUSSEF"; }
             45%, 50% { content: "MAHER EL VOUSSEF"; }
             50%, 55% { content: "MAHER EL Y0USSEF"; }
-            55%, 60% { content: "MAHER EL YOuSS3F"; }
+            55%, 60% { content: "MAHER EL YO¤SSEF"; }
             60%, 65% { content: "MAHER EL YOU5SEF"; }
             65%, 70% { content: "MAHER EL YOUS$EF"; }
             70%, 75% { content: "MAHER EL YOUSS3F"; }
-            75%, 80% { content: "MAHER EL YOU5SE-"; }
+            75%, 80% { content: "MAHER EL YOUSSE-"; }
             80%, 100% { content: "MAHER EL YOUSSEF"; }      
+        }
+
+        h1::after {
+            content: '|';
+            display: inline-block;
+            animation: blink 0.6s step-end infinite;
         }
 
         .links {

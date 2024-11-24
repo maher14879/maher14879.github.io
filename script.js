@@ -28,6 +28,10 @@ class Dot {
             this.posY = 0;
         }
 
+        if (this.posY < 0) {
+            this.posY = window.innerHeight;
+        }
+
         if (this.posX > window.innerWidth) {
             this.posX = 0;
         }
@@ -73,7 +77,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        const downY = - dot.scale * 10
+        const downY = dot.scale * (-10)
         dot.add_pos(0, downY);
     });
     requestAnimationFrame(animateDots);

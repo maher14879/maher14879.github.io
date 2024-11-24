@@ -8,9 +8,9 @@
         body {
             margin: 0;
             overflow: hidden;
-            font-family: Arial, sans-serif;
-            background-color: #0d1117; /* Dark background */
-            color: #58a6ff; /* Cool blue text */
+            font-family: 'Courier New', Courier, monospace;
+            background-color: black;
+            color: white;
         }
 
         canvas {
@@ -73,58 +73,41 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let particlesArray = [];
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const fontSize = 18;
 
-        class Particle {
-            constructor(x, y, size, color, speedX, speedY) {
-                this.x = x;
-                this.y = y;
-                this.size = size;
-                this.color = color;
-                this.speedX = speedX;
-                this.speedY = speedY;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // Reset position if out of bounds
-                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
-                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
+        let columns = canvas.width / fontSize;
+        let drops = [];
+        
+        // Initialize drops
+        for (let i = 0; i < columns; i++) {
+            drops.push(0);
         }
 
-        // Initialize particles
-        function initParticles() {
-            particlesArray = [];
-            for (let i = 0; i < 150; i++) {
-                const size = Math.random() * 3 + 1;
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                const color = 'rgba(88, 166, 255, 0.7)'; // Cool blue particles
-                const speedX = Math.random() * 2 - 1;
-                const speedY = Math.random() * 2 - 1;
-                particlesArray.push(new Particle(x, y, size, color, speedX, speedY));
+        // Draw falling code effect
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height); // Fade out effect
+
+            ctx.fillStyle = 'rgba(0, 255, 0, 1)'; // Green color
+            ctx.font = `${fontSize}px 'Courier New'`;
+
+            // Loop through columns and draw characters
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0; // Reset drop if it goes past the bottom
+                }
+
+                drops[i]++;
             }
         }
 
         // Animation loop
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let particle of particlesArray) {
-                particle.update();
-                particle.draw();
-            }
-
+            draw();
             requestAnimationFrame(animate);
         }
 
@@ -132,11 +115,14 @@
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            initParticles();
+            columns = canvas.width / fontSize;
+            drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops.push(0);
+            }
         });
 
-        // Initialize and animate
-        initParticles();
+        // Start animation
         animate();
     </script>
 </body>

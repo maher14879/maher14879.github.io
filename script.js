@@ -3,13 +3,11 @@ class Dot {
         this.scale = Math.random() ** 2
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
-        this.dot.style.width = `${this.scale * 5}px`;
-        this.dot.style.height = `${this.scale * 5}px`;
+        this.dot.style.width = `${this.scale * 5 + 1}px`;
+        this.dot.style.height = `${this.scale * 5 + 1}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
         this.dot.style.boxShadow = `0 0 5px 1px ${color}, 0 0 5px 1px ${color}`;
-        this.dot.style.width = `${this.scale * 5 + 1}px`; 
-        this.dot.style.height = `${this.scale * 5 + 1}px`;
 
         this.posX = x;
         this.posY = y;
@@ -52,23 +50,19 @@ function createRandomDot() {
 const dots = [];
 for (let i = 0; i < 60; i++) {createRandomDot();}
 
-let mousePosition = { x: 0, y: 0 };
-let deltaPosition = { x: 0, y: 0 };
+let mousePosition = 0;
+let deltaPosition = 0;
 
 document.addEventListener('mousemove', (event) => {
-    if (Math.abs(event.clientX - mousePosition.x) < 100) {
-        deltaPosition.x = event.clientX - mousePosition.x;
-    }
-    if (Math.abs(event.clientY - mousePosition.y) < 100) {
-        deltaPosition.y = event.clientY - mousePosition.y;
+    if (Math.abs(event.clientX - mousePosition) < 100) {
+        deltaPosition = event.clientX - mousePosition;
     }
 
-    mousePosition.x = event.clientX;
-    mousePosition.y = event.clientY;
+    mousePosition = event.clientX;
 
     dots.forEach(
         dot => {
-            dot.add_pos(deltaPosition.x * 0.3, 0);
+            dot.add_pos(deltaPosition * 0.3, 0);
         }
     );
 }

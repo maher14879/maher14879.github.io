@@ -56,7 +56,7 @@ let mousePosition = 0;
 let deltaPosition = 0;
 
 document.addEventListener('mousemove', (event) => {
-    if (Math.abs(event.clientX - mousePosition) < 100) {
+    if (Math.abs(event.clientX - mousePosition) < 500) {
         deltaPosition = event.clientX - mousePosition;
     }
 
@@ -71,27 +71,11 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
-    let avgX = 0;
-    let avgY = 0;
-    
     dots.forEach(dot => {
-        avgX += dot.x;
-        avgY += dot.y;
-    });
-    
-    avgX /= dots.length;
-    avgY /= dots.length;
-    dots.forEach(dot => {
-        let dx = avgX - dot.x;
-        let dy = avgY - dot.y;
-        let distance_sqr = (dx * dx + dy * dy);
-        dx /= distance_sqr;
-        dy /= distance_sqr;
-        dot.add_pos(dx * 2, dy * 2);
+        dot.add_pos(0, 3);
     });
     
     requestAnimationFrame(animateDots);
 }
-
 
 animateDots();

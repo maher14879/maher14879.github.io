@@ -54,9 +54,10 @@ for (let i = 0; i < 60; i++) {createRandomDot();}
 
 let mousePosition = 0;
 let deltaPosition = 0;
+const smoothFactor = 0.1;
 
 document.addEventListener('mousemove', (event) => {
-    let targetPosition = event.clientX;
+    const targetPosition = event.clientX;
     deltaPosition = targetPosition - previousMousePosition;
     mousePosition += (deltaPosition) * smoothFactor;
     previousMousePosition = targetPosition;
@@ -69,7 +70,6 @@ function animateDots() {
     dots.forEach(dot => {
         dot.add_pos(0, 3);
     });
-    
     requestAnimationFrame(animateDots);
 }
 

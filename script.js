@@ -58,9 +58,9 @@ let deltaPosition = 0;
 document.addEventListener('mousemove', (event) => {
     deltaPosition = event.clientX - mousePosition
     mousePosition = event.clientX;
-    if (Math.abs(deltaPosition) > 100) {
-        deltaPosition = Math.sign(deltaPosition) * 100
-    }
+    //"if (Math.abs(deltaPosition) > 100) {
+    //    deltaPosition = Math.sign(deltaPosition) * 10
+    //}
 
     dots.forEach(
         dot => {

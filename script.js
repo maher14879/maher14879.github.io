@@ -58,15 +58,12 @@ let deltaPosition = 0;
 document.addEventListener('mousemove', (event) => {
     deltaPosition = event.clientX - mousePosition
     mousePosition = event.clientX;
-    //"if (Math.abs(deltaPosition) > 100) {
-    //    deltaPosition = Math.sign(deltaPosition) * 10
-    //}
-
     dots.forEach(
         dot => {
             dot.add_pos(deltaPosition * 0.3, 0);
         }
     );
+    console.log(`Dot moved: x by ${deltaPosition * 0.3}`);
 }
 );
 
@@ -74,6 +71,7 @@ function animateDots() {
     dots.forEach(dot => {
         const rot = Math.sin((dot.x + dot.y) * 0.001) * 10
         dot.add_pos(rot, 3);
+        console.log(`Dot rotated and moved: x by ${rot}, y by 3`);
     });
     requestAnimationFrame(animateDots);
 }

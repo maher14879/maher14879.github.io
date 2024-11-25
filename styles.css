@@ -24,6 +24,18 @@ body {
     scrollbar-color: transparent transparent; 
 }
 
+.content::-webkit-scrollbar {
+    width: 0;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+.content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 h1 {
     font-size: 24px;
     color: #00ff00;

@@ -13,6 +13,7 @@ body {
 .content {
     text-align: left;
     max-width: 300px;
+    overflow-y: auto; 
     width: 100%;
     padding: 20px;
     background-color: #000000;
@@ -43,11 +44,6 @@ a {
 a:hover {
     color: #33ff33;
     text-shadow: 0 0 5px #00ff00;
-}
-
-.spotify-widget {
-    margin-top: 20px;
-    text-align: center;
 }
 
 iframe {

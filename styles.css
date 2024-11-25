@@ -26,33 +26,6 @@ h1 {
     margin-bottom: 10px;
 }
 
-h1::after {
-    content: "<AHER EL YOUSSEF";
-    display: inline-block;
-    animation: typing 1.5s steps(15, end) infinite, blink 0.1s step-end infinite;
-}
-
-@keyframes typing {
-    0%, 5% { content: "<AHER EL YOUSSEF"; }
-    5%, 10% { content: "M4HER EL YOUSSEF"; }
-    10%, 15% { content: "MA#ER EL YOUSSEF"; }
-    15%, 20% { content: "MAH3R EL YOUSSEF"; }
-    20%, 25% { content: "MAHE2 EL YOUSSEF |"; }
-    25%, 30% { content: "MAHER EL YOUSSEF |"; }
-    30%, 35% { content: "MAHER 3L YOUSSEF |"; }
-    35%, 40% { content: "MAHER E1 YOUSSEF |"; }
-    40%, 45% { content: "MAHER EL YOUSSEF |"; }
-    45%, 50% { content: "MAHER EL VOUSSEF"; }
-    50%, 55% { content: "MAHER EL Y0USSEF"; }
-    55%, 60% { content: "MAHER EL YOVSSEF"; }
-    60%, 65% { content: "MAHER EL YOU5SEF"; }
-    65%, 70% { content: "MAHER EL YOUS$EF"; }
-    70%, 75% { content: "MAHER EL YOUSS3F |"; }
-    75%, 80% { content: "MAHER EL YOUSSE8 |"; }
-    80%, 95% { content: "MAHER EL YOUSSEF |"; }      
-    95%, 100% { content: "MAHER EL YOUSSEF"; }   
-}
-
 .links {
     display: flex;
     flex-direction: column;

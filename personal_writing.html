@@ -12,14 +12,26 @@
     <div class="content">
         <p>
             - abstraction - 
-            Both sound and light can be abstracted as a mathematical concept: waves. At first glance, they are very different things, yet they share an abstraction that resembles each other. It's similar to how both a computer and a human can "die." The Doppler effect and redshift occur in both, and the only apparent reason is that they are both "waves." It seems that things align based on how they can be abstracted. There are phenomena we can observe that are not just a line connecting data points but have a value the universe agrees upon.
+            25-11-2024
         </p>
         <p>
-            afsnit 2
+            <div id="text-container"></div>
+        </p>
+    </div>
+    <div class="content">
+        <p>
+            - title - 
         </p>
     </div>
 </div>
 <script src="script.js"></script>
-
+<script>
+    fetch('abstract.txt')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('text-container').innerText = data;
+        })
+        .catch(error => console.error('Error fetching text file:', error));
+</script>
 </body>
 </html>

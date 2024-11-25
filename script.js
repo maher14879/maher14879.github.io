@@ -57,7 +57,7 @@ let deltaPosition = 0;
 const smoothFactor = 0.1;
 
 document.addEventListener('mousemove', (event) => {
-    const targetPosition = event.clientX;
+    let targetPosition = event.clientX;
     deltaPosition = targetPosition - previousMousePosition;
     mousePosition += (deltaPosition) * smoothFactor;
     previousMousePosition = targetPosition;

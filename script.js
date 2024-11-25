@@ -54,15 +54,14 @@ for (let i = 0; i < 60; i++) {createRandomDot();}
 
 let mousePosition = 0;
 let deltaPosition = 0;
-const smoothFactor = 0.1;
 
 document.addEventListener('mousemove', (event) => {
     deltaPosition = event.clientX - mousePosition
     mousePosition = event.clientX;
-    if (abs(deltaPosition) > 10) {
+    if (Math.abs(deltaPosition) > 10) {
         deltaPosition = Math.sign(deltaPosition) * 10 
     }
-    
+
     dots.forEach(
         dot => {
             dot.add_pos(deltaPosition * 0.3, 0);

@@ -58,10 +58,14 @@ const smoothFactor = 0.1;
 
 document.addEventListener('mousemove', (event) => {
     deltaPosition = event.clientX - mousePosition
-    mousePosition = deltaPosition;
+    mousePosition = event.clientX;
+    if (abs(deltaPosition) > 10) {
+        deltaPosition = Math.sign(deltaPosition) * 10 
+    }
+    
     dots.forEach(
         dot => {
-            dot.add_pos(Math.min(10, deltaPosition * 0.3), 0);
+            dot.add_pos(deltaPosition * 0.3, 0);
         }
     );
 }
@@ -69,7 +73,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(Math.sin(dot.x / 100) * 40, 3);
+        dot.add_pos(Math.sin(dot.x / 100) * 10, 3);
     });
     requestAnimationFrame(animateDots);
 }

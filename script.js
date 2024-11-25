@@ -56,19 +56,14 @@ let mousePosition = 0;
 let deltaPosition = 0;
 
 document.addEventListener('mousemove', (event) => {
-    if (Math.abs(event.clientX - mousePosition) < 500) {
-        deltaPosition = event.clientX - mousePosition;
-    }
-
-    mousePosition += deltaPosition * 0.1;
-
-    dots.forEach(
-        dot => {
-            dot.add_pos(deltaPosition * 0.3, 0);
-        }
-    );
-}
-);
+    let targetPosition = event.clientX;
+    deltaPosition = targetPosition - previousMousePosition;
+    mousePosition += (deltaPosition) * smoothFactor;
+    previousMousePosition = targetPosition;
+    dots.forEach(dot => {
+        dot.add_pos(deltaPosition * 0.3, 0);
+    });
+});
 
 function animateDots() {
     dots.forEach(dot => {

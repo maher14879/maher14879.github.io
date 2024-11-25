@@ -1,0 +1,85 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #000000;
+    color: #00ff00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.content {
+    text-align: left;
+    max-width: 300px;
+    width: 100%;
+    padding: 20px;
+    background-color: #000000;
+    border: 2px solid #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+h1 {
+    font-size: 24px;
+    color: #00ff00;
+    margin-bottom: 10px;
+}
+
+h1::after {
+    content: "<AHER EL YOUSSEF";
+    display: inline-block;
+    animation: typing 1.5s steps(15, end) infinite, blink 0.1s step-end infinite;
+}
+
+@keyframes typing {
+    0%, 5% { content: "<AHER EL YOUSSEF"; }
+    5%, 10% { content: "M4HER EL YOUSSEF"; }
+    10%, 15% { content: "MA#ER EL YOUSSEF"; }
+    15%, 20% { content: "MAH3R EL YOUSSEF"; }
+    20%, 25% { content: "MAHE2 EL YOUSSEF |"; }
+    25%, 30% { content: "MAHER EL YOUSSEF |"; }
+    30%, 35% { content: "MAHER 3L YOUSSEF |"; }
+    35%, 40% { content: "MAHER E1 YOUSSEF |"; }
+    40%, 45% { content: "MAHER EL YOUSSEF |"; }
+    45%, 50% { content: "MAHER EL VOUSSEF"; }
+    50%, 55% { content: "MAHER EL Y0USSEF"; }
+    55%, 60% { content: "MAHER EL YOVSSEF"; }
+    60%, 65% { content: "MAHER EL YOU5SEF"; }
+    65%, 70% { content: "MAHER EL YOUS$EF"; }
+    70%, 75% { content: "MAHER EL YOUSS3F |"; }
+    75%, 80% { content: "MAHER EL YOUSSE8 |"; }
+    80%, 95% { content: "MAHER EL YOUSSEF |"; }      
+    95%, 100% { content: "MAHER EL YOUSSEF"; }   
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+a {
+    color: #00ff00;
+    text-decoration: none;
+    font-size: 14px;
+    position: relative;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #33ff33;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.spotify-widget {
+    margin-top: 20px;
+    text-align: center;
+}
+
+iframe {
+    border-radius: 4px;
+    width: 100%;
+    height: 352px;
+    border: 2px solid #00ff00;
+}

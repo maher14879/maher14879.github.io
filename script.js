@@ -71,7 +71,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(Math.sin(dot.x * 0.05) * 3, 3);
+        dot.add_pos(Math.sin(dot.x) * 3, 3);
     });
     requestAnimationFrame(animateDots);
 }

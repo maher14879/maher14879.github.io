@@ -56,7 +56,7 @@ let mousePosition = 0;
 let deltaPosition = 0;
 
 document.addEventListener('mousemove', (event) => {
-    deltaPosition = ((event.clientX - mousePosition) ** 2) * 0.001
+    deltaPosition = (event.clientX - mousePosition) * 0.01
     mousePosition += deltaPosition;
     dots.forEach(
         dot => {

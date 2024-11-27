@@ -71,7 +71,6 @@ function saveDotsToStorage() {
 
 function loadDotsFromStorage() {
     const storedDots = JSON.parse(localStorage.getItem('dots') || '[]');
-    let dots = []
     if (storedDots.length === 0) {
         for (let i = 0; i < 60; i++) {
             createRandomDot();

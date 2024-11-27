@@ -1,8 +1,8 @@
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 
 class Dot {
-    constructor(x, y, color = 'white') {
-        this.scale = Math.random() ** 2;
+    constructor(x, y, scale, color = 'white') {
+        this.scale = scale;
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
         this.dot.style.width = `${this.scale * 5 + 1}px`;
@@ -50,7 +50,7 @@ let deltaPosition_y = 0;
 function createRandomDot() {
     const randomX = Math.random() * window.innerWidth;
     const randomY = Math.random() * window.innerHeight;
-    const dot = new Dot(randomX, randomY);
+    const dot = new Dot(randomX, randomY, Math.random() ** 2);
     dots.push(dot);
 }
 
@@ -88,8 +88,7 @@ function loadDotsFromStorage() {
         }
     } else {
         storedDots.forEach(({ x, y, scale }) => {
-            const dot = new Dot(x, y);
-            dot.scale = scale;
+            const dot = new Dot(x, y, scale);
             dots.push(dot);
         });
     }

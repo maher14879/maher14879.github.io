@@ -62,7 +62,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(deltaPosition_x, deltaPosition_y);
+        dot.add_pos(deltaPosition_x * 0.001, deltaPosition_y * 0.001);
     });
     requestAnimationFrame(animateDots);
 }

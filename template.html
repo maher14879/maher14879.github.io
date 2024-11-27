@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Writing</title>
+    <title>__name__</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,14 +12,14 @@
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
     <div class="content">
         <p>
-            ABSTRACTION | 25-11-2024
+            Article_Title
         </p>
         <p>
             <div id="text-container"></div>
         </p>
     </div>
     <script>
-        fetch('assets\\text\\abstraction.txt')
+        fetch('assets\\text\\article_name.txt')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('text-container').innerText = data;

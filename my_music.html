@@ -13,24 +13,25 @@
     }
 </style>
 <body>
-<button id="backButton" onclick="goToMainMenu()">> main_menu</button>
-<div class="container">
-    <h1>MY MUSIC</h1>
-    <div class="content">
-        <p>
-            I usually compose music for the video games i make, but i also like to write funny rap lyrics sometimes.
-        </p>
-        <p>
-            I have currently released music for my game
-            <a href="orbita.html" target="_blank">Orbita</a> on Spotify as ∑∀Π∃ℝ. I am still working on the music for my other game <a href="cluster.html" target="_blank">Cluster</a>.
-        </p>
-        <div class="spotify-widget">
-            <iframe src="https://open.spotify.com/embed/artist/0XtpNO7IjWbERe1laAGl61?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-    </div>    
+    <script src="script.js"></script>
+    <script> function goToMainMenu() {window.location.href = "index.html";}</script>
+    <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
 
-</div>
-<script src="script.js"></script>
-<script> function goToMainMenu() {window.location.href = "index.html";}</script>
+    <div class="container">
+        <h1>MY MUSIC</h1>
+        <div class="content">
+            <p>
+                I usually compose music for the video games i make, but i also like to write funny rap lyrics sometimes.
+            </p>
+            <p>
+                I have currently released music for my game
+                <a href="orbita.html" target="_blank">Orbita</a> on Spotify as ∑∀Π∃ℝ. I am still working on the music for my other game <a href="cluster.html" target="_blank">Cluster</a>.
+            </p>
+            <div class="spotify-widget">
+                <iframe src="https://open.spotify.com/embed/artist/0XtpNO7IjWbERe1laAGl61?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>    
+
+    </div>
 </body>
 </html>

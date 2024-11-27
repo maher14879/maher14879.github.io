@@ -10,18 +10,15 @@
     <script src="script.js"></script>
     <script> function goToMainMenu() {window.location.href = "index.html";}</script>
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
-    <div class="container">
+    <div class="content">
         <h1>PERSONAL WRITING</h1>
-        <div class="content">
-            <p>
-                ABSTRACTION | 25-11-2024
-            </p>
-            <p>
-                <div id="text-container"></div>
-            </p>
-        </div>
+        <p>
+            ABSTRACTION | 25-11-2024
+        </p>
+        <p>
+            <div id="text-container"></div>
+        </p>
     </div>
-    <script src="script.js"></script>
     <script>
         fetch('assets\\text\\abstraction.txt')
             .then(response => response.text())

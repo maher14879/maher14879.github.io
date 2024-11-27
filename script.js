@@ -57,12 +57,12 @@ let deltaPosition_y = 0;
 
 document.addEventListener('mousemove', (event) => {
     deltaPosition_x = (event.clientX - window.innerWidth / 2)
-    deltaPosition_y = (event.clientX - window.innerHeight / 2)
+    deltaPosition_y = (event.clientY - window.innerHeight / 2)
 });
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(deltaPosition_x * 0.001, deltaPosition_y * 0.001);
+        dot.add_pos(deltaPosition_x * 0.01, deltaPosition_y * 0.01);
     });
     requestAnimationFrame(animateDots);
 }

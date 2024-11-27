@@ -69,8 +69,15 @@ function animateDots() {
 animateDots();
 
 function saveDotsToStorage() {
-    const dotData = dots.map(dot => ({ x: dot.posX, y: dot.posY, scale: dot.scale }));
+    const dotData = dots.map(dot => ({ 
+        x: dot.posX, 
+        y: dot.posY, 
+        scale: dot.scale 
+    }));
     localStorage.setItem('dots', JSON.stringify(dotData));
+
+    const deltaData = { x: deltaPosition_x, y: deltaPosition_y };
+    localStorage.setItem('deltaPosition', JSON.stringify(deltaData));
 }
 
 function loadDotsFromStorage() {
@@ -86,10 +93,14 @@ function loadDotsFromStorage() {
             dots.push(dot);
         });
     }
+
+    const storedDelta = JSON.parse(localStorage.getItem('deltaPosition') || '{"x":0,"y":0}');
+    deltaPosition_x = storedDelta.x;
+    deltaPosition_y = storedDelta.y;
 }
 
 loadDotsFromStorage();
 window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
-    localStorage.setItem('deltaPosition', JSON.stringify({ x: deltaPosition_x, y: deltaPosition_y }));
 });
+

@@ -49,11 +49,30 @@ function createRandomDot() {
     const dot = new Dot(randomX, randomY);
     dots.push(dot);
 }
-const dots = [];
-for (let i = 0; i < 60; i++) {createRandomDot();}
 
-let deltaPosition_x = 0;
-let deltaPosition_y = 0;
+function saveDotsToStorage() {
+    const dotData = dots.map(dot => ({ x: dot.posX, y: dot.posY, scale: dot.scale }));
+    localStorage.setItem('dots', JSON.stringify(dotData));
+}
+
+function loadDotsFromStorage() {
+    const storedDots = JSON.parse(localStorage.getItem('dots') || '[]');
+    storedDots.forEach(({ x, y }) => dots.push(new Dot(x, y)));
+}
+
+function saveDotsToStorage() {
+    const dotData = dots.map(dot => ({ x: dot.posX, y: dot.posY, scale: dot.scale }));
+    localStorage.setItem('dots', JSON.stringify(dotData));
+}
+
+function loadDotsFromStorage() {
+    const storedDots = JSON.parse(localStorage.getItem('dots') || '[]');
+    storedDots.forEach(({ x, y }) => dots.push(new Dot(x, y)));
+}
+
+loadDotsFromStorage();
+loadDeltaPosition();
+setInterval(saveDotsToStorage, 1000);
 
 document.addEventListener('mousemove', (event) => {
     deltaPosition_x = (event.clientX - window.innerWidth / 2)

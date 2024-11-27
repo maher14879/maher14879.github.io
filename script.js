@@ -45,7 +45,7 @@ class Dot {
 
 let dots = [];
 let deltaPosition_x = 0;
-let deltaPosition_y = 0;
+let deltaPosition_y = 3;
 
 function createRandomDot() {
     const randomX = Math.random() * window.innerWidth;

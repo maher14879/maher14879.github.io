@@ -50,6 +50,20 @@ function createRandomDot() {
     dots.push(dot);
 }
 
+document.addEventListener('mousemove', (event) => {
+    deltaPosition_x = (event.clientX - window.innerWidth / 2)
+    deltaPosition_y = (event.clientY - window.innerHeight / 2)
+});
+
+function animateDots() {
+    dots.forEach(dot => {
+        dot.add_pos(deltaPosition_x * 0.01, deltaPosition_y * 0.01);
+    });
+    requestAnimationFrame(animateDots);
+}
+
+animateDots();
+
 function saveDotsToStorage() {
     const dotData = dots.map(dot => ({ x: dot.posX, y: dot.posY, scale: dot.scale }));
     localStorage.setItem('dots', JSON.stringify(dotData));
@@ -57,8 +71,16 @@ function saveDotsToStorage() {
 
 function loadDotsFromStorage() {
     const storedDots = JSON.parse(localStorage.getItem('dots') || '[]');
-    storedDots.forEach(({ x, y }) => dots.push(new Dot(x, y)));
+    let dots = []
+    if (storedDots.length === 0) {
+        for (let i = 0; i < 60; i++) {
+            createRandomDot();
+        }
+    } else {
+        storedDots.forEach(({ x, y }) => dots.push(new Dot(x, y)));
+    }
 }
+
 
 function saveDotsToStorage() {
     const dotData = dots.map(dot => ({ x: dot.posX, y: dot.posY, scale: dot.scale }));
@@ -76,17 +98,3 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
     localStorage.setItem('deltaPosition', JSON.stringify({ x: deltaPosition_x, y: deltaPosition_y }));
 });
-
-document.addEventListener('mousemove', (event) => {
-    deltaPosition_x = (event.clientX - window.innerWidth / 2)
-    deltaPosition_y = (event.clientY - window.innerHeight / 2)
-});
-
-function animateDots() {
-    dots.forEach(dot => {
-        dot.add_pos(deltaPosition_x * 0.01, deltaPosition_y * 0.01);
-    });
-    requestAnimationFrame(animateDots);
-}
-
-animateDots();

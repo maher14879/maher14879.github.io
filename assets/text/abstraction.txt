@@ -1,3 +1,15 @@
-Both light and sound can be abstracted as a mathematical concept: waves. At first glance very different things that share an abstraction, similar to how a computer and a person both can "die". 
+Both light and sound can be abstracted as a mathematical concept: waves. At first glance, they seem like very different things that share an abstraction, similar to how a computer and a person both can "die." However, if we dive deeper, we might discover that this common abstraction could be more fundamental than any other notion in science.
 
-I often think that it must have been such an awesome thing to find out how sound has the Doppler effect, just as light has redshift, for the only apparent reason that they are both waves. It seems that things align based on how they can be abstracted. When we abstarct we are not just drawing a line between points, but rather learning about ways of thinking that the universe itself prefers to use, i.e. the abstraction is part of the thing itself.
+Part 1: What an awesome discovery redshifting must have been for the Doppler effect community
+
+You have likely experienced the Doppler effect when an ambulance drives by. The frequency increases when it is driving towards you. This is because the ambulance is moving closer to the sound wave that it has just created, shortening the period and increasing the frequency. When the ambulance is driving away from you, the opposite happens, lengthening the period and decreasing the frequency. One can imagine throwing a ball from a train; the distance between you and the ball (analogous to the period) will be smaller when throwing it in the direction of the train and larger when throwing it in the opposite direction.
+
+One would not expect electromagnetic radiation to have this wave property. What would the light equivalent of the Doppler effect be? It would be hard to expect that lighting a flashlight on a train would yield the same results as throwing a ball, yet redshifting exists.
+
+Redshifting is a property seen in light emitted from galaxies that are moving away from us. Since our universe is expanding, the light gets shifted towards a higher wavelength and has a lower frequency. This is called the relativistic Doppler effect, which uses the same formula, but also takes time dilation into account—something negligible for a moving ambulance.
+
+Part 2: The universe making itself easier to understand
+
+Why such different phenomena would adhere to the same abstraction in such different ways is a question I have long pondered. It seems, for some reason, that things align based on how they can be abstracted. When we abstract, we are not just drawing a line between points, but rather learning about ways of thinking that the universe itself seems to prefer. One could almost imagine that our universe is reusing existing code to save on the programmer's salary.
+
+The conclusion must be that our universe is not composed of many separate phenomena, but is rather the same phenomenon repeating itself in many ways. The shape of a galaxy and that of a seashell are not just similar—they are the same thing: a spiral. Learning about the shape of galaxies will indeed help you understanding seashells, and vice versa.

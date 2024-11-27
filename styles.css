@@ -4,9 +4,9 @@ body {
     color: #00ff00;
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 50vh;
-    margin: 0;
+    align-items: flex-start;  /* Align content from the top */
+    min-height: 100vh;  /* Use full height of the viewport */
+    margin: 20px 0 0 0;  /* 20px margin from top */
     overflow: hidden;
     z-index: 0;
 }
@@ -14,16 +14,36 @@ body {
 .content {
     text-align: left;
     max-width: 600px;
-    overflow-y: auto;
-    max-height: 75vh;
-    width: 100%;
+    width: 90%;  /* Make the content responsive */
     padding: 20px;
     background-color: #000000;
     border: 2px solid #00ff00;
     box-shadow: 0 0 10px #00ff00;
+    max-height: 75vh;
+    overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
     z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .content {
+        width: 95%;  /* On smaller screens, allow more width */
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    body {
+        margin: 10px 0 0 0;  /* Smaller top margin for phones */
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        width: 100%;  /* Full width on very small screens */
+        max-width: 100%;
+        padding: 10px;
+    }
 }
 
 .content::-webkit-scrollbar {

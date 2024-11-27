@@ -52,15 +52,24 @@ function createRandomDot() {
 const dots = [];
 for (let i = 0; i < 60; i++) {createRandomDot();}
 
-let mousePosition = 0;
-let deltaPosition = 0;
+let mousePosition_x = 0;
+let mousePosition_y = 0;
+let deltaPosition_x = 0;
+let deltaPosition_y = 0;
+let lastTime = performance.now();
 
 document.addEventListener('mousemove', (event) => {
-    deltaPosition = (event.clientX - mousePosition) * 0.01
-    mousePosition += deltaPosition;
+    const currentTime = performance.now();
+    deltaTime = (currentTime - lastTime) * 0.001; 
+    lastTime = currentTime;
+
+    deltaPosition_x = (event.clientX - mousePosition_x) * deltaTime
+    deltaPosition_y = (event.clientX - mousePosition_y) * deltaTime
+    mousePosition_y += deltaPosition_x;
+    mousePosition_x += deltaPosition_y;
     dots.forEach(
         dot => {
-            dot.add_pos(deltaPosition, 0);
+            dot.add_pos(deltaPosition_x, deltaPosition_y);
         }
     );
 });

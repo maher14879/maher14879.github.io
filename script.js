@@ -65,18 +65,13 @@ document.addEventListener('mousemove', (event) => {
 
     deltaPosition_x = Math.round((event.clientX - mousePosition_x) * deltaTime)
     deltaPosition_y = Math.round((event.clientX - mousePosition_y) * deltaTime)
-    mousePosition_y += deltaPosition_x;
-    mousePosition_x += deltaPosition_y;
-    dots.forEach(
-        dot => {
-            dot.add_pos(deltaPosition_x, deltaPosition_y);
-        }
-    );
 });
 
 function animateDots() {
+    mousePosition_y += deltaPosition_x;
+    mousePosition_x += deltaPosition_y;
     dots.forEach(dot => {
-        dot.add_pos(0, 3);
+        dot.add_pos(deltaPosition_x, deltaPosition_y + 3);
     });
     requestAnimationFrame(animateDots);
 }

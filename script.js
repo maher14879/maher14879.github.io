@@ -72,7 +72,10 @@ function loadDotsFromStorage() {
 
 loadDotsFromStorage();
 loadDeltaPosition();
-setInterval(saveDotsToStorage, 1000);
+window.addEventListener('beforeunload', () => {
+    saveDotsToStorage();
+    localStorage.setItem('deltaPosition', JSON.stringify({ x: deltaPosition_x, y: deltaPosition_y }));
+});
 
 document.addEventListener('mousemove', (event) => {
     deltaPosition_x = (event.clientX - window.innerWidth / 2)

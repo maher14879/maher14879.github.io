@@ -45,8 +45,8 @@ class Dot {
 }
 
 let dots = [];
-let deltaPosition_x = 0;
-let deltaPosition_y = 3;
+let deltaPosition_x = Math.random();
+let deltaPosition_y = Math.random();
 
 function createRandomDot() {
     const randomX = Math.random() * window.innerWidth;
@@ -54,18 +54,6 @@ function createRandomDot() {
     const dot = new Dot(randomX, randomY, Math.random() ** 2);
     dots.push(dot);
 }
-
-let lastMouseMove = 0;
-const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
-
-document.addEventListener('mousemove', (event) => {
-  const now = Date.now();
-  if (now - lastMouseMove > mouseMoveDelay) {
-    deltaPosition_x = event.clientX - window.innerWidth / 2;
-    deltaPosition_y = event.clientY - window.innerHeight / 2;
-    lastMouseMove = now;
-  }
-});
 
 function animateDots() {
     dots.forEach(dot => {

@@ -83,7 +83,7 @@ function saveDotsToStorage() {
 function loadDotsFromStorage() {
     const storedDots = JSON.parse(localStorage.getItem('dots') || '[]');
     if (storedDots.length === 0) {
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 10; i++) {
             createRandomDot();
         }
     } else {

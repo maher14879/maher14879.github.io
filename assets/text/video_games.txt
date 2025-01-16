@@ -2,11 +2,11 @@ There are lots of reasons why video games are fun, but playing them aint one!
 <br><br>
 ¤ Part 1: Newtonian gravity is enough for a dating simulator
 <br><br>
-Making video games must be one of the best ways to teach yourself programming. It is the no-man's-land between abstraction and reality. 
+Making video games must be one of the best ways to teach yourself programming. It is the no man's land between abstraction and reality. 
 You must embody the physicist who abstracts things into objects with properties that interact and the pragmatist who adds arbitrary boundaries 
 that ensure proper gameplay. This dichotomy is at the center of programming: are we optimizing for abstraction or optimization? 
 <br><br>
-¤ Part 2: How can i make this about myself?
+¤ Part 2: How can I make this about myself?
 <br><br>
 My project Orbita started as a physics simulator but ended up being very unscalable because I found my 
 vision and only did what was necessary to achieve that vision. Now I am working on my second project Cluster, which is an open-world game with no 

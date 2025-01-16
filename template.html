@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>__name__</title>
+    <title>Making Video Games</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,19 +12,22 @@
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
     <div class="content">
         <p>
-            Article_Title
+            Making Video Games
         </p>
         <p>
             <div id="text-container"></div>
         </p>
+        <div class="images">
+            <!-- Placeholder for three images side by side -->
+            <img src="assets/images/pixel_art_1.png" alt="Image 1">
+            <img src="assets/images/pixel_art_2.png" alt="Image 2">
+            <img src="assets/images/pixel_art_3.png" alt="Image 3">
+        </div>
     </div>
     <script>
-        fetch('assets\\text\\article_name.txt')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('text-container').innerText = data;
-            })
-            .catch(error => console.error('Error fetching text file:', error));
+        document.getElementById('text-container').innerText = `Making video games must be one of the best ways to teach yourself programming. It is the no-man's-land between abstraction and reality. You must embody the physicist, abstracting things into objects with properties that interact, and the pragmatist, adding arbitrary boundaries that ensure proper gameplay. This dichotomy is at the *center* of programming, i.e., are we optimizing for abstraction or optimization.
+
+My project Orbita started as a physics simulator but ended up being very unscalable because I found my vision and only did what was necessary to achieve that vision. Now I am working on my second project Cluster, which is an open-world game with no direct limits on what the player can do. This forces me to focus a lot on abstracting in a smart way, that makes the player's control feel realistic, without having to code the weak nuclear force.`;
     </script>
 </body>
 </html>

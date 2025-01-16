@@ -1,13 +1,13 @@
-There are lots of reasons why video games are interesting, and playing them is not one of them!
-<br>
+There are lots of reasons why video games are fun, but playing them is not one of them!
+<br><br>
 ¤ Part 1: Newtonian gravity is enough for a dating simulator
-<br>
+<br><br>
 Making video games must be one of the best ways to teach yourself programming. It is the no-man's-land between abstraction and reality. 
 You must embody the physicist, abstracting things into objects with properties that interact, and the pragmatist, adding arbitrary boundaries 
 that ensure proper gameplay. This dichotomy is at the center of programming: are we optimizing for abstraction or optimization?
-<br>
+<br><br>
 ¤ Part 2: How can i make this about myself?
-<br>
+<br><br>
 My project <a href="orbita.html" target="_blank">Orbita</a> started as a physics simulator but ended up being very unscalable because I found my 
 vision and only did what was necessary to achieve that vision. Now I am working on my second project Cluster, which is an open-world game with no 
 direct limits on what the player can do. This forces me to focus a lot on abstracting in a smart way, that makes the player's control feel realistic,

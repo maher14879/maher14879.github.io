@@ -1,8 +1,15 @@
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 
+function normalizeVector(x, y) {
+    const magnitude = Math.sqrt(x * x + y * y);
+    if (magnitude === 0) return { x: 0, y: 0 }; // Avoid division by zero
+    return { x: x / magnitude, y: y / magnitude };
+  }
+
 class Dot {
     constructor(x, y, scale, color = 'white') {
         this.scale = scale;
+        this.speed = 10
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
         this.dot.style.width = `${this.scale * 3 + 1}px`;
@@ -24,8 +31,8 @@ class Dot {
     }
 
     add_pos(x, y) {
-        this.posX -= x * this.scale;
-        this.posY -= y * this.scale;
+        this.posX -= x * this.scale * this.speed;
+        this.posY -= y * this.scale * this.speed;
 
         if (this.posY >= window.innerHeight) {
             this.posY = 1;
@@ -61,7 +68,8 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     dots.forEach(dot => {
-        dot.add_pos(deltaPosition_x * 0.01, deltaPosition_y * 0.01);
+        x, y = normalizeVector(deltaPosition_x, deltaPosition_y)
+        dot.add_pos(x, y);
     });
     requestAnimationFrame(animateDots);
 }

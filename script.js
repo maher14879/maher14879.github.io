@@ -60,10 +60,13 @@ const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 
 document.addEventListener('mousemove', (event) => {
-    targetX = event.clientX - window.innerWidth / 2;
-    targetY = event.clientY - window.innerHeight / 2;
-    deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
-    deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+    const now = Date.now();
+    if (now - lastMouseMove > mouseMoveDelay) {
+        targetX = event.clientX - window.innerWidth / 2;
+        targetY = event.clientY - window.innerHeight / 2;
+        deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
+        deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+    };
   }
 );
 

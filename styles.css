@@ -112,10 +112,11 @@ iframe {
 .images {
 	display: flex;
 	justify-content: center;
-	gap: 10px; /* Adjust the spacing between images as needed */
+	gap: 10px;
 }
 
 .images img {
 	max-width: 100%;
-	height: auto;
+	max-height: 100%;
+	object-fit: contain;
 }

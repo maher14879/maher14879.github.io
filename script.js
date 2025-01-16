@@ -3,7 +3,7 @@ const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 class Dot {
     constructor(x, y, scale, color = 'white') {
         this.scale = scale;
-        this.speed = 0.1
+        this.speed = 0.01
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
         this.dot.style.width = `${this.scale * 3 + 1}px`;
@@ -45,8 +45,8 @@ class Dot {
 }
 
 let dots = [];
-let deltaPosition_x = Math.random();
-let deltaPosition_y = Math.random();
+let deltaPosition_x = 0;
+let deltaPosition_y = 3;
 
 function createRandomDot() {
     const randomX = Math.random() * window.innerWidth;
@@ -54,6 +54,18 @@ function createRandomDot() {
     const dot = new Dot(randomX, randomY, Math.random() ** 2);
     dots.push(dot);
 }
+
+let lastMouseMove = 0;
+const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
+const mouseSmooth = 1
+
+document.addEventListener('mousemove', (event) => {
+    targetX = event.clientX - window.innerWidth / 2;
+    targetY = event.clientY - window.innerHeight / 2;
+    deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
+    deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+  }
+);
 
 function animateDots() {
     dots.forEach(dot => {

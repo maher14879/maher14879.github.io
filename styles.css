@@ -117,10 +117,8 @@ iframe {
 }
 
 .images img {
-	width: 100%; /* Ensure image scales to available space */
-	min-width: 80vw; /* Maximum width based on viewport width */
-	max-width: 600px; /* Minimum width of 600px */
-	max-height: 80vh; /* Maximum height based on viewport height */
+    width: 600px;
+	max-width: 80vw; 
 	object-fit: contain;
 	flex: 1 1 auto;
 }

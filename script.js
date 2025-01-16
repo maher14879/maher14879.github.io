@@ -103,3 +103,15 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 
+const wordLinks = {
+    "Orbita": '<a href="orbita.html" target="_blank">Orbita</a>',
+    "Cluster": '<a href="cluster.html" target="_blank">Cluster</a>',
+};
+
+function replaceWordsWithLinks(text) {
+    Object.keys(wordLinks).forEach(word => {
+        const regex = new RegExp(`\\b${word}\\b`, 'g'); // Matches whole words only
+        text = text.replace(regex, wordLinks[word]);
+    });
+    return text;
+}

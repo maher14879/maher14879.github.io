@@ -9,7 +9,7 @@ function normalizeVector(x, y) {
 class Dot {
     constructor(x, y, scale, color = 'white') {
         this.scale = scale;
-        this.speed = 10
+        this.speed = 1000
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
         this.dot.style.width = `${this.scale * 3 + 1}px`;

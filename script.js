@@ -5,8 +5,8 @@ class Dot {
         this.scale = scale;
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
-        this.dot.style.width = `${this.scale + 1}px`;
-        this.dot.style.height = `${this.scale + 1}px`;
+        this.dot.style.width = `${this.scale * 3 + 1}px`;
+        this.dot.style.height = `${this.scale * 3 + 1}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
         this.dot.style.boxShadow = boxShadow;

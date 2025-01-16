@@ -1,4 +1,4 @@
-Both light and sound can be abstracted as a mathematical concept: waves. At first glance, they seem like very different things that share an abstraction, similar to how a computer and a person both can "die". However, if we dive deeper, we might discover that this common abstraction could be more fundamental than any other notion in science.
+Both light and sound can be abstracted as the same mathematical concept: waves. At first glance, they seem like very different things that share an abstraction, similar to how a computer and a person both can "die". However, if we dive deeper, we might discover that this common abstraction could be as fundamental as any other notion in science.
 
 ¤ Part 1: What an awesome discovery redshifting must have been for the Doppler effect community
 

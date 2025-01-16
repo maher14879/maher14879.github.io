@@ -108,3 +108,14 @@ iframe {
 #backButton:hover {
     background-color: #33ff33;
 }
+
+.images {
+	display: flex;
+	justify-content: center;
+	gap: 10px; /* Adjust the spacing between images as needed */
+}
+
+.images img {
+	max-width: 100%;
+	height: auto;
+}

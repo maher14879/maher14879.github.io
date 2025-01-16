@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Making Video Games</title>
+    <title>Example Site</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
     <div class="content">
         <p>
-            VIDEO GAMES | 16-01-2025
+            EXAMPLE | XX-XX-XXXX
         </p>
         <div class="images">
             <img src="assets/images/example.png" alt="Image 1">
@@ -22,7 +22,7 @@
         </p>
     </div>
     <script>
-        fetch('assets\\text\\abstraction.txt')
+        fetch('assets\\text\\example.txt')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('text-container').innerText = data;

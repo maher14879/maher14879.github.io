@@ -113,7 +113,8 @@ iframe {
 	display: flex;
 	justify-content: center;
 	gap: 10px;
-    flex-wrap: nowrap; 
+	flex-wrap: nowrap; 
+	width: 100%;
 }
 
 .images img {

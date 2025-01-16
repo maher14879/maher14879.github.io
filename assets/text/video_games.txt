@@ -4,7 +4,7 @@ There are lots of reasons why video games are fun, but playing them aint one!
 <br><br>
 Making video games must be one of the best ways to teach yourself programming. It is the no man's land between abstraction and reality. 
 You must embody the physicist who abstracts things into objects with properties that interact and the pragmatist who adds arbitrary boundaries 
-that ensure proper gameplay. This dichotomy is at the center of programming: are we optimizing for abstraction or optimization? 
+that ensure proper gameplay. The choice between abstraction and optimization is central to programming, and a skilled programmer knows how to balance both.
 <br><br>
 ¤ Part 2: How can I make this about myself?
 <br><br>

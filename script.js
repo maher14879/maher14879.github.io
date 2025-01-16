@@ -110,7 +110,7 @@ const wordLinks = {
 
 function replaceWordsWithLinks(text) {
     Object.keys(wordLinks).forEach(word => {
-        const regex = new RegExp(`\\b${word}\\b`, 'g'); // Matches whole words only
+        const regex = new RegExp(`\\b${word}\\b`, 'g');
         text = text.replace(regex, wordLinks[word]);
     });
     return text;

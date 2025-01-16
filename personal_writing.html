@@ -23,7 +23,7 @@
             .then(response => response.text())
             .then(data => {
                 const updatedText = replaceWordsWithLinks(data);
-                document.getElementById('text-container').innerText = data;
+                document.getElementById('text-container').innerHTML = data;
             })
             .catch(error => console.error('Error fetching text file:', error));
     </script>

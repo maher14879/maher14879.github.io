@@ -1,13 +1,13 @@
 Both light and sound can be abstracted as the same mathematical concept: waves. At first glance, they seem like very different things that share an abstraction, similar to how a computer and a person both can "die". However, if we dive deeper, we might discover that this common abstraction could be as fundamental as any other notion in science.
-
+\n
 ¤ Part 1: What an awesome discovery redshifting must have been for the Doppler effect community
-
+\n
 You have likely experienced a weird change in the sound an ambulance drives by. This is the Doppler effect. It happens because the ambulance is moving closer to the sound wave that it had just created, shortening the period and increasing the frequency. When the ambulance is driving away from you, the opposite happens. One can imagine throwing a ball from a train; the distance between you and the ball (analogous to the period) will be smaller when throwing it in the direction of the train and vice versa.
-
+\n
 One would not expect electromagnetic radiation to have this wave property. What would the light equivalent of the Doppler effect even be? It might not seem likely that a flashlight on a train would yield the same results as throwing a ball, yet redshifting exists.
-
+\n
 Redshifting is a property seen in light emitted from galaxies that are moving away from us. Since our universe is expanding, the light gets shifted towards a higher wavelength and has a lower frequency. This is called the relativistic Doppler effect, which is the original formula with a time dilation term — something negligible for something as slow as an ambulance or train.
-
+\n
 ¤ Part 2: The universe making itself easier to understand
-
+\n
 Why such different phenomena would adhere to the same abstraction in such different ways is a question I have long pondered. It seems, for some reason, that things align based on how they can be abstracted. When we abstract, we are not just drawing a line between points, but rather learning about ways of thinking that the universe itself seems to prefer. Like any proficient programmer, the universe loves to reuse ideas in seemingly unfitting places. So the next you feel the urge to study the spiral shape of galaxies, maybe seashell could be a good place to start. 

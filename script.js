@@ -1,4 +1,14 @@
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
+const viewportHeight = document.documentElement.clientHeight;
+const viewportWidth = document.documentElement.clientWidth;
+
+let dots = [];
+let deltaPosition_x = 0;
+let deltaPosition_y = 3;
+
+let lastMouseMove = 0;
+const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
+const mouseSmooth = 0.01
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -27,43 +37,36 @@ class Dot {
     add_pos(x, y) {
         this.posX -= x * this.scale * this.speed;
         this.posY -= y * this.scale * this.speed;
-
-        if (this.posY >= window.innerHeight) {
+    
+        if (this.posY >= viewportHeight) {
             this.posY = 1;
         } else if (this.posY <= 0) {
-            this.posY = window.innerHeight - 1;
+            this.posY = viewportHeight - 1;
         }
-
-        if (this.posX >= window.innerWidth) {
+    
+        if (this.posX >= viewportWidth) {
             this.posX = 1;
         } else if (this.posX <= 0) {
-            this.posX = window.innerWidth - 1;
+            this.posX = viewportWidth - 1;
         }
-
+    
         this.updatePosition();
     }
+    
 }
 
-let dots = [];
-let deltaPosition_x = 0;
-let deltaPosition_y = 3;
-
 function createRandomDot() {
-    const randomX = Math.random() * window.innerWidth;
-    const randomY = Math.random() * window.innerHeight;
+    const randomX = Math.random() * viewportWidth;
+    const randomY = Math.random() * viewportHeight;
     const dot = new Dot(randomX, randomY, Math.random() ** 2);
     dots.push(dot);
 }
 
-let lastMouseMove = 0;
-const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
-const mouseSmooth = 0.01
-
 document.addEventListener('mousemove', (event) => {
     const now = Date.now();
     if (now - lastMouseMove > mouseMoveDelay) {
-        targetX = event.clientX - window.innerWidth / 2;
-        targetY = event.clientY - window.innerHeight / 2;
+        targetX = event.clientX - viewportWidth / 2;
+        targetY = event.clientY - viewportHeight / 2;
         deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
         deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
     };

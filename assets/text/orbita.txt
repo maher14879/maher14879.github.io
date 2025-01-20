@@ -47,11 +47,9 @@ This is inspired by *Undertale* but is based on quotes that I find convincing fo
 <br><br>
 <pre>
     > "You lose, yet try again... 
-<br>
     > that's why others depend on you."
-<br><br>
+
     > "It will take you long...  
-<br>
     > but the time will pass anyway."  
 </pre>
 <br><br>

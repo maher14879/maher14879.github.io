@@ -13,7 +13,7 @@ You can also shoot a charged bullet that gravitates the asteroids, combining the
 If I remake this project, I would improve the particle system and create a belt object of asteroids that handles updates and collisions.  
 <br><br>
 
-¤ Part 2: Music: Into Space  
+¤ Part 2: Music and Sound
 <br><br>
 
 The soundtrack for the game can be found on Spotify.  

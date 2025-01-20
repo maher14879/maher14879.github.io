@@ -1,4 +1,4 @@
-My code can be viewed on my <a href="https://github.com/maher14879/Orbita/tree/main" target="_blank">GitHub Folder</a>, and is only playable using Python.  
+My code can be viewed on my GitHub, and is only playable using Python.  
 I am thinking about remaking it using JavaScript so it can be playable online.  
 <br><br>
 
@@ -43,12 +43,14 @@ I think this would be greatly appreciated by the astronomy community.
 <br><br>
 
 Dying makes you receive motivational death messages.  
-This is inspired by *Undertale* but is based on quotes that I find convincing for myself.  
-
-> "You lose, yet try again...  
+This is inspired by *Undertale* but is based on quotes that I find convincing for myself:
+<br><br>
+> "You lose, yet try again... 
+<br>
 > that's why others depend on you."
-
+<br><br>
 > "It will take you long...  
+<br>
 > but the time will pass anyway."  
 <br><br>
 

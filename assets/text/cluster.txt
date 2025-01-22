@@ -14,12 +14,12 @@ I would be inspired by the game Noita, where everything is a pixel of certain ma
 <br><br>
 
 Some of the things I want in my game are that: 
-<pre>
-    > No natural health regeneration. Healing must be deliberate. 
-    > Potion recipes vary by world, discovered through clues in the world. 
-    > Crafting is shapeless and simple, focused on using basic items creatively. 
-    > Upon revival, abilities are temporarily hindered.
-</pre>
+<p style="font-size: 12px;">
+    &gt; No natural health regeneration. Healing must be deliberate.<br>
+    &gt; Potion recipes vary by world, discovered through clues in the world.<br>
+    &gt; Crafting is shapeless and simple, focused on using basic items creatively.<br>
+    &gt; Upon revival, abilities are temporarily hindered.
+</p>
 I feel like these changes are unusual for most games since they require a very deliberate approach. 
 <br><br>
 

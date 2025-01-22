@@ -45,13 +45,12 @@ I think this would be greatly appreciated by the astronomy community.
 Dying makes you receive motivational death messages.  
 This is inspired by Undertale, but is based on quotes that I find appealing:
 <br><br>
-<pre>
-    > "You lose, yet try again... 
-    > that's why others depend on you."
-
-    > "It will take you long...  
-    > but the time will pass anyway."  
-</pre>
+<p style="font-size: 12px;">
+    &gt; "You lose, yet try again... <br>
+    &gt; that's why others depend on you."<br><br>
+    &gt; "It will take you long...  <br>
+    &gt; but the time will pass anyway." 
+</p>
 <br><br>
 
 ¤ Part 6: Someone Answered Your Call  

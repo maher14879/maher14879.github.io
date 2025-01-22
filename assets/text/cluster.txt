@@ -16,9 +16,9 @@ In this regard i would be inspired by the game Noita, where everything is a some
 Some of the things I want in my game are that: 
 <pre>
     > No natural health regeneration. Healing must be deliberate. 
-    > Potion recipes vary by world, discovered through experimentation or dungeon clues. 
+    > Potion recipes vary by world, discovered through clues in the world. 
     > Crafting is shapeless and simple, focused on using basic items creatively. 
-    > Dying costs power or abilities, regained through specific tasks.
+    > Upon revival, abilities are temporarily hindered.
 </pre>
 I feel like these changes are unusual for most games since they require a very deliberate approach. 
 <br><br>

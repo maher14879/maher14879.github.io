@@ -14,10 +14,10 @@ I.e., the game would be isometric. Although the artistic style for Minecraft is 
 
 Some of the things I want in my game are that: 
 <pre>
-    > There is no natural health regeneration. I want everything to be deliberate, including the healing of the player character. 
-    > Potion recipes are specific to each world, and information about them can be found by either experimentation or gathering information in, e.g., dungeons. 
-    > Crafting is shapeless and simple. The player must not be able to create clocks or complex items, but instead use the simple things around them to create something more complicated. 
-    > Dying does not mean losing your items, but instead losing a certain power, max strength, or ability that is only regained from a certain task.
+    > No natural health regeneration. Healing must be deliberate. 
+    > Potion recipes vary by world, discovered through experimentation or dungeon clues. 
+    > Crafting is shapeless and simple, focused on using basic items creatively. 
+    > Dying costs power or abilities, regained through specific tasks.
 </pre>
 I feel like these changes are unusual for most games since they require a very deliberate approach.
 <br><br>

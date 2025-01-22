@@ -118,9 +118,9 @@ window.addEventListener('beforeunload', () => {
 });
 
 const wordLinks = {
-    "Orbita": '<a href="orbita.html" target="_blank">Orbita</a>',
+    "Orbita": '<a href="orbita.html" >Orbita</a>',
     //"Cluster": '<a href="cluster.html" >Cluster</a>',
-    "GitHub": '<a href="https://github.com/maher14879" >GitHub</a>'
+    "GitHub": '<a href="https://github.com/maher14879" target="_blank" >GitHub</a>'
 };
 
 function replaceWordsWithLinks(text) {

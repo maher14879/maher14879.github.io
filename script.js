@@ -1,14 +1,11 @@
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
-const viewportHeight = document.documentElement.clientHeight;
-const viewportWidth = document.documentElement.clientWidth;
+const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
+const mouseSmooth = 0.01
 
 let dots = [];
 let deltaPosition_x = 0;
-let deltaPosition_y = 3;
-
+let deltaPosition_y = 0;
 let lastMouseMove = 0;
-const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
-const mouseSmooth = 0.01
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -69,6 +66,8 @@ document.addEventListener('mousemove', (event) => {
         targetY = event.clientY - viewportHeight / 2;
         deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
         deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+        viewportHeight = document.documentElement.clientHeight;
+        viewportWidth = document.documentElement.clientWidth;
     };
   }
 );

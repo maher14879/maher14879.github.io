@@ -1,6 +1,6 @@
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
-const mouseSmooth = 0.0001 //scale down difference
+const mouseSmooth = 0.01
 
 viewportHeight = document.documentElement.clientHeight;
 viewportWidth = document.documentElement.clientWidth;
@@ -30,24 +30,24 @@ class Dot {
     }
 
     updatePosition() {
-        this.dot.style.left = `${this.posX * viewportWidth}px`;
-        this.dot.style.top = `${this.posY * viewportHeight}px`;
+        this.dot.style.left = `${this.posX}px`;
+        this.dot.style.top = `${this.posY}px`;
     }
 
     add_pos(x, y) {
         this.posX -= x * this.scale * this.speed;
         this.posY -= y * this.scale * this.speed;
     
-        if (this.posY >= 1) {
-            this.posY = 0.01;
+        if (this.posY >= viewportHeight) {
+            this.posY = 1;
         } else if (this.posY <= 0) {
-            this.posY = 1 - 0.01;
+            this.posY = viewportHeight - 1;
         }
     
-        if (this.posX >= 1) {
-            this.posX = 0.01;
+        if (this.posX >= viewportWidth) {
+            this.posX = 1;
         } else if (this.posX <= 0) {
-            this.posX = 1 - 0.01;
+            this.posX = viewportWidth - 1;
         }
     
         this.updatePosition();

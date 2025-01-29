@@ -2,8 +2,8 @@ const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 
-viewportHeight = document.documentElement.clientHeight;
-viewportWidth = document.documentElement.clientWidth;
+height = window.innerHeight;
+width = window.innerWidth;
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -38,16 +38,16 @@ class Dot {
         this.posX -= x * this.scale * this.speed;
         this.posY -= y * this.scale * this.speed;
     
-        if (this.posY >= viewportHeight) {
+        if (this.posY >= height) {
             this.posY = 1;
         } else if (this.posY <= 0) {
-            this.posY = viewportHeight - 1;
+            this.posY = height - 1;
         }
     
-        if (this.posX >= viewportWidth) {
+        if (this.posX >= width) {
             this.posX = 1;
         } else if (this.posX <= 0) {
-            this.posX = viewportWidth - 1;
+            this.posX = width - 1;
         }
     
         this.updatePosition();
@@ -56,8 +56,8 @@ class Dot {
 }
 
 function createRandomDot() {
-    const randomX = Math.random() * viewportWidth;
-    const randomY = Math.random() * viewportHeight;
+    const randomX = Math.random() * width;
+    const randomY = Math.random() * height;
     const dot = new Dot(randomX, randomY, Math.random() ** 2);
     dots.push(dot);
 }
@@ -65,12 +65,12 @@ function createRandomDot() {
 document.addEventListener('mousemove', (event) => {
     const now = Date.now();
     if (now - lastMouseMove > mouseMoveDelay) {
-        targetX = event.clientX - viewportWidth / 2;
-        targetY = event.clientY - viewportHeight / 2;
+        targetX = event.clientX - width / 2;
+        targetY = event.clientY - height / 2;
         deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
         deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-        viewportHeight = document.documentElement.clientHeight;
-        viewportWidth = document.documentElement.clientWidth;
+        height = window.innerHeight;
+        width = window.innerWidth;
     };
   }
 );

@@ -1,6 +1,6 @@
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
-const viewportHeight = document.documentElement.clientHeight / window.devicePixelRatio;
-const viewportWidth = document.documentElement.clientWidth / window.devicePixelRatio;
+const viewportHeight = document.documentElement.clientHeight * window.devicePixelRatio;
+const viewportWidth = document.documentElement.clientWidth * window.devicePixelRatio;
 
 let dots = [];
 let deltaPosition_x = 0;

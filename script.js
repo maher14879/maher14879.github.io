@@ -2,6 +2,9 @@ const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 
+viewportHeight = document.documentElement.clientHeight;
+viewportWidth = document.documentElement.clientWidth;
+
 let dots = [];
 let deltaPosition_x = 0;
 let deltaPosition_y = 0;

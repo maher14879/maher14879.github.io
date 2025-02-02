@@ -23,12 +23,6 @@
     </div>
     <script>
         fetch('assets\\text\\cluster.html')
-            .then(response => response.text())
-            .then(data => {
-                const updatedText = replaceWordsWithLinks(data);
-                document.getElementById('text-container').innerHTML = updatedText;
-            })
-            .catch(error => console.error('Error fetching text file:', error));
     </script>
 </body>
 </html>

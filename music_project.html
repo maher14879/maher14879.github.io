@@ -1,35 +1,29 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Example Site</title>
+    <title>Music Project</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+<style>
+    .spotify-widget {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
 <body>
     <script src="script.js"></script>
     <script> function goToMainMenu() {window.location.href = "index.html";}</script>
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
     <div class="content">
         <p>
-            EXAMPLE | XX-XX-XXXX
+            MUSIC PROJECT | 08-04-2025
         </p>
-        <div class="images">
-            <img src="assets/images/example.png" alt="Image 1">
-        </div>
         <p>
-            <div id="text-container"></div>
+            IN PROGRESS: This is my first machine learning project. More information about the project can be found on my GitHub page.
         </p>
     </div>
-    <script>
-        fetch('assets\\text\\example.html')
-            .then(response => response.text())
-            .then(data => {
-                const updatedText = replaceWordsWithLinks(data);
-                document.getElementById('text-container').innerHTML = updatedText;
-            })
-            .catch(error => console.error('Error fetching text file:', error));
-    </script>
 </body>
 </html>
 

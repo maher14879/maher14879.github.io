@@ -1,0 +1,41 @@
+My aim with this machine learning project is to sample a lot of Bach pieces and create a model that can predict what Bach would have written.
+By doing this i can "Bachify" (trademarked) any piece of music.
+This just means that by importing a piece of music, the model will predict what Bach would have written if he had written that piece and play it <span style="font-family: 'Comic Sans MS', cursive, sans-serif;">Bach</span>.
+<br><br>
+
+¤ Part 1: Importing the data
+<br><br>
+
+I am currently using www.jsbach.net to gather data, but I will probably switch to another source that also has midi files.
+The reason i am using midi is because it is easy to work with and that i am looking for a way to get the notes and not the sound.
+<br><br>
+
+¤ Part 2: Preparing the data
+<br><br>
+
+I centered all my data around the note C and removed octave information, using muspy on the midi files.
+Then i grouped all notes by bar in order and saved them in a json file. 
+This was useful since i could have the training data be the notes in the four bars before the current bar and after that the current bar.
+<br><br>
+
+¤ Part 3: Training the model
+<br><br>
+
+My first attempt was to use two simple Neural Network, one for the chords and the other for the melody.
+The hypothesis was that the chords would be easier to predict than the melody, so if i created a model on all the notes it would predict the chords.
+I could then use the chord model to remove chord notes and predict the melody.
+This attempt obviously failed because the model was not able to predict the chords or the melody correctly, but it was an easy implementation and a good starting point.
+I will still try to have this model run on this website, so i can "finish" the project, in hope of getting using a markovian model and a larger dataset in the future.
+<br><br>
+
+¤ Part 4: Using the model
+<br><br>
+
+To use the model on another midi file, i used ... (IN PROGRESS)
+<br><br>
+
+¤ Part 5: Implementing the model
+<br><br>
+
+To implement the model i ... (IN PROGRESS)
+<br><br>

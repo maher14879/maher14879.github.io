@@ -1,21 +1,19 @@
-My aim with this machine learning project is to sample a lot of Bach pieces and create a model that can predict what Bach would have written.
+In this machine learning project I will sample a lot of Bach pieces and create a model that can predict what Bach would have written.
 By doing this i can "Bachify" (trademarked) any piece of music.
-This just means that by importing a piece of music, the model will predict what Bach would have written if he had written that piece and play it <span style="font-family: 'Comic Sans MS', cursive, sans-serif;">Bach</span>.
 <br><br>
 
 ¤ Part 1: Importing the data
 <br><br>
 
-I am currently using www.jsbach.net to gather data, but I will probably switch to another source that also has midi files.
-The reason i am using midi is because it is easy to work with and that i am looking for a way to get the notes and not the sound.
+I am currently using www.jsbach.net to gather data, but I will probably switch to another source.
+The other source must have midi data, because i use note- and not sound data.
 <br><br>
 
 ¤ Part 2: Preparing the data
 <br><br>
 
-I centered all my data around the note C and removed octave information, using muspy on the midi files.
+I centered all my data around C and removed octave information.
 Then i grouped all notes by bar in order and saved them in a json file. 
-This was useful since i could have the training data be the notes in the four bars before the current bar and after that the current bar.
 <br><br>
 
 ¤ Part 3: Training the model

@@ -82,6 +82,8 @@ a {
 a:hover {
     color: #33ff33;
     text-shadow: 0 0 5px #00ff00;
+    display: inline-block;
+    width: 80%;
 }
 
 iframe {

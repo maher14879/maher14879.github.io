@@ -4,18 +4,17 @@ body {
     color: #00ff00;
     display: flex;
     justify-content: center;
-    align-items: flex-start;  /* Align content from the top */
-    min-height: 100vh;  /* Use full height of the viewport */
-    margin: 20px 0 0 0;  /* 20px margin from top */
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 20px 0 0 0;
     overflow: hidden;
     z-index: 0;
-    cursor: none;
 }
 
 .content {
     text-align: left;
     max-width: 600px;
-    width: 90%;  /* Make the content responsive */
+    width: 90%;
     padding: 20px;
     background-color: #000000;
     border: 2px solid #00ff00;
@@ -29,19 +28,19 @@ body {
 
 @media (max-width: 768px) {
     .content {
-        width: 95%;  /* On smaller screens, allow more width */
+        width: 95%;
         max-width: 90%;
         padding: 15px;
     }
 
     body {
-        margin: 10px 0 0 0;  /* Smaller top margin for phones */
+        margin: 10px 0 0 0;
     }
 }
 
 @media (max-width: 480px) {
     .content {
-        width: 100%;  /* Full width on very small screens */
+        width: 100%;
         max-width: 100%;
         padding: 10px;
     }
@@ -82,8 +81,6 @@ a {
 a:hover {
     color: #33ff33;
     text-shadow: 0 0 5px #00ff00;
-    display: inline-block;
-    width: 80%;
 }
 
 iframe {
@@ -154,5 +151,5 @@ iframe {
     background-size: cover;
     animation: customCursor 1s steps(3) infinite;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 0;
   }

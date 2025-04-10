@@ -132,18 +132,3 @@ function replaceWordsWithLinks(text) {
     });
     return text;
 }
-
-const cursor = document.querySelector('.custom-cursor');
-const body = document.querySelector('body');
-
-document.addEventListener('mousemove', (e) => {
-    const isInsideBody = e.clientX > 0 && e.clientX < window.innerWidth && e.clientY > 0 && e.clientY < window.innerHeight;
-    
-    if (isInsideBody) {
-        cursor.style.display = 'block'; // Show the custom cursor
-        cursor.style.left = e.pageX + 'px'; // Follow the mouse
-        cursor.style.top = e.pageY + 'px';  // Follow the mouse
-    } else {
-        cursor.style.display = 'none'; // Hide the custom cursor
-    }
-});

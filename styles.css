@@ -125,31 +125,6 @@ iframe {
 	flex: 1 1 auto;
 }
 
-@keyframes customCursor {
-    0% { background-image: url('assets/images/curser/charge_explosion_destroy/tile288.png'); }
-    6.25% { background-image: url('assets/images/curser/charge_explosion_destroy/tile289.png'); }
-    12.5% { background-image: url('assets/images/curser/charge_explosion_destroy/tile290.png'); }
-    18.75% { background-image: url('assets/images/curser/charge_explosion_destroy/tile291.png'); }
-    25% { background-image: url('assets/images/curser/charge_explosion_destroy/tile292.png'); }
-    31.25% { background-image: url('assets/images/curser/charge_explosion_destroy/tile293.png'); }
-    37.5% { background-image: url('assets/images/curser/charge_explosion_destroy/tile294.png'); }
-    43.75% { background-image: url('assets/images/curser/charge_explosion_destroy/tile295.png'); }
-    50% { background-image: url('assets/images/curser/charge_explosion_destroy/tile296.png'); }
-    56.25% { background-image: url('assets/images/curser/charge_explosion_destroy/tile297.png'); }
-    62.5% { background-image: url('assets/images/curser/charge_explosion_destroy/tile298.png'); }
-    68.75% { background-image: url('assets/images/curser/charge_explosion_destroy/tile299.png'); }
-    75% { background-image: url('assets/images/curser/charge_explosion_destroy/tile300.png'); }
-    81.25% { background-image: url('assets/images/curser/charge_explosion_destroy/tile301.png'); }
-    93.75% { background-image: url('assets/images/curser/charge_explosion_destroy/tile302.png'); }
-    100% { background-image: url('assets/images/curser/charge_explosion_destroy/tile303.png'); }
-  }
-
-  .custom-cursor {
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    background-size: cover;
-    animation: customCursor 1s steps(3) infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
+body {
+    cursor: url('assets/images/curser/spaceship.png'), auto;
+}

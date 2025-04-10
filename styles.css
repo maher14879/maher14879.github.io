@@ -152,4 +152,5 @@ iframe {
     background-size: cover;
     animation: customCursor 1s steps(3) infinite;
     pointer-events: none;
+    z-index: 9999;
   }

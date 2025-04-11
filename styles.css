@@ -12,6 +12,10 @@ body {
     cursor: url('assets/images/curser/curser.png'), auto;
 }
 
+a, button, [role="button"], .clickable {
+    cursor: url('assets/images/curser/curser_select.png'), auto;
+}
+
 .content {
     text-align: left;
     max-width: 600px;

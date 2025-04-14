@@ -155,7 +155,7 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            const patternScale = 0.01;s
+            const patternScale = 0.01;
             const xPattern = Math.sin(dot.posX * currentFrequency * patternScale);
             const yPattern = Math.cos(dot.posY * currentFrequency * patternScale);
             

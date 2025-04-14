@@ -164,10 +164,9 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            force_x = Math.cos(deltaPosition_x * period * width) * waveSmooth;
-            force_y = Math.sin(deltaPosition_y * period * height) * waveSmooth;
+            force_x = Math.cos(deltaPosition_x * period) * width;
+            force_y = Math.sin(deltaPosition_y * period) * height;
             dot.add_pos(force_x, force_y);
-            dot.updatePosition();
         }
     });
     requestAnimationFrame(animateDots);

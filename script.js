@@ -164,8 +164,8 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            force_x = Math.cos(deltaPosition_x * period) * waveSmooth;
-            force_y = Math.sin(deltaPosition_y * period) * waveSmooth;
+            force_x = Math.cos(deltaPosition_x * period * width) * waveSmooth;
+            force_y = Math.sin(deltaPosition_y * period * height) * waveSmooth;
             dot.add_pos(force_x, force_y);
             dot.updatePosition();
         }

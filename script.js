@@ -101,6 +101,12 @@ function loadDotsFromStorage() {
             dots.push(dot);
         });
     }
+    
+    if (dots.length < dotsCount) {
+        for (let i = dots.length; i < dotsCount; i++) {
+            createRandomDot();
+        }
+    }
 
     const storedDelta = JSON.parse(localStorage.getItem('deltaPosition') || '{"x":0,"y":0}');
     deltaPosition_x = storedDelta.x;

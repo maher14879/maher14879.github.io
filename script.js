@@ -17,6 +17,7 @@ const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const waveSmooth = 0.1;
 const dotsCount = 50;
+const waveCount = 10
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -25,6 +26,10 @@ let dots = [];
 let deltaPosition_x = 0;
 let deltaPosition_y = 0;
 let lastMouseMove = 0;
+
+let isPlaying = false;
+let currentFrequency = 440;
+let period = 1 / currentFrequency;
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -118,10 +123,6 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 
-
-let isPlaying = false;
-let currentFrequency = 440;
-
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('playButton').addEventListener('click', function() {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -159,14 +160,13 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
-    period = 1 / currentFrequency;
     dots.forEach(dot => {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
             console.log(`deltaPosition_x: ${deltaPosition_x}, deltaPosition_y: ${deltaPosition_y}`);
-            force_x = Math.cos(deltaPosition_x * period) * width * waveSmooth;
-            force_y = Math.cos(deltaPosition_y * period) * height * waveSmooth;
+            force_x = Math.cos((deltaPosition_x / width) * period * waveCount);
+            force_y = Math.cos((deltaPosition_y / height) * period * waveCount);
             dot.add_pos(force_x, force_y);
         }
     });

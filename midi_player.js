@@ -111,10 +111,6 @@ class Synthesizer {
     }
 }
 
-
-//new
-<script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
-
 let synth, lastTime
 
 function handleMidiUpload(file) {

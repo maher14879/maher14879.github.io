@@ -9,7 +9,7 @@ body {
     margin: 20px 0 0 0;
     overflow: hidden;
     z-index: 0;
-    cursor: url('assets/images/curser/curser.png'), auto;
+    cursor: url('assets/images/curser/curser.png') 10 10, auto;
 }
 
 a, button, [role="button"], .clickable {

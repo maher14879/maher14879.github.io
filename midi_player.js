@@ -111,16 +111,27 @@ class Synthesizer {
     }
 }
 
-async function handleMidiUpload(file) {
-    const arrayBuffer = await file.arrayBuffer()
-    const midi = new Midi(arrayBuffer)
-    const synth = new Synthesizer(midi, 0.3)
-    let last = performance.now()
-    function loop(t) {
-        const dt = (t - last) / 1000
-        last = t
-        synth.run(dt)
-        requestAnimationFrame(loop)
+
+//new
+let synth, lastTime
+
+function handleMidiUpload(file) {
+    const reader = new FileReader()
+    reader.onload = () => {
+        const midiData = parseMidi(reader.result)
+        synth = new Synthesizer(midiData, 0.2)
     }
+    reader.readAsArrayBuffer(file)
+}
+
+function loop(t) {
+    if (!lastTime) lastTime = t
+    const dt = (t - lastTime) / 1000
+    lastTime = t
+    if (synth) synth.run(dt)
     requestAnimationFrame(loop)
 }
+
+window.addEventListener('mousemove', () => {
+    if (!lastTime) requestAnimationFrame(loop)
+}, { once: true })

@@ -101,7 +101,7 @@ function loadDotsFromStorage() {
             dots.push(dot);
         });
     }
-    
+
     if (dots.length < dotsCount) {
         for (let i = dots.length; i < dotsCount; i++) {
             createRandomDot();
@@ -163,7 +163,7 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            const sineWave = Math.sin(dot.posX * currentFrequency / 1000);
+            const sineWave = Math.sin((dot.posX / width) * (currentFrequency / 1000));
             target = sineWave * (height / 2) + height / 2;
             deltaPosition_y = (target - dot.posY) * waveSmooth;
             dot.add_pos(deltaPosition_x, deltaPosition_y);

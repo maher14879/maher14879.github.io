@@ -159,14 +159,14 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
+    period = 1 / frequency
     dots.forEach(dot => {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            const sineWave = Math.sin((dot.posX / width) * (currentFrequency / 1000));
-            target = sineWave * (height / 2) + height / 2;
-            deltaPosition_y = (target - dot.posY) * waveSmooth;
-            dot.add_pos(deltaPosition_x, deltaPosition_y);
+            force_x = Math.cos(deltaPosition_x * period) * waveSmooth;
+            force_y = Math.sin(deltaPosition_y * period) * waveSmooth;
+            dot.add_pos(force_x, force_y);
             dot.updatePosition();
         }
     });

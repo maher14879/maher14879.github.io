@@ -155,18 +155,9 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            const patternScale = 0.01;
-            const xPattern = Math.sin(dot.posX * currentFrequency * patternScale);
-            const yPattern = Math.cos(dot.posY * currentFrequency * patternScale);
-            
-            dot.posX += xPattern * dot.scale;
-            dot.posY += yPattern * dot.scale;
-            
-            if (dot.posY >= height) dot.posY = 1;
-            if (dot.posY <= 0) dot.posY = height - 1;
-            if (dot.posX >= width) dot.posX = 1;
-            if (dot.posX <= 0) dot.posX = width - 1;
-            
+            const sineWave = Math.sin(dot.posX * frequency);
+            dot.posX += sineWave * 10;
+            dot.posY = sineWave * 10;
             dot.updatePosition();
         }
     });

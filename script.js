@@ -75,15 +75,6 @@ document.addEventListener('mousemove', (event) => {
   }
 );
 
-function animateDots() {
-    dots.forEach(dot => {
-        dot.add_pos(deltaPosition_x, deltaPosition_y);
-    });
-    requestAnimationFrame(animateDots);
-}
-
-animateDots();
-
 function saveDotsToStorage() {
     const dotData = dots.map(dot => ({ 
         x: dot.posX, 
@@ -119,6 +110,7 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 
+
 const wordLinks = {
     "Orbita": '<a href="orbita.html" >Orbita</a>',
     "Cluster": '<a href="cluster.html" >Cluster</a>',
@@ -132,3 +124,52 @@ function replaceWordsWithLinks(text) {
     });
     return text;
 }
+
+let isPlaying = false;
+let currentFrequency = 440;
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('playButton').addEventListener('click', function() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.value = currentFrequency;
+        oscillator.connect(audioContext.destination);
+
+        isPlaying = true;
+        console.log(`Playing ${currentFrequency}Hz`);
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 1);
+
+        oscillator.onended = () => {
+            isPlaying = false;
+            console.log("Sound stopped");
+        };
+    });
+});
+
+function animateDots() {
+    dots.forEach(dot => {
+        if (!isPlaying) {
+            dot.add_pos(deltaPosition_x, deltaPosition_y);
+        } else {
+            const patternScale = 0.01;s
+            const xPattern = Math.sin(dot.posX * currentFrequency * patternScale);
+            const yPattern = Math.cos(dot.posY * currentFrequency * patternScale);
+            
+            dot.posX += xPattern * dot.scale;
+            dot.posY += yPattern * dot.scale;
+            
+            if (dot.posY >= height) dot.posY = 1;
+            if (dot.posY <= 0) dot.posY = height - 1;
+            if (dot.posX >= width) dot.posX = 1;
+            if (dot.posX <= 0) dot.posX = width - 1;
+            
+            dot.updatePosition();
+        }
+    });
+    requestAnimationFrame(animateDots);
+}
+animateDots();

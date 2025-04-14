@@ -15,7 +15,7 @@ function replaceWordsWithLinks(text) {
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
-const waveSmooth = 1000;
+const waveSmooth = 200;
 const dotsCount = 50;
 
 height = window.innerHeight;
@@ -165,8 +165,8 @@ function animateDots() {
         } else {
             console.log(`deltaPosition_x: ${deltaPosition_x}, deltaPosition_y: ${deltaPosition_y}, entire_term: ${(deltaPosition_x / width) * (period * width)}`);
             deltaPosition_x
-            force_x = Math.cos((dot.posX / width) * (period * width)) * waveSmooth;
-            force_y = Math.cos((dot.posY / height) * (period * height)) * waveSmooth;
+            force_x = Math.cos(dot.posX * period) * waveSmooth;
+            force_y = Math.cos(dot.posY * period) * waveSmooth;
             dot.add_pos(force_x, force_y);
         }
     });

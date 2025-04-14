@@ -163,9 +163,9 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            console.log(`deltaPosition_x: ${deltaPosition_x}, deltaPosition_y: ${deltaPosition_y}`);
-            force_x = Math.cos((deltaPosition_x / width) * period * width);
-            force_y = Math.cos((deltaPosition_y / height) * period * height);
+            console.log(`deltaPosition_x: ${deltaPosition_x}, deltaPosition_y: ${deltaPosition_y}, entire_term: ${(deltaPosition_x / width) * (period * width)}`);
+            force_x = Math.cos((deltaPosition_x / width) * (period * width));
+            force_y = Math.cos((deltaPosition_y / height) * (period * height));
             dot.add_pos(force_x, force_y);
         }
     });

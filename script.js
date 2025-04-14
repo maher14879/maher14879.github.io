@@ -159,7 +159,7 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
-    period = 1 / frequency
+    period = 1 / currentFrequency;
     dots.forEach(dot => {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);

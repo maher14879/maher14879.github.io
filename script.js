@@ -28,7 +28,7 @@ let lastMouseMove = 0;
 
 let isPlaying = false;
 let currentFrequency = 440;
-let period = 1 / currentFrequency;
+let period = 50 / currentFrequency;
 
 class Dot {
     constructor(x, y, scale, color = 'white') {

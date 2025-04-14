@@ -69,7 +69,7 @@ class Synthesizer {
             channel_num_max = Math.max(notes.length, channel_num_max);
             for (let channel_num = 0; channel_num < channel_num_max; channel_num++) {
                 const note = notes[channel_num] || null;
-                const frequency = note ? note.frequency : 0;
+                const frequency = note ? 440 * Math.pow(2, (note.midi - 69) / 12) : 0;
                 const volume = note ? note.volume : 0;
 
                 if (!this.notes_dict[channel_num]) {

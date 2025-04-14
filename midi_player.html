@@ -7,18 +7,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <script src="script.js"></script>'
-    <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
-    <script src="midi_player.js"></script>
+    <script src="script.js"></script>
     <script> function goToMainMenu() {window.location.href = "index.html";}</script>
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
     <div class="content">
         <p>
             Midi Player | 11-04-2025
         </p>
-        This is a work in progress. Upload your midi file here to have them played back.
+        This is a work in progress.
         <br>
-        <input type="file" id="midi-upload" accept=".mid,.midi" onchange="handleMidiUpload(this.files[0])">
     </div>
 </body>
 </html>

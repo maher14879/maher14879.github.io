@@ -120,7 +120,7 @@ let synth, lastTime
 function handleMidiUpload(file) {
     const reader = new FileReader()
     reader.onload = () => {
-        const midiData = parseMidi(reader.result)
+        const midiData = new Midi(reader.result)
         synth = new Synthesizer(midiData, 0.2)
     }
     reader.readAsArrayBuffer(file)

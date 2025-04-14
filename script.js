@@ -15,7 +15,7 @@ function replaceWordsWithLinks(text) {
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
-const waveSmooth = 20;
+const waveSmooth = 1000;
 const dotsCount = 50;
 
 height = window.innerHeight;

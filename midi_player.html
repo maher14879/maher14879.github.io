@@ -1,0 +1,22 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midi Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <script src="script.js"></script>
+    <script> function goToMainMenu() {window.location.href = "index.html";}</script>
+    <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
+    <div class="content">
+        <p>
+            Midi Player | 11-04-2025
+        </p>
+        This is a work in progress. Upload your midi file here to have them played back.
+    </div>
+    <input type="file" id="midi-upload" accept=".mid,.midi" onchange="handleMidiUpload(this.files[0])">
+</body>
+</html>
+

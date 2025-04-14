@@ -124,3 +124,6 @@ async function handleMidiUpload(file) {
     }
     requestAnimationFrame(loop)
 }
+
+console.log('File loaded', file)
+console.log('Parsed MIDI', midi)

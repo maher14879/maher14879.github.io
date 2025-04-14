@@ -9,6 +9,14 @@
 <body>
     <script src="script.js"></script>
     <script scr="midi_player.js"></script>
+    <script>
+        const melody = ['C4', 'E4', 'G4', 'C5', 'B4', 'A4', 'G4', 'F4'];
+        const duration = 500; // duration in milliseconds
+    
+        document.getElementById('playButton').addEventListener('click', () => {
+            playMelody(melody, duration);
+        });
+    </script>
     <script> function goToMainMenu() {window.location.href = "index.html";}</script>
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
     <div class="content">
@@ -16,6 +24,7 @@
             Midi Player | 11-04-2025
         </p>
         This is a work in progress.
+        <button id="playButton">Play Melody</button>
         <br>
     </div>
 </body>

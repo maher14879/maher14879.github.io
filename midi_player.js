@@ -40,7 +40,3 @@ function playMelody(melody, duration) {
         }, index * duration);
     });
 }
-// Example usage
-const melody = ['C4', 'E4', 'G4', 'C5', 'B4', 'A4', 'G4', 'F4'];
-const duration = 500; // duration in milliseconds
-playMelody(melody, duration);

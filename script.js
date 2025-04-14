@@ -17,7 +17,6 @@ const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const waveSmooth = 0.1;
 const dotsCount = 50;
-const waveCount = 10
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -165,8 +164,8 @@ function animateDots() {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
             console.log(`deltaPosition_x: ${deltaPosition_x}, deltaPosition_y: ${deltaPosition_y}`);
-            force_x = Math.cos((deltaPosition_x / width) * period * waveCount);
-            force_y = Math.cos((deltaPosition_y / height) * period * waveCount);
+            force_x = Math.cos((deltaPosition_x / width) * period * width);
+            force_y = Math.cos((deltaPosition_y / height) * period * height);
             dot.add_pos(force_x, force_y);
         }
     });

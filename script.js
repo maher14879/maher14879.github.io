@@ -1,6 +1,7 @@
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
+const dotsCount = 50;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -30,14 +31,6 @@ class Dot {
     }
 
     updatePosition() {
-        this.dot.style.left = `${this.posX}px`;
-        this.dot.style.top = `${this.posY}px`;
-    }
-
-    add_pos(x, y) {
-        this.posX -= x * this.scale * this.speed;
-        this.posY -= y * this.scale * this.speed;
-    
         if (this.posY >= height) {
             this.posY = 1;
         } else if (this.posY <= 0) {
@@ -50,6 +43,13 @@ class Dot {
             this.posX = width - 1;
         }
     
+        this.dot.style.left = `${this.posX}px`;
+        this.dot.style.top = `${this.posY}px`;
+    }
+
+    add_pos(x, y) {
+        this.posX -= x * this.scale * this.speed;
+        this.posY -= y * this.scale * this.speed;
         this.updatePosition();
     }
     
@@ -90,7 +90,7 @@ function saveDotsToStorage() {
 function loadDotsFromStorage() {
     const storedDots = JSON.parse(localStorage.getItem('dots') || '[]');
     if (storedDots.length === 0) {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < dotsCount; i++) {
             createRandomDot();
         }
     } else {
@@ -155,8 +155,7 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            const sineWave = Math.sin(dot.posX * frequency);
-            dot.posX += sineWave * 10;
+            const sineWave = Math.sin(dot.posX * currentFrequency / 1000);
             dot.posY = sineWave * 10;
             dot.updatePosition();
         }

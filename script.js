@@ -1,6 +1,21 @@
+const wordLinks = {
+    "Orbita": '<a href="orbita.html" >Orbita</a>',
+    "Cluster": '<a href="cluster.html" >Cluster</a>',
+    "GitHub": '<a href="https://github.com/maher14879" target="_blank" >GitHub</a>',
+};
+
+function replaceWordsWithLinks(text) {
+    Object.keys(wordLinks).forEach(word => {
+        const regex = new RegExp(`\\b${word}\\b`, 'g');
+        text = text.replace(regex, wordLinks[word]);
+    });
+    return text;
+}
+
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
+const waveSmooth = 0.1;
 const dotsCount = 50;
 
 height = window.innerHeight;
@@ -62,19 +77,6 @@ function createRandomDot() {
     dots.push(dot);
 }
 
-document.addEventListener('mousemove', (event) => {
-    const now = Date.now();
-    if (now - lastMouseMove > mouseMoveDelay) {
-        targetX = event.clientX - width / 2;
-        targetY = event.clientY - height / 2;
-        deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
-        deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-        height = window.innerHeight;
-        width = window.innerWidth;
-    };
-  }
-);
-
 function saveDotsToStorage() {
     const dotData = dots.map(dot => ({ 
         x: dot.posX, 
@@ -111,20 +113,6 @@ window.addEventListener('beforeunload', () => {
 });
 
 
-const wordLinks = {
-    "Orbita": '<a href="orbita.html" >Orbita</a>',
-    "Cluster": '<a href="cluster.html" >Cluster</a>',
-    "GitHub": '<a href="https://github.com/maher14879" target="_blank" >GitHub</a>',
-};
-
-function replaceWordsWithLinks(text) {
-    Object.keys(wordLinks).forEach(word => {
-        const regex = new RegExp(`\\b${word}\\b`, 'g');
-        text = text.replace(regex, wordLinks[word]);
-    });
-    return text;
-}
-
 let isPlaying = false;
 let currentFrequency = 440;
 
@@ -150,13 +138,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+document.addEventListener('mousemove', (event) => {
+    const now = Date.now();
+    if (now - lastMouseMove > mouseMoveDelay) {
+        targetX = event.clientX - width / 2;
+        targetY = event.clientY - height / 2;
+        deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
+        deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+        height = window.innerHeight;
+        width = window.innerWidth;
+    };
+  }
+);
+
 function animateDots() {
     dots.forEach(dot => {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
             const sineWave = Math.sin(dot.posX * currentFrequency / 1000);
-            dot.posY = sineWave * 10;
+            target = sineWave * (height / 2) + height / 2;
+            deltaPosition_y = (target - dot.posY) * waveSmooth;
+            dot.add_pos(deltaPosition_x, deltaPosition_y);
             dot.updatePosition();
         }
     });

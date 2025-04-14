@@ -8,7 +8,6 @@
 </head>
 <body>
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
     <script src="midi_player.js"></script>
     <script> function goToMainMenu() {window.location.href = "index.html";}</script>
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
@@ -22,21 +21,4 @@
     </div>
 </body>
 </html>
-
-<script>
-    window.handleMidiUpload = async function(file) {
-        const arrayBuffer = await file.arrayBuffer()
-        const midi = new Midi(arrayBuffer)
-        const synth = new Synthesizer(midi, 0.3)
-        let last = performance.now()
-        function loop(t) {
-            const dt = (t - last) / 1000
-            last = t
-            synth.run(dt)
-            requestAnimationFrame(loop)
-        }
-        requestAnimationFrame(loop)
-    }
-</script>
-    
 

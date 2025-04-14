@@ -13,7 +13,7 @@ body {
 }
 
 a, button, [role="button"], .clickable {
-    cursor: url('assets/images/curser/curser_select.png'), auto;
+    cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
 }
 
 .content {

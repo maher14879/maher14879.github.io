@@ -15,8 +15,9 @@
             Midi Player | 11-04-2025
         </p>
         This is a work in progress. Upload your midi file here to have them played back.
+        <br>
+        <input type="file" id="midi-upload" accept=".mid,.midi" onchange="handleMidiUpload(this.files[0])">
     </div>
-    <input type="file" id="midi-upload" accept=".mid,.midi" onchange="handleMidiUpload(this.files[0])">
 </body>
 </html>
 

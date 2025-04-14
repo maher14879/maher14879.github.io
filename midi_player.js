@@ -1,47 +1,16 @@
-// play frequency
-function playFrequency(frequency, duration) {
+document.getElementById('playButton').addEventListener('click', function() {
+    // Create audio context
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Create oscillator (sound source)
     const oscillator = audioContext.createOscillator();
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+    oscillator.type = 'sine';  // Type of waveform (sine, square, sawtooth, triangle)
+    oscillator.frequency.value = 440;  // Frequency in Hz (A4 note)
+    
+    // Connect oscillator to output
     oscillator.connect(audioContext.destination);
+    
+    // Start the oscillator and stop it after 1 second
     oscillator.start();
-    setTimeout(() => {
-        oscillator.stop();
-        audioContext.close();
-    }, duration);
-}
-
-// play note
-function playNote(note, duration) {
-    const noteFrequencies = {
-        'C4': 261.63,
-        'D4': 293.66,
-        'E4': 329.63,
-        'F4': 349.23,
-        'G4': 392.00,
-        'A4': 440.00,
-        'B4': 493.88,
-        'C5': 523.25
-    };
-    const frequency = noteFrequencies[note];
-    if (frequency) {
-        playFrequency(frequency, duration);
-    } else {
-        console.error('Note not found:', note);
-    }
-}
-
-// play melody
-function playMelody(melody, duration) {
-    melody.forEach((note, index) => {
-        setTimeout(() => {
-            playNote(note, duration);
-        }, index * duration);
-    });
-}
-
-const melody = ['C4', 'E4', 'G4', 'C5', 'B4', 'A4', 'G4', 'F4'];
-const duration = 500; // duration in milliseconds
-
-playMelody(melody, duration)
+    oscillator.stop(audioContext.currentTime + 1);
+});

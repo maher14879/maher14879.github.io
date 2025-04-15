@@ -251,7 +251,7 @@ function animateDots() {
                 spawnDot -= despawnSpeed;
                 dots.pop().dot.remove()
             } else {
-                dot.add_pos(deltaPosition_x * dot.scale * deltaTime, deltaPosition_y * dot.scale * deltaTime);
+                dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
             }
         })
     } else {

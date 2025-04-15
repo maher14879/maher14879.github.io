@@ -185,10 +185,10 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
         
         for (let i = 0; i < midi.tracks.length; i++) {
-            const [x, y, sound_type] = trackData[i];
+            const [x, y, sound_type] = trackData[tracks.length];
             const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {
-                tracks.push(new track);
+                tracks.push(track);
             }
             if (tracks.length > 4) {
                 break;

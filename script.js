@@ -267,10 +267,10 @@ function animateDots() {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
-                    const term1 = (dot.posX - track.posX + Math.random() - 0.5)
-                    const term2 = (dot.posY - track.posY + Math.random() - 0.5)
-                    force_x += term1 * Math.sin(term1 * period) * Math.sin(term2 * period) * waveSpeed;
-                    force_y += term2 * Math.cos(term1 * period) * Math.cos(term2 * period) * waveSpeed;
+                    const term1 = (dot.posX - track.posX + Math.random() - 0.5) * period
+                    const term2 = (dot.posY - track.posY + Math.random() - 0.5) * period
+                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed;
+                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed;
                     if (spawnDot > spawnSpeed) {
                         dots.push(new Dot(track.posX, track.posY, Math.random() ** 2));
                     }

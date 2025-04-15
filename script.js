@@ -241,8 +241,9 @@ function animateDots() {
     }
 
     if (!isPlaying) {
+        const nowTime = audioContext.currentTime - startTime;
+        spawnDot += nowTime - lastTime;
         lastTime = nowTime;
-        spawnDot += nowTime - lastTime
         dots.forEach(dot => {
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
@@ -261,7 +262,6 @@ function animateDots() {
             dots.forEach(dot => {
                 force_x = 0;
                 force_y = 0;
-                const nowTime = audioContext.currentTime - startTime;
                 for (let i = 0; i < tracks.length; i++) {
                     const track = tracks[i];
                     const period = track.getCurrentPeriod(nowTime);

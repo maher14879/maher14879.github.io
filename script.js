@@ -217,6 +217,7 @@ function animateDots() {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
             })
         } else {
+            isPlaying = false;
             dots.forEach(dot => {
                 force_x = 0;
                 force_y = 0;

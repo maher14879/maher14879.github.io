@@ -105,9 +105,6 @@ class Track {
     }
     
     play(startTime) {
-        const real = new Float32Array([0, 1, 0.5, 0.25]);
-        const imag = new Float32Array(real.length);
-        const wave = audioContext.createPeriodicWave(real, imag);
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency
             const time = startTime + this.notes[i].time
@@ -115,7 +112,7 @@ class Track {
             const volume = this.notes[i].volume
 
             const oscillator = audioContext.createOscillator();
-            oscillator.setPeriodicWave(wave);
+            oscillator.type = 'triangle'
 
             oscillator.frequency.setValueAtTime(frequency, time);
 

@@ -110,11 +110,11 @@ class Track {
             gainNode.connect(audioContext.destination);
             
             gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
-            gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noteFade);
-            gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration - noteFade);
+            gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time);
+            gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration);
             
             oscillator.start(startTime + this.notes[i].time);
-            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration);
+            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFade);
         }
     }     
     getCurrentPeriod(nowTime) {

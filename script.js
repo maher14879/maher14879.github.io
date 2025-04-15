@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         startTime = audioContext.currentTime;
         for (let track of tracks) {
             track.play(startTime);
-        } 
+        }        
     });
 });
 
@@ -223,7 +223,7 @@ function animateDots() {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
             })
         } else {
-            isPlaying = false;
+            let tracks_active = false;
             dots.forEach(dot => {
                 force_x = 0;
                 force_y = 0;
@@ -234,11 +234,15 @@ function animateDots() {
                     if (period != null) {
                         force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                         force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
-                        isPlaying = true;
+                        tracks_active = true;
                     }
                 }
                 dot.add_pos(force_x, force_y);
             })
+            if (!tracks_active) {
+                isPlaying = false;
+                tracks = [];
+            }
         }
     requestAnimationFrame(animateDots);
 }

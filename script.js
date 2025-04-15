@@ -100,18 +100,20 @@ class Track {
         }
     }
     play(startTime) {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        oscillator.type = this.type;
-
         for (let i = 0; i < this.notes.length; i++) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.type = this.type;
+
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
         
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
+            oscillator.start(startTime + this.notes[i].time);
             gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noneFadeIn);
-            gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration);
+            gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
+            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }

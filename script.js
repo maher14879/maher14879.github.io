@@ -83,10 +83,10 @@ class Note {
 }
 
 class Track {
-    constructor(posX, posY, midi_trackk) {
+    constructor(posX, posY, type, midi_trackk) {
         this.posX = posX;
         this.posY = posY;
-        this.type = midi_trackk.type;
+        this.type = type;
         this.notes = [];
         for (let note of midi_trackk.notes) {
             this.notes.push(new Note(note.midi, note.duration, note.time));
@@ -156,7 +156,7 @@ function loadDotsFromStorage() {
             createRandomDot();
         }
     }
-
+        
     const storedDelta = JSON.parse(localStorage.getItem('deltaPosition') || '{"x":0,"y":0}');
     deltaPosition_x = storedDelta.x;
     deltaPosition_y = storedDelta.y;
@@ -178,15 +178,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const midi = new Midi(arrayBuffer);
 
         const positions = [
-            [0, 0],
-            [width, 0],
-            [0, height],
-            [width, height]
+            [0, 0, 'sine'],
+            [width, 0, 'sawtooth'],
+            [0, height, 'square'],
+            [width, height, 'triangle'],
         ];
         
         for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
-            const [x, y] = positions[i];
-            tracks.push(new Track(x, y, midi.tracks[i]));
+            const [x, y, type] = positions[i];
+            tracks.push(new Track(x, y, type, midi.tracks[i]));
         }
 
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();

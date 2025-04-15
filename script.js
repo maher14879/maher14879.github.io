@@ -167,9 +167,9 @@ window.addEventListener('beforeunload', () => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('midiInput').addEventListener('click', async function() {
+    document.getElementById('midiInput').addEventListener('change', async function(parameter) {
         const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-        const file = e.target.files[0];
+        const file = parameter.target.files[0];
         if (!file) return;
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);

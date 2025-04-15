@@ -101,7 +101,7 @@ class Track {
         this.oscillators = {};
         
         for (let note of midi_trackk.notes) {
-            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity * 127));
+            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity));
         }
     }
     play(startTime) {
@@ -109,13 +109,12 @@ class Track {
             const oscillator = this.createOscillator(this.notes[i]);
 
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
-            
+
             const gainNode = audioContext.createGain();
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
 
             gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
-            console.log(this.notes[i].volume)
             gainNode.gain.linearRampToValueAtTime(this.notes[i].volume, startTime + this.notes[i].time + noteFadeIn);
             gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
             

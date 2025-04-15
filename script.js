@@ -27,8 +27,8 @@ let deltaPosition_y = 0;
 let lastMouseMove = 0;
 
 const waveSmooth = 200;
-const noteFadeOut = 0.05;
-const noneFadeIn = 0.05;
+const noteFadeOut = 0.1;
+const noneFadeIn = 0.1;
 
 let tracks = [];
 let isPlaying = false;

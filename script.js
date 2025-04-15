@@ -19,8 +19,8 @@ const maxDots = 100;
 const spawnSpeed = 4;
 const despawnSpeed = 1;
 const attract = -10
-const waveSmooth = -200;
-const periodScaler = 20;
+const waveSmooth = 0.00001;
+const periodScaler = 1;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -49,7 +49,7 @@ class Dot {
         this.dot.style.height = `${this.scale * 3 + 1}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
-        const grey_scale = `rgb(${255 * (this.scale / 4 + 1)}, ${255 * (this.scale / 4 + 1)}, ${255 * (this.scale / 4 + 1)})`;
+        const grey_scale = `rgb(${255 * (this.scale / 4 + 0.2)}, ${255 * (this.scale / 4 + 0.2)}, ${255 * (this.scale / 4 + 0.2)})`;
         this.dot.style.boxShadow = `0 0 ${this.scale * 3 + 1}px 1px ${grey_scale}, 0 0 ${this.scale * 3 + 1}px 1px ${grey_scale}`;
 
         this.posX = x;

@@ -240,26 +240,27 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
-    dots.forEach(dot => {
-        if (!isPlaying) {
+    if (!isPlaying) {
+        dots.forEach(dot => {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
+            })
         } else {
-            force_x = 0;
-            force_y = 0;
-            const nowTime = audioContext.currentTime - startTime;
-            isPlaying = false
-            for (let i = 0; i < tracks.length; i++) {
-                const track = tracks[i];
-                const period = track.getCurrentPeriod(nowTime);
-                if (period != null) {
-                    force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
-                    force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
-                    isPlaying = true;
+            dots.forEach(dot => {
+                force_x = 0;
+                force_y = 0;
+                const nowTime = audioContext.currentTime - startTime;
+                for (let i = 0; i < tracks.length; i++) {
+                    const track = tracks[i];
+                    const period = track.getCurrentPeriod(nowTime);
+                    if (period != null) {
+                        force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
+                        force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
+                        isPlaying = true;
+                    }
                 }
-            }
-            dot.add_pos(force_x, force_y);
+                dot.add_pos(force_x, force_y);
+            })
         }
-    });
     requestAnimationFrame(animateDots);
 }
 animateDots();

@@ -12,8 +12,8 @@ function replaceWordsWithLinks(text) {
     return text;
 }
 
-const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
-const mouseSmooth = 0.001
+const mouseMoveDelay = 10;
+const mouseSmooth = 0.0001
 const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 4;

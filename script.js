@@ -27,7 +27,7 @@ let deltaPosition_y = 0;
 let lastMouseMove = 0;
 
 const waveSmooth = 200;
-const noteAdjuster = 0.01;
+const noteFade = 0.05;
 
 let tracks = [];
 let isPlaying = false;
@@ -99,14 +99,18 @@ class Track {
     }
     play(startTime) {
         for (let i = 0; i < this.notes.length; i++) {
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = this.type;
-            
+
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
-            oscillator.connect(audioContext.destination);
+        
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
+            gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noteFade);
+            gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration - noteFade);
             
             oscillator.start(startTime + this.notes[i].time);
-            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration - noteAdjuster);
+            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration);
         }
     }     
     getCurrentPeriod(nowTime) {
@@ -180,16 +184,15 @@ document.addEventListener('DOMContentLoaded', function() {
         isPlaying = true;
 
         const positions = [
-            [0, 0],
-            [width, 0],
-            [0, height],
-            [width, height],
+            [0, 0, 'sine'],
+            [width, 0, 'square'],
+            [0, height, 'triangle'],
+            [width, height, 'sawtooth'],
         ];
 
         let position_index = 0;
         for (let i = 0; i < midi.tracks.length; i++) {
-            const [x, y] = positions[position_index];
-            const sound_type = Math.random() < 0.5 ? 'sine' : 'square';
+            const [x, y, sound_type] = positions[position_index];
             const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);

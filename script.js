@@ -222,8 +222,10 @@ function animateDots() {
         } else {
             force_x = 0;
             force_y = 0;
-            for (let track in tracks) {
-                if (track.getCurrentPeriod() != null) {
+            for (let i = 0; i < tracks.length; i++) {
+                const track = tracks[i];
+                const period = track.getCurrentPeriod();
+                if (period != null) {
                     period = track.getCurrentPeriod();
                     force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                     force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;

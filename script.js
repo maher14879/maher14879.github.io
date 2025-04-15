@@ -103,20 +103,20 @@ class Track {
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
         oscillator.type = this.type;
-        
+
         for (let i = 0; i < this.notes.length; i++) {
-            oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
+            endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
+            oscillator.frequency.linearRampToValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
+            continue;
         
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
             gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noneFadeIn);
             gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration);
             
             oscillator.start(startTime + this.notes[i].time);
             oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
-            endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
     }     
     getCurrentPeriod(nowTime) {

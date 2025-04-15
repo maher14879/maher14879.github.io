@@ -261,7 +261,8 @@ function animateDots() {
             deltaPosition_x = Math.random() * 1000
             deltaPosition_y = Math.random() * 1000
         }
-        dots.forEach(dot => {
+        const currentDots = [...dots];
+        currentDots.forEach(dot => {
             let force_x = 0;
             let force_y = 0;
             for (let i = 0; i < tracks.length; i++) {
@@ -276,7 +277,7 @@ function animateDots() {
                 }
             }
 
-            dots.forEach(dotOther => {
+            currentDots.forEach(dotOther => {
                 if (dotOther !== dot) {
                     const dx = dotOther.posX - dot.posX
                     const dy = dotOther.posY - dot.posY

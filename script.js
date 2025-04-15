@@ -189,7 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let position_index = 0;
         for (let i = 0; i < midi.tracks.length; i++) {
             const [x, y] = positions[position_index];
-            const track = new Track(x, y, 'sine', midi.tracks[i]);
+            const sound_type = Math.random() < 0.5 ? 'sine' : 'square';
+            const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);
                 position_index++;

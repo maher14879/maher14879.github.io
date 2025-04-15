@@ -14,13 +14,13 @@ function replaceWordsWithLinks(text) {
 
 const mouseMoveDelay = 10;
 const mouseSmooth = 0.01
-const mouseSpeed = 0.01
+const mouseSpeed = 0.1
 const dotsCount = 20;
 const maxDots = 100;
-const spawnSpeed = 40 * 1000;
-const despawnSpeed = 100 * 1000;
+const spawnSpeed = 4000 * 1000;
+const despawnSpeed = 10000 * 1000;
 const attract = 0.1
-const waveSmooth = 1000;
+const waveSpeed = 100000;
 const periodScaler = 1;
 
 let dots = [];
@@ -269,8 +269,8 @@ function animateDots() {
                 if (period != null) {
                     const term1 = (dot.posX - track.posX + Math.random() - 0.5)
                     const term2 = (dot.posY - track.posY + Math.random() - 0.5)
-                    force_x += term1 * Math.sin(term1 * period) * Math.sin(term2 * period) * waveSmooth;
-                    force_y += term2 * Math.cos(term1 * period) * Math.cos(term2 * period) * waveSmooth;
+                    force_x += term1 * Math.sin(term1 * period) * Math.sin(term2 * period) * waveSpeed;
+                    force_y += term2 * Math.cos(term1 * period) * Math.cos(term2 * period) * waveSpeed;
                     if (spawnDot > spawnSpeed) {
                         dots.push(new Dot(track.posX, track.posY, Math.random() ** 2));
                     }
@@ -290,8 +290,7 @@ function animateDots() {
             if (spawnDot > spawnSpeed) {
                 spawnDot -= spawnSpeed;
             }
-            dot.add_pos(force_x, force_y);  
-            console.log(force_x, force_y);   
+            dot.add_pos(force_x, force_y);
         })
     }
     requestAnimationFrame(animateDots);

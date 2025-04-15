@@ -236,14 +236,15 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
+    const nowTime = audioContext.currentTime - startTime;
+    spawnDot += nowTime - lastTime;
+    lastTime = nowTime;
+    
     if (dots.length > maxDots) {
         dots = dots.slice(0, maxDots);
     }
 
     if (!isPlaying) {
-        const nowTime = audioContext.currentTime - startTime;
-        spawnDot += nowTime - lastTime;
-        lastTime = nowTime;
         dots.forEach(dot => {
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
@@ -251,35 +252,35 @@ function animateDots() {
             } else {
                 dot.add_pos(deltaPosition_x, deltaPosition_y);
             }
-            })
-        } else {
-            if (audioContext.currentTime > endTime) {
-                audioContext.suspend();
-                isPlaying = false;
-                deltaPosition_x = Math.random() * 1000
-                deltaPosition_y = Math.random() * 1000
-            }
-            dots.forEach(dot => {
-                force_x = 0;
-                force_y = 0;
-                for (let i = 0; i < tracks.length; i++) {
-                    const track = tracks[i];
-                    const period = track.getCurrentPeriod(nowTime);
-                    if (period != null) {
-                        force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
-                        force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
-                        if (spawnDot > spawnSpeed) {
-                            const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
-                            dots.push(dot);
-                        }
+        })
+    } else {
+        if (audioContext.currentTime > endTime) {
+            audioContext.suspend();
+            isPlaying = false;
+            deltaPosition_x = Math.random() * 1000
+            deltaPosition_y = Math.random() * 1000
+        }
+        dots.forEach(dot => {
+            force_x = 0;
+            force_y = 0;
+            for (let i = 0; i < tracks.length; i++) {
+                const track = tracks[i];
+                const period = track.getCurrentPeriod(nowTime);
+                if (period != null) {
+                    force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
+                    force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
+                    if (spawnDot > spawnSpeed) {
+                        const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
+                        dots.push(dot);
                     }
                 }
-                if (spawnDot > spawnSpeed) {
-                    spawnDot -= spawnSpeed;
-                }
-                dot.add_pos(force_x, force_y);
-            })
-        }
+            }
+            if (spawnDot > spawnSpeed) {
+                spawnDot -= spawnSpeed;
+            }
+            dot.add_pos(force_x, force_y);
+        })
+    }
     requestAnimationFrame(animateDots);
 }
 animateDots();

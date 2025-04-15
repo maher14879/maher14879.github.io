@@ -30,7 +30,7 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let periodScaler = 50;
+let periodScaler = 10;
 let lastTime = 0;
 let spawnDot = 0;
 
@@ -111,7 +111,13 @@ class Track {
             const oscillator = audioContext.createOscillator();
             oscillator.type = this.type;
             oscillator.frequency.setValueAtTime(frequency, time);
-            oscillator.volume = volume
+            
+            const gainNode = audioContext.createGain()
+            gainNode.gain.setValueAtTime(volume, time)
+
+            oscillator.connect(gainNode)
+            gainNode.connect(audioContext.destination)
+
             oscillator.start(time)
             oscillator.stop(time + duration)
             

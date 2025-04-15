@@ -93,8 +93,9 @@ class Track {
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
-                console.log('frequency,', frequency);
-                this.notes.push(new Note(frequency, note.time));
+            frequency = note.midi;
+            console.log('frequency,', frequency, note.name);
+            this.notes.push(new Note(frequency, note.time));
         }
         console.log(`Created track with ${this.notes.length} valid notes`);
     }

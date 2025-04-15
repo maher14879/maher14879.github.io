@@ -117,7 +117,7 @@ class Track {
             
             oscillator.start(startTime + this.notes[i].time);
             oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
-            endTime = max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
+            endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
     }     
     getCurrentPeriod(nowTime) {

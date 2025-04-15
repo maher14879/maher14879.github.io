@@ -177,18 +177,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         isPlaying = true;
 
-        const trackData = [
-            [0, 0, 'sine'],
-            [width, 0, 'triangle'],
-            [0, height, 'square'],
-            [width, height, 'sawtooth'],
+        const positions = [
+            [0, 0],
+            [width, 0],
+            [0, height],
+            [width, height],
         ];
-        
+
+        let position_index = 0;
         for (let i = 0; i < midi.tracks.length; i++) {
-            const [x, y, sound_type] = trackData[Math.floor(Math.random() * 3)];
-            const track = new Track(x, y, sound_type, midi.tracks[i]);
+            const [x, y, sound_type] = positions[position_index];
+            const track = new Track(x, y, 'square', midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);
+                position_index++;
             }
             if (tracks.length > 4) {
                 break;

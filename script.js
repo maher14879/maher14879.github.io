@@ -240,7 +240,7 @@ function animateDots() {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
             })
         } else {
-            if (endTime > audioContext.currentTime) {
+            if (audioContext.currentTime > endTime) {
                 audioContext.suspend();
                 isPlaying = false;
             }

@@ -19,8 +19,8 @@ const maxDots = 100;
 const spawnSpeed = 4;
 const despawnSpeed = 1;
 const attract = -1
-const waveSmooth = 200;
-const periodScaler = 1;
+const waveSmooth = -200;
+const periodScaler = 20;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -275,12 +275,7 @@ function animateDots() {
                     }
                 }
             }
-            
-            if (spawnDot > spawnSpeed) {
-                spawnDot -= spawnSpeed;
-            }
-            dot.add_pos(force_x, force_y);
-            
+
             dots.forEach(dotOther => {
                 if (dotOther !== dot) {
                     const dx = dotOther.posX - dot.posX
@@ -289,7 +284,12 @@ function animateDots() {
                     force_x += (dx / distSq) * attract
                     force_y += (dy / distSq) * attract
                 }
-            })            
+            })    
+
+            if (spawnDot > spawnSpeed) {
+                spawnDot -= spawnSpeed;
+            }
+            dot.add_pos(force_x, force_y);        
         })
     }
     requestAnimationFrame(animateDots);

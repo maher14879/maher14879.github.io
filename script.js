@@ -105,7 +105,6 @@ class Track {
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency
             const time = startTime + this.notes[i].time
-            const nextTime = startTime + this.notes[i+1].time || 0
             const duration = this.notes[i].duration
             const volume = this.notes[i].volume
 
@@ -113,7 +112,7 @@ class Track {
             oscillator.type = this.type;
             oscillator.frequency.setValueAtTime(frequency, time);
             oscillator.start(time)
-            oscillator.stop(Math.max(time + duration, nextTime))
+            oscillator.stop(time + duration)
             oscillator.connect(audioContext.destination)
             
             endTime = Math.max(time + duration, endTime);

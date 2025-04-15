@@ -103,9 +103,8 @@ class Track {
         oscillator.start(startTime + this.notes[0].time);
         for (let i = 1; i < this.notes.length; i++) {
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
+            oscillator.frequency.stop(startTime + this.notes[i].time + this.notes[i].duration);
         }
-        const end = this.notes[this.notes.length - 1];
-        oscillator.stop(startTime + end.time + end.duration);
     }    
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {
@@ -184,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
             [width, height, 'sawtooth'],
         ];
         
-        for (let i = 0; i < Math.min(1, midi.tracks.length); i++) {
+        for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
             const [x, y, type] = trackData[i];
             tracks.push(new Track(x, y, type, midi.tracks[i]));
         }

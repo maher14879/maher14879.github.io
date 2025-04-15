@@ -226,8 +226,8 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('mousemove', (event) => {
     const now = Date.now();
     if (now - lastMouseMove > mouseMoveDelay) {
-        targetX = event.clientX - width / 2;
-        targetY = event.clientY - height / 2;
+        const targetX = event.clientX - width / 2;
+        const targetY = event.clientY - height / 2;
         deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
         deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
         height = window.innerHeight;

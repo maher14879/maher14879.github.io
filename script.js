@@ -113,7 +113,7 @@ class Track {
             oscillator.frequency.setValueAtTime(frequency, time);
             oscillator.volume = volume
             oscillator.start(time)
-            oscillator.stop(time + duration + noteFadeOut)
+            oscillator.stop(time + duration)
             
             endTime = Math.max(time + duration, endTime);
         }

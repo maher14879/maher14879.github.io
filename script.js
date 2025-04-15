@@ -249,7 +249,7 @@ function animateDots() {
         dots.forEach(dot => {
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
-                dots.pop().dot.remove()
+                //dots.pop().dot.remove()
             } else {
                 dot.add_pos(deltaPosition_x * dot.scale * deltaTime, deltaPosition_y * dot.scale * deltaTime);
             }

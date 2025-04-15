@@ -33,6 +33,7 @@ const noneFadeIn = 0.1;
 let tracks = [];
 let isPlaying = false;
 let startTime = 0;
+let endTime = 0;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {
@@ -116,6 +117,7 @@ class Track {
             
             oscillator.start(startTime + this.notes[i].time);
             oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
+            endTime = max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
     }     
     getCurrentPeriod(nowTime) {
@@ -189,9 +191,9 @@ document.addEventListener('DOMContentLoaded', function() {
         isPlaying = true;
 
         const positions = [
-            [50, 50, 'triangle'],
-            [width - 50, 50, 'square'],
-            [50, height - 50, 'sine'],
+            [50, 50, 'sine'],
+            [width - 50, 50, 'triangle'],
+            [50, height - 50, 'square'],
             [width - 50, height - 50, 'sawtooth'],
         ];
 
@@ -234,6 +236,9 @@ function animateDots() {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
             })
         } else {
+            if (endTime > audioContext.currentTime) {
+                isPlaying = false;
+            }
             dots.forEach(dot => {
                 force_x = 0;
                 force_y = 0;

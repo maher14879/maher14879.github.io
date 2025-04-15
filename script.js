@@ -163,9 +163,6 @@ function loadDotsFromStorage() {
         storedDots.forEach(({ x, y, scale }) => {
             const dot = new Dot(x, y, scale);
             dots.push(dot);
-            if (dots.length >= maxDots) {
-                return;
-            }
         });
     }
 
@@ -242,6 +239,10 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
+    if (dots.length > maxDots) {
+        dots = dots.slice(0, maxDots);
+    }
+
     if (!isPlaying) {
         dots.forEach(dot => {
             dot.add_pos(deltaPosition_x, deltaPosition_y);

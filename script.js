@@ -191,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             tracks.push(new Track(x, y, type, track));
         }
-        }
 
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         audioContext.onstatechange = () => {

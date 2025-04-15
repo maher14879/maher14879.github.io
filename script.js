@@ -236,10 +236,10 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
-    const nowTime = audioContext.currentTime - startTime;
-    const deltaTime = nowTime - lastTime
+    const nowTime = Date.now() - startTime;
+    const deltaTime = Date.now() - lastTime;
+    lastTime = Date.now();
     spawnDot += deltaTime;
-    lastTime = nowTime;
     
     if (dots.length > maxDots) {
         dots = dots.slice(0, maxDots);

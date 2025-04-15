@@ -51,6 +51,7 @@ class Dot {
         this.dot.style.pointerEvents = 'none';
         const c = this.scale / 3;
         const color = `rgb(${255 * c}, ${255 * c}, ${255 * c})`;
+        console.log(color)
         this.dot.style.boxShadow = `0 0 ${this.scale * 3 + 1}px 1px ${color}, 0 0 ${this.scale * 3 + 1}px 1px ${color}`;
 
         this.posX = x;

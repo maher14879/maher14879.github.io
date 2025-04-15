@@ -30,7 +30,6 @@ const waveSmooth = 200;
 
 let tracks = [];
 let isPlaying = false;
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let startTime = 0;
 
 class Dot {
@@ -78,9 +77,8 @@ class Dot {
 }
 
 class Note {
-    constructor(frequency, duration, time) {
+    constructor(frequency, time) {
         this.frequency = frequency;
-        this.duration = duration;
         this.time = time;
     }
 }
@@ -92,7 +90,7 @@ class Track {
         this.type = type;
         this.notes = [];
         for (let note of midi_trackk.notes) {
-            this.notes.push(new Note(note.midi, note.duration, note.time));
+            this.notes.push(new Note(note.midi, note.time));
         }
     }
     play(startTime) {
@@ -103,7 +101,7 @@ class Track {
         oscillator.start(startTime + this.notes[0].time);
         for (let i = 1; i < this.notes.length; i++) {
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
-            oscillator.frequency.stop(startTime + this.notes[i].time + this.notes[i].duration);
+            oscillator.stop(startTime + this.notes[i].time + 0.1);
         }
     }    
     getCurrentPeriod(nowTime) {

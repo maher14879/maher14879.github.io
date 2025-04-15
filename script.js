@@ -124,7 +124,7 @@ class Track {
             gainNode.gain.setTargetAtTime(0, time + duration, noteFadeOut);
 
             oscillator.start(time)
-            oscillator.end(time + duration + noteFadeOut)
+            oscillator.stop(time + duration + noteFadeOut)
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }

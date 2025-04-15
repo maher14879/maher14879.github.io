@@ -13,13 +13,13 @@ function replaceWordsWithLinks(text) {
 }
 
 const mouseMoveDelay = 10;
-const mouseSmooth = 0.001
+const mouseSmooth = 0.0001
 const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 4 * 1000;
 const despawnSpeed = 10 * 1000;
 const attract = 0.1
-const waveSmooth = 100;
+const waveSmooth = 1000;
 const periodScaler = 1;
 
 let dots = [];

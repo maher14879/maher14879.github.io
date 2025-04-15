@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tracks.push(track);
                 position_index++;
             }
-            if (tracks.length >= 4) {
+            if (position_index >= 4) {
                 break;
             }
         }

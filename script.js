@@ -30,7 +30,7 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let periodScaler = 1;
+let periodScaler = 15;
 let lastTime = 0;
 let spawnDot = 0;
 
@@ -105,6 +105,7 @@ class Track {
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency
             const time = startTime + this.notes[i].time
+            const nextTime = startTime + this.notes[i+1].time || 0
             const duration = this.notes[i].duration
             const volume = this.notes[i].volume
 
@@ -112,7 +113,7 @@ class Track {
             oscillator.type = this.type;
             oscillator.frequency.setValueAtTime(frequency, time);
             oscillator.start(time)
-            oscillator.stop(time + duration)
+            oscillator.stop(Math.max(time + duration, nextTime))
             oscillator.connect(audioContext.destination)
             
             endTime = Math.max(time + duration, endTime);
@@ -261,7 +262,7 @@ function animateDots() {
                     const period = track.getCurrentPeriod(nowTime);
                     if (period != null) {
                         force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
-                        force_y += Math.sin((dot.posY - track.posY) * period) * waveSmooth;
+                        force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
                         if (spawnDot > spawnSpeed) {
                             const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
                             dots.push(dot);

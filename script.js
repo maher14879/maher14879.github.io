@@ -121,8 +121,8 @@ class Track {
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
 
-        for (let oscillator in this.oscillators.values()) {
-            oscillator.start();
+        for (let key in this.oscillators) {
+            this.oscillators[key].start();
         }
     }
 

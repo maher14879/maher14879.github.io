@@ -19,8 +19,8 @@ const maxDots = 100;
 const spawnSpeed = 4;
 const despawnSpeed = 1;
 const attract = -1
-const waveSmooth = 200;
-const periodScaler = 15;
+const waveSmooth = 10;
+const periodScaler = 1;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -278,12 +278,15 @@ function animateDots() {
             }
             
             dots.forEach(dotOther => {
-                if (dotOther === dot) return
-                const dx = dotOther.posX - dot.posX
-                const dy = dotOther.posY - dot.posY
-                const distSq = dx * dx + dy * dy + 1e-6
-                force_x += (dx / distSq) * attract
-                force_y += (dy / distSq) * attract
+                if (!dotOther === dot) {
+                    const dx = dotOther.posX - dot.posX
+                    const dy = dotOther.posY - dot.posY
+                    const distSq = dx * dx + dy * dy + 1e-6
+                    force_x += (dx / distSq) * attract
+                    force_y += (dy / distSq) * attract
+
+                    console.log((dx / distSq) * attract, (dy / distSq) * attract)
+                }
             })            
 
             if (spawnDot > spawnSpeed) {

@@ -166,13 +166,11 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 document.addEventListener('DOMContentLoaded', function() {
-    const playButton = document.getElementById('playButton');
+    const playButton = document.getElementById('midiInput');
     if (playButton) {
         playButton.addEventListener('click', async function() {
-            const { Midi } = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
             isPlaying = true;
-            const midiPath = 'assets/midi/Aria Math - C418.mid';
-
+            const { Midi } = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
             const res = await fetch(midiPath);
             const arrayBuffer = await res.arrayBuffer();
             const midi = new Midi(arrayBuffer);
@@ -202,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     } else {
-        console.error('Play button not found');
+        console.error('midiInput button not found');
     }
 });
 

@@ -19,6 +19,8 @@ const maxDots = 100;
 const spawnSpeed = 4;
 const despawnSpeed = 1;
 const attract = -1
+const waveSmooth = 200;
+const periodScaler = 15;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -32,11 +34,9 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let periodScaler = 15;
 let lastTime = 0;
 let spawnDot = 0;
 
-const waveSmooth = 200;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {

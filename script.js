@@ -280,9 +280,8 @@ function animateDots() {
             dots.forEach(dotOther => {
                 const deltaX = dotOther.posX - dot.posX
                 const deltaY = dotOther.posY - dot.posY
-                const distSq = dx * dx + dy * dy
-                force_x += deltaX * attract / distSq
-                force_y += deltaY * attract / distSq
+                force_x += attract / deltaX
+                force_y += attract / deltaY
             })
 
             if (spawnDot > spawnSpeed) {

@@ -249,7 +249,7 @@ function animateDots() {
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
                 //dots.pop().dot.remove()
-                console.log("Despawn dot")
+                //console.log("Despawn dot")
             }
         })
     } else {

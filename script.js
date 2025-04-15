@@ -18,7 +18,7 @@ const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 4;
 const despawnSpeed = 1;
-const attract = 10
+const attract = 0.1
 const waveSmooth = 1;
 const periodScaler = 1;
 

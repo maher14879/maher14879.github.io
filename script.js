@@ -110,7 +110,7 @@ class Track {
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            oscillator.start(Math.min(0, startTime + this.notes[i].time - noteFadeIn));
+            oscillator.start(Math.max(0, startTime + this.notes[i].time - noteFadeIn));
             gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noteFadeIn);
             gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
             oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);

@@ -29,6 +29,7 @@ let lastMouseMove = 0;
 
 let tracks = [];
 let isPlaying = false;
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -92,27 +93,24 @@ class Track {
             this.notes.push(new Note(note.midi, note.duration, note.time));
         }
     }
-    play() {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    play(startTime) {
         const oscillator = audioContext.createOscillator();
         oscillator.type = this.type;
-        oscillator.frequency.value = this.notes[0].frequency;
+        oscillator.frequency.setValueAtTime(this.notes[0].frequency, startTime + this.notes[0].time);
         oscillator.connect(audioContext.destination);
-        oscillator.start(this.notes[0].time);
+        oscillator.start(startTime + this.notes[0].time);
         for (let i = 1; i < this.notes.length; i++) {
-            setTimeout(() => {
-                oscillator.frequency.setValueAtTime(this.notes[i].frequency, this.notes[i].time);
-            }, this.notes[i].time * 1000);
+            oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
         }
-        setTimeout(() => {
-            oscillator.stop();
-        }, this.notes[this.notes.length - 1].time * 1000 + this.notes[this.notes.length - 1].duration * 1000);
-    }
-    getCurrentPeriod() {
-        const now = Date.now();
-        for (let i = 0; i < this.notes.length; i++) {
-            if (this.notes[i].time * 1000 <= now && now <= (this.notes[i].time + this.notes[i].duration) * 1000) {
-                return period = periodScaler / this.notes[i].frequency;
+        const end = this.notes[this.notes.length - 1];
+        oscillator.stop(startTime + end.time + end.duration);
+    }    
+    getCurrentPeriod(nowTime) {
+        for (let note of this.notes) {
+            const start = note.time;
+            const end = note.time + note.duration;
+            if (start <= nowTime && nowTime <= end) {
+                return periodScaler / note.frequency;
             }
         }
         return null;
@@ -196,9 +194,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
+        startTime = audioContext.currentTime;
         for (let track of tracks) {
-            track.play();
-        }
+            track.play(startTime);
+        } 
     });
 });
 
@@ -222,11 +221,11 @@ function animateDots() {
         } else {
             force_x = 0;
             force_y = 0;
+            const nowTime = audioContext.currentTime - startTime;
             for (let i = 0; i < tracks.length; i++) {
                 const track = tracks[i];
-                const period = track.getCurrentPeriod();
+                const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
-                    period = track.getCurrentPeriod();
                     force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                     force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
                 }

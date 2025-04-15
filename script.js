@@ -26,14 +26,12 @@ let deltaPosition_x = 0;
 let deltaPosition_y = 0;
 let lastMouseMove = 0;
 
-const waveSmooth = 200;
-const noteFadeOut = 0.1;
-const noneFadeIn = 0.1;
-
 let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
+
+const waveSmooth = 200;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {
@@ -188,9 +186,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
 
-        const noteFadeOut = parseFloat(noteFadeOutSlider.value);
-        const noneFadeIn = parseFloat(noneFadeInSlider.value);
+        const noteFadeOutSlider = document.getElementById('noteFadeOut');
+        const noneFadeInSlider = document.getElementById('noneFadeIn');
 
+        let noteFadeOut = parseFloat(noteFadeOutSlider.value);
+        let noneFadeIn = parseFloat(noneFadeInSlider.value);
 
         isPlaying = true;
 

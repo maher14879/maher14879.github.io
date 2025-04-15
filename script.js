@@ -27,7 +27,7 @@ let deltaPosition_y = 0;
 let lastMouseMove = 0;
 
 const waveSmooth = 200;
-const noteLength = 0.1;
+const noteAdjuster = 0.01;
 
 let tracks = [];
 let isPlaying = false;
@@ -106,7 +106,7 @@ class Track {
             oscillator.connect(audioContext.destination);
             
             oscillator.start(startTime + this.notes[i].time);
-            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration);
+            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration - noteAdjuster);
         }
     }     
     getCurrentPeriod(nowTime) {

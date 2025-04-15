@@ -98,6 +98,7 @@ class Track {
         this.posY = posY;
         this.type = type;
         this.notes = [];
+        this.oscillators = {};
         
         for (let note of midi_trackk.notes) {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity * 127));
@@ -105,24 +106,34 @@ class Track {
     }
     play(startTime) {
         for (let i = 0; i < this.notes.length; i++) {
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            oscillator.type = this.type;
+            oscillator = this.createOscillator(this.notes[i]);
 
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
-        
+            
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
+            console.log(this.notes[i].volume)
             gainNode.gain.linearRampToValueAtTime(this.notes[i].volume, startTime + this.notes[i].time + noteFadeIn);
             gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
-
-            oscillator.start(Math.max(0, startTime + this.notes[i].time));
-            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
-    }     
+    }
+
+    createOscillator(note) {
+        if (note.frequency in this.oscillators) {
+            return this.oscillators[note.frequency];
+        }
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.type = this.type;
+        this.oscillators[note.frequency] = oscillator
+
+        return oscillator;
+    }
+
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {
             const start = note.time;

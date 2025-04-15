@@ -13,7 +13,7 @@ function replaceWordsWithLinks(text) {
 }
 
 const mouseMoveDelay = 10;
-const mouseSmooth = 0.1
+const mouseSmooth = 0.001
 const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 4 * 1000;
@@ -244,7 +244,7 @@ function animateDots() {
 
     if (!isPlaying) {
         dots.forEach(dot => {
-            dot.add_pos(deltaPosition_x * dot.scale * deltaTime, deltaPosition_y * dot.scale * deltaTime);
+            dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
                 //dots.pop().dot.remove()

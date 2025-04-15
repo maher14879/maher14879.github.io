@@ -13,11 +13,12 @@ function replaceWordsWithLinks(text) {
 }
 
 const mouseMoveDelay = 10;
-const mouseSmooth = 0.0001
+const mouseSmooth = 0.01
+const mouseSpeed = 0.01
 const dotsCount = 20;
 const maxDots = 100;
-const spawnSpeed = 4 * 1000;
-const despawnSpeed = 10 * 1000;
+const spawnSpeed = 40 * 1000;
+const despawnSpeed = 100 * 1000;
 const attract = 0.1
 const waveSmooth = 1000;
 const periodScaler = 1;
@@ -244,11 +245,11 @@ function animateDots() {
 
     if (!isPlaying) {
         dots.forEach(dot => {
-            dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
-            console.log(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
+            dot.add_pos(deltaPosition_x * dot.scale * mouseSpeed, deltaPosition_y * dot.scale * mouseSpeed);
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
-                dots.pop().dot.remove()
+                //dots.pop().dot.remove()
+                console.log("Despawn dot")
             }
         })
     } else {

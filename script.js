@@ -262,8 +262,8 @@ function animateDots() {
             deltaPosition_y = Math.random() * 1000
         }
         dots.forEach(dot => {
-            force_x = 0;
-            force_y = 0;
+            let force_x = 0;
+            let force_y = 0;
             for (let i = 0; i < tracks.length; i++) {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
@@ -278,7 +278,7 @@ function animateDots() {
             }
             
             dots.forEach(dotOther => {
-                if (!dotOther === dot) {
+                if (dotOther !== dot) {
                     const dx = dotOther.posX - dot.posX
                     const dy = dotOther.posY - dot.posY
                     const distSq = dx * dx + dy * dy + 1e-6

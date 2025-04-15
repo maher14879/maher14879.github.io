@@ -79,9 +79,10 @@ class Dot {
 }
 
 class Note {
-    constructor(frequency, time) {
+    constructor(frequency, time, duration) {
         this.frequency = frequency;
         this.time = time;
+        this.duration = duration;
     }
 }
 
@@ -93,20 +94,21 @@ class Track {
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
-            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time));
+            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration));
         }
     }
     play(startTime) {
-        const oscillator = audioContext.createOscillator();
-        oscillator.type = this.type;
-        oscillator.frequency.setValueAtTime(this.notes[0].frequency, startTime + this.notes[0].time);
-        oscillator.connect(audioContext.destination);
-        oscillator.start(startTime + this.notes[0].time);
-        for (let i = 1; i < this.notes.length; i++) {
+        for (let i = 0; i < this.notes.length; i++) {
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = this.type;
+            
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
-            oscillator.frequency.setValueAtTime(0, startTime + this.notes[i].time + noteLength);
+            oscillator.connect(audioContext.destination);
+            
+            oscillator.start(startTime + this.notes[i].time);
+            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration);
         }
-    }    
+    }     
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {
             const start = note.time;

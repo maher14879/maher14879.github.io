@@ -110,10 +110,9 @@ class Track {
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            oscillator.start(startTime + this.notes[i].time);
+            oscillator.start(startTime);
             gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noneFadeIn);
             gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
-            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
@@ -241,6 +240,7 @@ function animateDots() {
             })
         } else {
             if (endTime > audioContext.currentTime) {
+                audioContext.suspend();
                 isPlaying = false;
             }
             dots.forEach(dot => {

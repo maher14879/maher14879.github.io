@@ -179,9 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const positions = [
             [0, 0, 'sine'],
-            [width, 0, 'sawtooth'],
+            [width, 0, 'triangle'],
             [0, height, 'square'],
-            [width, height, 'triangle'],
+            [width, height, 'sawtooth'],
         ];
         
         for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {

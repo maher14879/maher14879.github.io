@@ -238,7 +238,7 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     const nowTime = audioContext.currentTime - startTime;
-    deltaTime = nowTime - lastTime
+    const deltaTime = nowTime - lastTime
     spawnDot += deltaTime;
     lastTime = nowTime;
     

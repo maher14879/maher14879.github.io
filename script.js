@@ -16,7 +16,6 @@ const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const dotsCount = 20;
 const maxDots = 100;
-const periodScaler = 50;
 const spawnSpeed = 0.1;
 
 height = window.innerHeight;
@@ -33,6 +32,7 @@ let startTime = 0;
 let endTime = 0;
 let noteFadeIn = 0.1;
 let noteFadeOut = 0.1;
+let periodScaler = 50;
 let lastTime = 0;
 let spawnDot = 0;
 
@@ -114,9 +114,9 @@ class Track {
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
 
-            gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
-            gainNode.gain.linearRampToValueAtTime(this.notes[i].volume, startTime + this.notes[i].time + noteFadeIn);
-            gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.setTargetAtTime(this.notes[i].volume, startTime + this.notes[i].time);
+            gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration);
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
@@ -208,9 +208,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const noteFadeOutSlider = document.getElementById('noteFadeOut');
         const noteFadeInSlider = document.getElementById('noteFadeIn');
+        const periodScalerSlider = document.getElementById('periodScaler');
 
         noteFadeOut = parseFloat(noteFadeOutSlider.value);
         noteFadeIn = parseFloat(noteFadeInSlider.value);
+        periodScaler = parseFloat(periodScalerSlider.value);
 
         isPlaying = true;
         document.querySelector('.content').remove()

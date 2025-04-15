@@ -263,7 +263,7 @@ function animateDots() {
         dots.forEach(dot => {
             force_x = 0;
             force_y = 0;
-            for (let i = 0; i < 1; i++) { //tracks.length
+            for (let i = 0; i < tracks.length; i++) {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {

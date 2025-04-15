@@ -49,7 +49,7 @@ class Dot {
         this.dot.style.height = `${this.scale * 3 + 1}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
-        const grey_scale = `rgb(${255 * this.scale / 3}, ${255 * this.scale / 3}, ${255 * this.scale / 3})`;
+        const grey_scale = `rgb(${255 * this.scale / 4 + 1}, ${255 * this.scale / 4 + 1}, ${255 * this.scale / 4 + 1})`;
         this.dot.style.boxShadow = `0 0 ${this.scale * 3 + 1}px 1px ${grey_scale}, 0 0 ${this.scale * 3 + 1}px 1px ${grey_scale}`;
 
         this.posX = x;
@@ -270,8 +270,10 @@ function animateDots() {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
-                    force_x += Math.cos((dot.posX - track.posX + Math.random() - 0.5) * period) * waveSmooth;
-                    force_y += Math.cos((dot.posY - track.posY + Math.random() - 0.5) * period) * waveSmooth;
+                    term1 = (dot.posX - track.posX + Math.random() - 0.5) * period
+                    term2 = (dot.posY - track.posY + Math.random() - 0.5) * period
+                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSmooth;
+                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSmooth;
                     if (spawnDot > spawnSpeed) {
                         dots.push(new Dot(track.posX, track.posY, Math.random() ** 2));
                     }

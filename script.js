@@ -104,7 +104,7 @@ class Track {
         oscillator.start(startTime + this.notes[0].time);
         for (let i = 1; i < this.notes.length; i++) {
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
-            oscillator.stop(startTime + this.notes[i].time + noteLength);
+            oscillator.frequency.setValueAtTime(0, startTime + this.notes[i].time + noteLength);
         }
     }    
     getCurrentPeriod(nowTime) {
@@ -223,7 +223,6 @@ function animateDots() {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
             })
         } else {
-            let tracks_active = false;
             dots.forEach(dot => {
                 force_x = 0;
                 force_y = 0;
@@ -234,15 +233,10 @@ function animateDots() {
                     if (period != null) {
                         force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                         force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
-                        tracks_active = true;
                     }
                 }
                 dot.add_pos(force_x, force_y);
             })
-            if (!tracks_active) {
-                isPlaying = false;
-                tracks = [];
-            }
         }
     requestAnimationFrame(animateDots);
 }

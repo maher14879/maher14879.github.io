@@ -16,7 +16,7 @@ const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const dotsCount = 20;
 const maxDots = 100;
-const spawnSpeed = 0.1;
+const spawnSpeed = 4;
 const despawnSpeed = 4;
 
 height = window.innerHeight;
@@ -196,10 +196,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const positions = [
-            [50, 50, 'sine'],
-            [width - 50, 50, 'triangle'],
-            [50, height - 50, 'square'],
-            [width - 50, height - 50, 'sawtooth'],
+            [100, 100, 'sine'],
+            [width - 100, 100, 'triangle'],
+            [100, height - 100, 'square'],
+            [width - 100, height - 100, 'sawtooth'],
         ];
 
         let position_index = 0;
@@ -248,7 +248,7 @@ function animateDots() {
         dots.forEach(dot => {
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
-                dot.remove()
+                dot.dot.remove()
             } else {
                 dot.add_pos(deltaPosition_x, deltaPosition_y);
             }
@@ -263,14 +263,14 @@ function animateDots() {
         dots.forEach(dot => {
             force_x = 0;
             force_y = 0;
-            for (let i = 0; i < tracks.length; i++) {
+            for (let i = 0; i < 1; i++) { //tracks.length
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
                     force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                     force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
                     if (spawnDot > spawnSpeed) {
-                        const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
+                        const dot = new Dot(track.posX + Math.random(), track.posY + Math.random(), Math.random() ** 2);
                         dots.push(dot);
                     }
                 }

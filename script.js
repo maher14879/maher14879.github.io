@@ -278,14 +278,12 @@ function animateDots() {
             }
             
             dots.forEach(dotOther => {
-                if (dotOther !== dot) {
+                if (dotOther !== dot && null) {
                     const dx = dotOther.posX - dot.posX
                     const dy = dotOther.posY - dot.posY
                     const distSq = dx * dx + dy * dy + 1e-6
                     force_x += (dx / distSq) * attract
                     force_y += (dy / distSq) * attract
-
-                    console.log((dx / distSq) * attract, (dy / distSq) * attract)
                 }
             })            
 

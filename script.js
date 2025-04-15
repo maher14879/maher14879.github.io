@@ -112,7 +112,7 @@ class Track {
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {
             const start = note.time;
-            const end = note.time + noteLength;
+            const end = note.time + note.duration;
             if (start <= nowTime && nowTime <= end) {
                 return periodScaler / note.frequency;
             }
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let position_index = 0;
         for (let i = 0; i < midi.tracks.length; i++) {
             const [x, y] = positions[position_index];
-            const track = new Track(x, y, 'square', midi.tracks[i]);
+            const track = new Track(x, y, 'sine', midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);
                 position_index++;

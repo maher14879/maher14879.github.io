@@ -188,10 +188,10 @@ document.addEventListener('DOMContentLoaded', function() {
         isPlaying = true;
 
         const positions = [
-            [0, 0, 'sine'],
-            [width, 0, 'square'],
-            [0, height, 'triangle'],
-            [width, height, 'sawtooth'],
+            [50, 50, 'triangle'],
+            [width - 50, 50, 'square'],
+            [50, height - 50, 'sine'],
+            [width - 50, height - 50, 'sawtooth'],
         ];
 
         let position_index = 0;

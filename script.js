@@ -12,7 +12,6 @@ function replaceWordsWithLinks(text) {
     return text;
 }
 
-const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const dotsCount = 20;
@@ -50,7 +49,7 @@ class Dot {
         this.dot.style.height = `${this.scale * 3 + 1}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
-        this.dot.style.boxShadow = boxShadow;
+        this.dot.style.boxShadow = `0 0 ${this.scale * 3 + 1}px 1px grey, 0 0 ${this.scale * 3 + 1}px 1px grey`;
 
         this.posX = x;
         this.posY = y;

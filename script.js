@@ -31,6 +31,7 @@ const waveSmooth = 200;
 let tracks = [];
 let isPlaying = false;
 let startTime = 0;
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -186,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
             tracks.push(new Track(x, y, type, midi.tracks[i]));
         }
 
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         audioContext.onstatechange = () => {
             if (audioContext.state === 'closed') {
                 isPlaying = false;

@@ -176,7 +176,6 @@ function loadDotsFromStorage() {
     deltaPosition_y = storedDelta.y;
 }
 
-loadDotsFromStorage();
 window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
@@ -303,4 +302,7 @@ function animateDots() {
     }
     requestAnimationFrame(animateDots);
 }
+
+//run
+loadDotsFromStorage();
 animateDots();

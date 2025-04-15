@@ -19,7 +19,7 @@ const maxDots = 100;
 const spawnSpeed = 4;
 const despawnSpeed = 1;
 const attract = -1
-const waveSmooth = 10;
+const waveSmooth = 200;
 const periodScaler = 1;
 
 height = window.innerHeight;
@@ -268,11 +268,10 @@ function animateDots() {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
-                    force_x += Math.cos((dot.posX - track.posX + Math.random()) * period) * waveSmooth;
-                    force_y += Math.cos((dot.posY - track.posY + Math.random()) * period) * waveSmooth;
+                    force_x += Math.cos((dot.posX - track.posX + Math.random() - 0.5) * period) * waveSmooth;
+                    force_y += Math.cos((dot.posY - track.posY + Math.random() - 0.5) * period) * waveSmooth;
                     if (spawnDot > spawnSpeed) {
-                        const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
-                        dots.push(dot);
+                        dots.push(new Dot(track.posX, track.posY, Math.random() ** 2));
                     }
                 }
             }

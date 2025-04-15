@@ -30,7 +30,7 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let periodScaler = 10;
+let periodScaler = 1;
 let lastTime = 0;
 let spawnDot = 0;
 
@@ -247,6 +247,8 @@ function animateDots() {
             if (audioContext.currentTime > endTime) {
                 audioContext.suspend();
                 isPlaying = false;
+                deltaPosition_x = Math.random() * 1000
+                deltaPosition_y = Math.random() * 1000
             }
             dots.forEach(dot => {
                 force_x = 0;
@@ -259,7 +261,7 @@ function animateDots() {
                     const period = track.getCurrentPeriod(nowTime);
                     if (period != null) {
                         force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
-                        force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
+                        force_y += Math.sin((dot.posY - track.posY) * period) * waveSmooth;
                         if (spawnDot > spawnSpeed) {
                             const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
                             dots.push(dot);

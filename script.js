@@ -30,6 +30,7 @@ let lastMouseMove = 0;
 let tracks = [];
 let isPlaying = false;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let startTime = 0;
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const arrayBuffer = await res.arrayBuffer();
         const midi = new Midi(arrayBuffer);
 
-        const positions = [
+        const trackData = [
             [0, 0, 'sine'],
             [width, 0, 'triangle'],
             [0, height, 'square'],
@@ -183,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
         
         for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
-            const [x, y, type] = positions[i];
+            const [x, y, type] = trackData[i];
             tracks.push(new Track(x, y, type, midi.tracks[i]));
         }
 

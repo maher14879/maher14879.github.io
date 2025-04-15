@@ -19,7 +19,7 @@ const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 40 * 1000;
 const despawnSpeed = 100 * 1000;
-const attract = 0.1
+const attract = 10
 const waveSpeed = -200;
 const periodScaler = 1;
 
@@ -238,6 +238,7 @@ function animateDots() {
     const deltaTime = Date.now() - lastTime;
     lastTime = Date.now();
     spawnDot += deltaTime;
+    spawnDot
     
     if (dots.length > maxDots) {
         dots = dots.slice(0, maxDots);
@@ -272,7 +273,7 @@ function animateDots() {
                     force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed;
                     force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed;
                     if (spawnDot > spawnSpeed) {
-                        dots.push(new Dot(track.posX, track.posY, Math.random() ** 2));
+                        //dots.push(new Dot(track.posX, track.posY, Math.random() ** 2));
                     }
                 }
             }

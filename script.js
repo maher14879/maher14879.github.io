@@ -27,6 +27,7 @@ let deltaPosition_y = 0;
 let lastMouseMove = 0;
 
 const waveSmooth = 200;
+const noteLength = 0.1;
 
 let tracks = [];
 let isPlaying = false;
@@ -79,7 +80,7 @@ class Dot {
 
 class Note {
     constructor(frequency, time) {
-        this.frequency = frequency;
+        this.frequency = 440 * Math.pow(2, (frequency - 69) / 12);;
         this.time = time;
     }
 }
@@ -102,13 +103,13 @@ class Track {
         oscillator.start(startTime + this.notes[0].time);
         for (let i = 1; i < this.notes.length; i++) {
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
-            oscillator.stop(startTime + this.notes[i].time + 0.1);
+            oscillator.stop(startTime + this.notes[i].time + noteLength);
         }
     }    
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {
             const start = note.time;
-            const end = note.time + note.duration;
+            const end = note.time + noteLength;
             if (start <= nowTime && nowTime <= end) {
                 return periodScaler / note.frequency;
             }

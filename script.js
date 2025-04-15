@@ -85,10 +85,11 @@ class Dot {
 }
 
 class Note {
-    constructor(frequency, time, duration) {
+    constructor(frequency, time, duration, volume) {
         this.frequency = frequency;
         this.time = time;
         this.duration = duration;
+        this.volume = volume;
     }
 }
 
@@ -100,7 +101,7 @@ class Track {
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
-            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration));
+            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity * 127));
         }
     }
     play(startTime) {
@@ -197,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         noteFadeIn = parseFloat(noteFadeInSlider.value);
 
         isPlaying = true;
+        document.querySelector('.content').remove()
 
         const positions = [
             [50, 50, 'sine'],
@@ -271,7 +273,7 @@ function animateDots() {
                     }
                 }
                 if (spawnDot > spawnSpeed) {spawnDot -= spawnSpeed}
-                dot.add_pos(deltaPosition_x + force_x, deltaPosition_y + force_y);
+                dot.add_pos(force_x, force_y);
             })
         }
     requestAnimationFrame(animateDots);

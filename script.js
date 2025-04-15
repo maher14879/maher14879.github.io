@@ -98,7 +98,6 @@ class Track {
         this.posY = posY;
         this.type = type;
         this.notes = [];
-        this.oscillators = {};
         
         for (let note of midi_trackk.notes) {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity));
@@ -106,36 +105,29 @@ class Track {
     }
     play(startTime) {
         for (let i = 0; i < this.notes.length; i++) {
-            const oscillator = this.createOscillator(this.notes[i]);
+            frequency = this.notes[i].frequency
+            time = startTime + this.notes[i].time
+            duration = this.notes[i].duration
+            volume = this.notes[i].volume
 
-            oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = this.type;
+            oscillator.frequency.setValueAtTime(frequency, startTime + this.notes[i].time);
 
             const gainNode = audioContext.createGain();
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
+            
+            gainNode.gain.setValueAtTime(0, time);
+            gainNode.gain.setTargetAtTime(volume, time);
+            gainNode.gain.setValueAtTime(volume, time + duration);
+            gainNode.gain.setTargetAtTime(0, time + duration + noteFadeOut);
 
-            gainNode.gain.setValueAtTime(0, startTime);
-            gainNode.gain.setTargetAtTime(this.notes[i].volume, startTime + this.notes[i].time);
-            gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration);
+            oscillator.start(time)
+            oscillator.end(time + duration + noteFadeOut)
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
-
-        for (let key in this.oscillators) {
-            this.oscillators[key].start();
-        }
-    }
-
-    createOscillator(note) {
-        if (note.frequency in this.oscillators) {
-            return this.oscillators[note.frequency];
-        }
-
-        const oscillator = audioContext.createOscillator();
-        oscillator.type = this.type;
-        this.oscillators[note.frequency] = oscillator
-
-        return oscillator;
     }
 
     getCurrentPeriod(nowTime) {

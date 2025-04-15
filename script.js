@@ -27,7 +27,8 @@ let deltaPosition_y = 0;
 let lastMouseMove = 0;
 
 const waveSmooth = 200;
-const noteFade = 0.05;
+const noteFadeOut = 0.05;
+const noneFadeIn = 0.05;
 
 let tracks = [];
 let isPlaying = false;
@@ -110,11 +111,11 @@ class Track {
             gainNode.connect(audioContext.destination);
             
             gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
-            gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time);
+            gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noneFadeIn);
             gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration);
             
             oscillator.start(startTime + this.notes[i].time);
-            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFade);
+            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
         }
     }     
     getCurrentPeriod(nowTime) {

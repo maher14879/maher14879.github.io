@@ -13,7 +13,7 @@ function replaceWordsWithLinks(text) {
 }
 
 const mouseMoveDelay = 10;
-const mouseSmooth = 0.0001
+const mouseSmooth = 0.01
 const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 4;
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        startTime = audioContext.currentTime + 10;
+        startTime = audioContext.currentTime;
         for (let track of tracks) {
             track.play(startTime);
         }        
@@ -238,7 +238,8 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     const nowTime = audioContext.currentTime - startTime;
-    spawnDot += nowTime - lastTime;
+    deltaTime = nowTime - lastTime
+    spawnDot += deltaTime;
     lastTime = nowTime;
     
     if (dots.length > maxDots) {
@@ -251,7 +252,7 @@ function animateDots() {
                 spawnDot -= despawnSpeed;
                 dots.pop().dot.remove()
             } else {
-                dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
+                dot.add_pos(deltaPosition_x * dot.scale * deltaTime, deltaPosition_y * dot.scale * deltaTime);
             }
         })
     } else {

@@ -188,6 +188,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
 
+        const noteFadeOut = parseFloat(noteFadeOutSlider.value);
+        const noneFadeIn = parseFloat(noneFadeInSlider.value);
+
+
         isPlaying = true;
 
         const positions = [

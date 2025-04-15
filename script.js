@@ -30,8 +30,6 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let noteFadeIn = 0.1;
-let noteFadeOut = 0.1;
 let periodScaler = 50;
 let lastTime = 0;
 let spawnDot = 0;
@@ -112,17 +110,8 @@ class Track {
 
             const oscillator = audioContext.createOscillator();
             oscillator.type = this.type;
-            oscillator.frequency.setValueAtTime(frequency, startTime + this.notes[i].time);
-
-            const gainNode = audioContext.createGain();
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            gainNode.gain.setValueAtTime(0, time);
-            gainNode.gain.setTargetAtTime(volume, time, noteFadeIn);
-            gainNode.gain.setValueAtTime(volume, time + duration);
-            gainNode.gain.setTargetAtTime(0, time + duration, noteFadeOut);
-
+            oscillator.frequency.setValueAtTime(frequency, time);
+            oscillator.volume = volume
             oscillator.start(time)
             oscillator.stop(time + duration + noteFadeOut)
             
@@ -197,15 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!file) return;
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
-
-        const noteFadeOutSlider = document.getElementById('noteFadeOut');
-        const noteFadeInSlider = document.getElementById('noteFadeIn');
-        const periodScalerSlider = document.getElementById('periodScaler');
-
-        noteFadeOut = parseFloat(noteFadeOutSlider.value);
-        noteFadeIn = parseFloat(noteFadeInSlider.value);
-        periodScaler = parseFloat(periodScalerSlider.value);
-
+        
         isPlaying = true;
         document.querySelector('.content').remove()
 

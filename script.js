@@ -93,10 +93,8 @@ class Track {
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
-            console.log('frequency,', note.midi, note.name);
             this.notes.push(new Note(note.midi, note.time));
         }
-        console.log(`Created track with ${this.notes.length} valid notes`);
     }
     play(startTime) {
         const oscillator = audioContext.createOscillator();
@@ -186,9 +184,15 @@ document.addEventListener('DOMContentLoaded', function() {
             [width, height, 'sawtooth'],
         ];
         
-        for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
-            const [x, y, type] = trackData[i];
-            tracks.push(new Track(x, y, type, midi.tracks[i]));
+        for (let i = 0; i < midi.tracks.length; i++) {
+            const [x, y, sound_type] = trackData[i];
+            const track = new Track(x, y, sound_type, midi.tracks[i]);
+            if (track.notes.length > 0) {
+                tracks.push(new track);
+            }
+            if (tracks.length > 4) {
+                break;
+            }
         }
 
         startTime = audioContext.currentTime;

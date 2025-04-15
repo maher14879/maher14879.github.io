@@ -252,7 +252,7 @@ function animateDots() {
                 dots.pop().dot.remove()
             } else {
                 dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
-                console.log(deltaPosition_x * dot.scale * deltaTime, deltaPosition_y * dot.scale * deltaTime);
+                console.log(deltaPosition_x * dot.scale * deltaTime * 1000, deltaPosition_y * dot.scale * deltaTime * 1000);
             }
         })
     } else {

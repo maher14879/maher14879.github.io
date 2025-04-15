@@ -17,6 +17,7 @@ const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const waveSmooth = 200;
 const dotsCount = 50;
+const periodScaler = 50;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -26,9 +27,8 @@ let deltaPosition_x = 0;
 let deltaPosition_y = 0;
 let lastMouseMove = 0;
 
+let tracks = [];
 let isPlaying = false;
-let currentFrequency = 440;
-let period = 50 / currentFrequency;
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -72,6 +72,51 @@ class Dot {
         this.updatePosition();
     }
     
+}
+
+class Note {
+    constructor(frequency, duration, time) {
+        this.frequency = frequency;
+        this.duration = duration;
+        this.time = time;
+    }
+}
+
+class Track {
+    constructor(posX, posY, midi_trackk) {
+        this.posX = posX;
+        this.posY = posY;
+        this.type = midi_trackk.type;
+        this.notes = [];
+        for (note of midi_trackk.notes) {
+            this.notes.push(new Note(note.midi, note.duration, note.time));
+        }
+    }
+    play() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        oscillator.type = this.type;
+        oscillator.frequency.value = this.notes[0].frequency;
+        oscillator.connect(audioContext.destination);
+        oscillator.start(this.notes[0].time);
+        for (let i = 1; i < this.notes.length; i++) {
+            setTimeout(() => {
+                oscillator.frequency.setValueAtTime(this.notes[i].frequency, this.notes[i].time);
+            }, this.notes[i].time * 1000);
+        }
+        setTimeout(() => {
+            oscillator.stop();
+        }, this.notes[this.notes.length - 1].time * 1000 + this.notes[this.notes.length - 1].duration * 1000);
+    }
+    getCurrentPeriod() {
+        const now = Date.now();
+        for (let i = 0; i < this.notes.length; i++) {
+            if (this.notes[i].time * 1000 <= now && now <= (this.notes[i].time + this.notes[i].duration) * 1000) {
+                return period = periodScaler / this.notes[i].frequency;
+            }
+        }
+        return null;
+    }
 }
 
 function createRandomDot() {
@@ -122,28 +167,41 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 
+import { Midi } from '@tonejs/midi';
+
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('playButton').addEventListener('click', function() {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        
-        oscillator.type = 'sine';
-        oscillator.frequency.value = currentFrequency;
-        oscillator.connect(audioContext.destination);
-
+    document.getElementById('playButton').addEventListener('click', async function() {
         isPlaying = true;
-        console.log(`Playing ${currentFrequency}Hz`);
+        const midiPath = 'assets/midi/Aria Math - C418.mid';
 
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 1);
+        const res = await fetch(midiPath);
+        const arrayBuffer = await res.arrayBuffer();
+        const midi = new Midi(arrayBuffer);
 
-        oscillator.onended = () => {
-            isPlaying = false;
-            console.log("Sound stopped");
+        const positions = [
+            [0, 0],
+            [width, 0],
+            [0, height],
+            [width, height]
+        ];
+        
+        for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
+            const [x, y] = positions[i];
+            tracks.push(new Track(x, y, midi.tracks[i]));
+        }
+
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext.onstatechange = () => {
+            if (audioContext.state === 'closed') {
+                isPlaying = false;
+            }
         };
+
+        for (let track of tracks) {
+            track.play();
+        }
     });
 });
-
 
 document.addEventListener('mousemove', (event) => {
     const now = Date.now();
@@ -163,10 +221,15 @@ function animateDots() {
         if (!isPlaying) {
             dot.add_pos(deltaPosition_x, deltaPosition_y);
         } else {
-            console.log(`deltaPosition_x: ${deltaPosition_x}, deltaPosition_y: ${deltaPosition_y}, entire_term: ${(deltaPosition_x / width) * (period * width)}`);
-            deltaPosition_x
-            force_x = Math.cos(dot.posX * period) * waveSmooth;
-            force_y = Math.cos(dot.posY * period) * waveSmooth;
+            force_x = 0;
+            force_y = 0;
+            for (let track in tracks) {
+                if (track.getCurrentPeriod() != null) {
+                    period = track.getCurrentPeriod();
+                    force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
+                    force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
+                }
+            }
             dot.add_pos(force_x, force_y);
         }
     });

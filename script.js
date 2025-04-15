@@ -17,8 +17,8 @@ const mouseSmooth = 0.01
 const mouseSpeed = 0.1
 const dotsCount = 20;
 const maxDots = 100;
-const spawnSpeed = 4000 * 1000;
-const despawnSpeed = 10000 * 1000;
+const spawnSpeed = 40 * 1000;
+const despawnSpeed = 100 * 1000;
 const attract = 0.1
 const waveSpeed = 100000;
 const periodScaler = 1;
@@ -234,7 +234,7 @@ document.addEventListener('mousemove', (event) => {
 );
 
 function animateDots() {
-    const nowTime = Date.now() - startTime;
+    const nowTime = audioContext.currentTime - startTime;
     const deltaTime = Date.now() - lastTime;
     lastTime = Date.now();
     spawnDot += deltaTime;
@@ -290,6 +290,7 @@ function animateDots() {
             if (spawnDot > spawnSpeed) {
                 spawnDot -= spawnSpeed;
             }
+            console.log(force_x, force_y);
             dot.add_pos(force_x, force_y);
         })
     }

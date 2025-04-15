@@ -99,6 +99,10 @@ class Track {
     }
     play(startTime) {
         for (let i = 0; i < this.notes.length; i++) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = this.type;
 
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
         

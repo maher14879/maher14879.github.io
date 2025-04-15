@@ -99,7 +99,7 @@ class Track {
                 
                 // If it's not a number, skip this note
                 if (typeof midiValue !== 'number') {
-                    console.warn('Skipping invalid MIDI note:', note);
+                    console.log('Skipping invalid MIDI note:', note);
                     continue;
                 }
                 
@@ -111,13 +111,13 @@ class Track {
                 
                 // Validate time
                 if (typeof note.time !== 'number' || note.time < 0) {
-                    console.warn('Skipping note with invalid time:', note);
+                    console.log('Skipping note with invalid time:', note);
                     continue;
                 }
                 
                 this.notes.push(new Note(frequency, note.time));
             } catch (error) {
-                console.error('Error processing MIDI note:', note, error);
+                console.log('Error processing MIDI note:', note, error);
             }
         }
         

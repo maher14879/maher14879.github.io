@@ -116,12 +116,14 @@ class Track {
 
             const oscillator = audioContext.createOscillator();
             oscillator.setPeriodicWave(wave);
-            oscillator.type = this.type;
-            const gainNode = audioContext.createGain();
-            oscillator.frequency.setValueAtTime(frequency, time);
-            gainNode.gain.setValueAtTime(volume, time);
 
+            oscillator.frequency.setValueAtTime(frequency, time);
+
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(volume, time);
+            gainNode.gain.linearRampToValueAtTime(0, time + duration)
             oscillator.connect(gainNode).connect(audioContext.destination);
+
             oscillator.start(time)
             oscillator.stop(time + duration)
             oscillator.connect(audioContext.destination)

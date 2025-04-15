@@ -115,7 +115,7 @@ class Track {
             oscillator.start(time)
             oscillator.stop(time + duration + noteFadeOut)
             
-            endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
+            endTime = Math.max(time + duration, endTime);
         }
     }
 
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!file) return;
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
-        
+
         isPlaying = true;
         document.querySelector('.content').remove()
 

@@ -169,12 +169,12 @@ window.addEventListener('beforeunload', () => {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('playButton').addEventListener('click', async function() {
         const { Midi } = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-        isPlaying = true;
-        const midiPath = 'assets/midi/Aria Math - C418.mid';
-
-        const res = await fetch(midiPath);
-        const arrayBuffer = await res.arrayBuffer();
+        const file = e.target.files[0];
+        if (!file) return;
+        const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
+
+        isPlaying = true;
 
         const trackData = [
             [0, 0, 'sine'],

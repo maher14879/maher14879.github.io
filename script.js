@@ -276,8 +276,13 @@ function animateDots() {
                 }
             }
             
+            if (spawnDot > spawnSpeed) {
+                spawnDot -= spawnSpeed;
+            }
+            dot.add_pos(force_x, force_y);
+            
             dots.forEach(dotOther => {
-                if (dotOther !== dot && null) {
+                if (dotOther !== dot) {
                     const dx = dotOther.posX - dot.posX
                     const dy = dotOther.posY - dot.posY
                     const distSq = dx * dx + dy * dy + 1e-6
@@ -285,11 +290,6 @@ function animateDots() {
                     force_y += (dy / distSq) * attract
                 }
             })            
-
-            if (spawnDot > spawnSpeed) {
-                spawnDot -= spawnSpeed;
-            }
-            dot.add_pos(force_x, force_y);
         })
     }
     requestAnimationFrame(animateDots);

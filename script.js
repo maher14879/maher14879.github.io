@@ -17,6 +17,7 @@ const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const dotsCount = 20;
 const periodScaler = 50;
+const spawnSpeed = 0.1;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -32,6 +33,8 @@ let startTime = 0;
 let endTime = 0;
 let noteFadeIn = 0.1;
 let noteFadeOut = 0.1;
+let lastTime = 0;
+let spawnDot = 0;
 
 const waveSmooth = 200;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -248,18 +251,21 @@ function animateDots() {
                 force_x = 0;
                 force_y = 0;
                 const nowTime = audioContext.currentTime - startTime;
+                lastTime = nowTime;
+                spawnDot += nowTime - lastTime
                 for (let i = 0; i < tracks.length; i++) {
                     const track = tracks[i];
                     const period = track.getCurrentPeriod(nowTime);
                     if (period != null) {
                         force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                         force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
-                        if (Math.random() < 0.1) {
+                        if (spawnDot > spawnSpeed) {
                             const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
                             dots.push(dot);
                         }
                     }
                 }
+                if (spawnDot > spawnSpeed) {spawnDot -= spawnSpeed}
                 dot.add_pos(deltaPosition_x + force_x, deltaPosition_y + force_y);
             })
         }

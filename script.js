@@ -30,6 +30,8 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
+let noneFadeIn = 0.1;
+let noteFadeOut = 0.1;
 
 const waveSmooth = 200;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -189,8 +191,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const noteFadeOutSlider = document.getElementById('noteFadeOut');
         const noneFadeInSlider = document.getElementById('noneFadeIn');
 
-        let noteFadeOut = parseFloat(noteFadeOutSlider.value);
-        let noneFadeIn = parseFloat(noneFadeInSlider.value);
+        noteFadeOut = parseFloat(noteFadeOutSlider.value);
+        noneFadeIn = parseFloat(noneFadeInSlider.value);
 
         isPlaying = true;
 

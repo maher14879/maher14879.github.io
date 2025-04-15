@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let position_index = 0;
         for (let i = 0; i < midi.tracks.length; i++) {
-            const [x, y, sound_type] = positions[position_index];
+            const [x, y] = positions[position_index];
             const track = new Track(x, y, 'square', midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);

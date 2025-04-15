@@ -167,10 +167,9 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 
-import { Midi } from '@tonejs/midi';
-
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('playButton').addEventListener('click', async function() {
+        const { Midi } = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
         isPlaying = true;
         const midiPath = 'assets/midi/Aria Math - C418.mid';
 

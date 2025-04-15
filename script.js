@@ -16,6 +16,7 @@ const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const dotsCount = 20;
+const maxDots = 100;
 const periodScaler = 50;
 const spawnSpeed = 0.1;
 
@@ -162,6 +163,9 @@ function loadDotsFromStorage() {
         storedDots.forEach(({ x, y, scale }) => {
             const dot = new Dot(x, y, scale);
             dots.push(dot);
+            if (dots.length >= maxDots) {
+                return;
+            }
         });
     }
 

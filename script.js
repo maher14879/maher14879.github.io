@@ -22,9 +22,6 @@ const attract = 0.1
 const waveSmooth = 100;
 const periodScaler = 1;
 
-height = window.innerHeight;
-width = window.innerWidth;
-
 let dots = [];
 let deltaPosition_x = 0;
 let deltaPosition_y = 0;
@@ -37,6 +34,8 @@ let endTime = 0;
 let lastTime = 0;
 let spawnDot = 0;
 
+const height = window.innerHeight;
+const width = window.innerWidth;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {
@@ -247,11 +246,10 @@ function animateDots() {
 
     if (!isPlaying) {
         dots.forEach(dot => {
+            dot.add_pos(deltaPosition_x * dot.scale * deltaTime, deltaPosition_y * dot.scale * deltaTime);
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
                 //dots.pop().dot.remove()
-            } else {
-                dot.add_pos(deltaPosition_x * dot.scale * deltaTime, deltaPosition_y * dot.scale * deltaTime);
             }
         })
     } else {

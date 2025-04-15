@@ -34,8 +34,8 @@ let endTime = 0;
 let lastTime = 0;
 let spawnDot = 0;
 
-let height = window.innerHeight;
-let width = window.innerWidth;
+const height = window.innerHeight;
+const width = window.innerWidth;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {
@@ -228,8 +228,6 @@ document.addEventListener('mousemove', (event) => {
         const targetY = event.clientY - height / 2;
         deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
         deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-        height = window.innerHeight;
-        width = window.innerWidth;
     };
   }
 );

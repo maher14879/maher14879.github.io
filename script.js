@@ -93,7 +93,7 @@ class Track {
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
-            this.notes.push(new Note(note.midi, note.time));
+            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time));
         }
     }
     play(startTime) {

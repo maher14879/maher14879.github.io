@@ -16,7 +16,7 @@ const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
 const dotsCount = 50;
-const periodScaler = 10;
+const periodScaler = 50;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -188,12 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
             tracks.push(new Track(x, y, type, midi.tracks[i]));
         }
 
-        audioContext.onstatechange = () => {
-            if (audioContext.state === 'closed') {
-                isPlaying = false;
-            }
-        };
-
         startTime = audioContext.currentTime;
         for (let track of tracks) {
             track.play(startTime);
@@ -222,12 +216,14 @@ function animateDots() {
             force_x = 0;
             force_y = 0;
             const nowTime = audioContext.currentTime - startTime;
+            isPlaying = false
             for (let i = 0; i < tracks.length; i++) {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
                     force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                     force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
+                    isPlaying = true;
                 }
             }
             dot.add_pos(force_x, force_y);

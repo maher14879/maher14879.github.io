@@ -88,7 +88,7 @@ class Track {
         this.posY = posY;
         this.type = midi_trackk.type;
         this.notes = [];
-        for (note of midi_trackk.notes) {
+        for (let note of midi_trackk.notes) {
             this.notes.push(new Note(note.midi, note.duration, note.time));
         }
     }

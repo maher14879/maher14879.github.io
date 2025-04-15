@@ -105,10 +105,10 @@ class Track {
     }
     play(startTime) {
         for (let i = 0; i < this.notes.length; i++) {
-            frequency = this.notes[i].frequency
-            time = startTime + this.notes[i].time
-            duration = this.notes[i].duration
-            volume = this.notes[i].volume
+            const frequency = this.notes[i].frequency
+            const time = startTime + this.notes[i].time
+            const duration = this.notes[i].duration
+            const volume = this.notes[i].volume
 
             const oscillator = audioContext.createOscillator();
             oscillator.type = this.type;

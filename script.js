@@ -165,45 +165,42 @@ loadDotsFromStorage();
 window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
+
 document.addEventListener('DOMContentLoaded', function() {
-    const playButton = document.getElementById('midiInput');
-    if (playButton) {
-        playButton.addEventListener('click', async function() {
-            isPlaying = true;
-            const { Midi } = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-            const res = await fetch(midiPath);
-            const arrayBuffer = await res.arrayBuffer();
-            const midi = new Midi(arrayBuffer);
+    document.getElementById('midiInput').addEventListener('click', async function() {
+        const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
+        const file = e.target.files[0];
+        if (!file) return;
+        const arrayBuffer = await file.arrayBuffer();
+        const midi = new Midi(arrayBuffer);
 
-            const trackData = [
-                [0, 0, 'sine'],
-                [width, 0, 'triangle'],
-                [0, height, 'square'],
-                [width, height, 'sawtooth'],
-            ];
-            
-            for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
-                const [x, y, type] = trackData[i];
-                tracks.push(new Track(x, y, type, midi.tracks[i]));
+        isPlaying = true;
+
+        const trackData = [
+            [0, 0, 'sine'],
+            [width, 0, 'triangle'],
+            [0, height, 'square'],
+            [width, height, 'sawtooth'],
+        ];
+        
+        for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
+            const [x, y, type] = trackData[i];
+            tracks.push(new Track(x, y, type, midi.tracks[i]));
+        }
+
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext.onstatechange = () => {
+            if (audioContext.state === 'closed') {
+                isPlaying = false;
             }
+        };
 
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            audioContext.onstatechange = () => {
-                if (audioContext.state === 'closed') {
-                    isPlaying = false;
-                }
-            };
-
-            startTime = audioContext.currentTime;
-            for (let track of tracks) {
-                track.play(startTime);
-            }
-        });
-    } else {
-        console.error('midiInput button not found');
-    }
+        startTime = audioContext.currentTime;
+        for (let track of tracks) {
+            track.play(startTime);
+        } 
+    });
 });
-
 
 document.addEventListener('mousemove', (event) => {
     const now = Date.now();

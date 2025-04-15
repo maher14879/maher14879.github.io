@@ -13,13 +13,13 @@ function replaceWordsWithLinks(text) {
 }
 
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
-const mouseSmooth = 0.01
+const mouseSmooth = 0.001
 const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 4;
 const despawnSpeed = 1;
 const attract = 10
-const waveSmooth = 10;
+const waveSmooth = 1;
 const periodScaler = 1;
 
 height = window.innerHeight;
@@ -42,7 +42,6 @@ const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 class Dot {
     constructor(x, y, scale, color = 'white') {
         this.scale = scale;
-        this.speed = 0.1
         this.dot = document.createElement('div');
         this.dot.style.position = 'absolute';
         this.dot.style.width = `${this.scale * 3 + 1}px`;
@@ -77,8 +76,8 @@ class Dot {
     }
 
     add_pos(x, y) {
-        this.posX -= x * this.scale * this.speed;
-        this.posY -= y * this.scale * this.speed;
+        this.posX -= x;
+        this.posY -= y;
         this.updatePosition();
     }
     
@@ -252,7 +251,7 @@ function animateDots() {
                 spawnDot -= despawnSpeed;
                 dots.pop().dot.remove()
             } else {
-                dot.add_pos(deltaPosition_x, deltaPosition_y);
+                dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
             }
         })
     } else {
@@ -284,7 +283,7 @@ function animateDots() {
                 if (dotOther !== dot) {
                     const dx = dotOther.posX - dot.posX
                     const dy = dotOther.posY - dot.posY
-                    const distSq = dx * dx + dy * dy + 1e-6
+                    const distSq = Math.max(1, dx * dx + dy * dy)
                     force_x += (dx / distSq) * attract
                     force_y += (dy / distSq) * attract
                 }

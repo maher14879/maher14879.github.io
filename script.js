@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
         
         for (let i = 0; i < midi.tracks.length; i++) {
-            const [x, y, sound_type] = trackData[tracks.length];
+            const [x, y, sound_type] = trackData[Math.floor(Math.random() * 3)];
             const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);

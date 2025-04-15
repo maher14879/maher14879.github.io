@@ -278,11 +278,13 @@ function animateDots() {
             }
             
             dots.forEach(dotOther => {
-                const deltaX = dotOther.posX - dot.posX
-                const deltaY = dotOther.posY - dot.posY
-                force_x += attract / deltaX
-                force_y += attract / deltaY
-            })
+                if (dotOther === dot) return
+                const dx = dotOther.posX - dot.posX
+                const dy = dotOther.posY - dot.posY
+                const distSq = dx * dx + dy * dy + 1e-6
+                force_x += (dx / distSq) * attract
+                force_y += (dy / distSq) * attract
+            })            
 
             if (spawnDot > spawnSpeed) {
                 spawnDot -= spawnSpeed;

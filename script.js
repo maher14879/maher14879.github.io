@@ -120,6 +120,10 @@ class Track {
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
+
+        for (let oscillator in this.oscillators.values()) {
+            oscillator.start();
+        }
     }
 
     createOscillator(note) {
@@ -128,7 +132,6 @@ class Track {
         }
 
         const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
         oscillator.type = this.type;
         this.oscillators[note.frequency] = oscillator
 
@@ -211,6 +214,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         isPlaying = true;
         document.querySelector('.content').remove()
+
+        if (audioContext.state === 'suspended') {
+            await audioContext.resume();
+        }
 
         const positions = [
             [50, 50, 'sine'],

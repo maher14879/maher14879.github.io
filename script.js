@@ -93,37 +93,9 @@ class Track {
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
-            try {
-                // Validate MIDI note
-                let midiValue = note.midi;
-                
-                // If it's not a number, skip this note
-                if (typeof midiValue !== 'number') {
-                    console.log('Skipping invalid MIDI note:', note);
-                    continue;
-                }
-                
-                // Clamp to valid MIDI range (0-127)
-                midiValue = Math.max(0, Math.min(127, midiValue));
-                
-                // Convert to frequency
-                const frequency = 440 * Math.pow(2, (midiValue - 69) / 12);
-                
-                // Validate time
-                if (typeof note.time !== 'number' || note.time < 0) {
-                    console.log('Skipping note with invalid time:', note);
-                    continue;
-                }
-                
+                console.log('frequency,', frequency);
                 this.notes.push(new Note(frequency, note.time));
-            } catch (error) {
-                console.log('Error processing MIDI note:', note, error);
-            }
         }
-        
-        // Sort notes by time just in case
-        this.notes.sort((a, b) => a.time - b.time);
-        
         console.log(`Created track with ${this.notes.length} valid notes`);
     }
     play(startTime) {

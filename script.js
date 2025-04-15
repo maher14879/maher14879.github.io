@@ -245,9 +245,10 @@ function animateDots() {
     if (!isPlaying) {
         dots.forEach(dot => {
             dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
+            console.log(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
             if (spawnDot > despawnSpeed) {
                 spawnDot -= despawnSpeed;
-                //dots.pop().dot.remove()
+                dots.pop().dot.remove()
             }
         })
     } else {
@@ -288,7 +289,8 @@ function animateDots() {
             if (spawnDot > spawnSpeed) {
                 spawnDot -= spawnSpeed;
             }
-            dot.add_pos(force_x, force_y);        
+            dot.add_pos(force_x, force_y);  
+            console.log(force_x, force_y);   
         })
     }
     requestAnimationFrame(animateDots);

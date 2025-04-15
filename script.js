@@ -111,13 +111,6 @@ class Track {
             const oscillator = audioContext.createOscillator();
             oscillator.type = this.type;
             oscillator.frequency.setValueAtTime(frequency, time);
-            
-            const gainNode = audioContext.createGain()
-            gainNode.gain.setValueAtTime(volume, time)
-
-            oscillator.connect(gainNode)
-            gainNode.connect(audioContext.destination)
-
             oscillator.start(time)
             oscillator.stop(time + duration)
             

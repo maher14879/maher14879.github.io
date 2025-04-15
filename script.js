@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        startTime = audioContext.currentTime;
+        startTime = audioContext.currentTime + 10;
         for (let track of tracks) {
             track.play(startTime);
         }        
@@ -279,6 +279,7 @@ function animateDots() {
                     }
                 }
             }
+            console.log(force_x, force_y)
 
             currentDots.forEach(dotOther => {
                 if (dotOther !== dot) {

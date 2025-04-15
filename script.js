@@ -34,8 +34,8 @@ let endTime = 0;
 let lastTime = 0;
 let spawnDot = 0;
 
-const height = window.innerHeight;
-const width = window.innerWidth;
+let height = window.innerHeight;
+let width = window.innerWidth;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {

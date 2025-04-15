@@ -106,12 +106,14 @@ class Track {
     }
     play(startTime) {
         for (let i = 0; i < this.notes.length; i++) {
-            oscillator = this.createOscillator(this.notes[i]);
+            const oscillator = this.createOscillator(this.notes[i]);
 
             oscillator.frequency.setValueAtTime(this.notes[i].frequency, startTime + this.notes[i].time);
             
+            const gainNode = audioContext.createGain();
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
+
             gainNode.gain.setValueAtTime(0, startTime + this.notes[i].time);
             console.log(this.notes[i].volume)
             gainNode.gain.linearRampToValueAtTime(this.notes[i].volume, startTime + this.notes[i].time + noteFadeIn);

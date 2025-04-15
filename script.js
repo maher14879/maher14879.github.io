@@ -241,8 +241,15 @@ function animateDots() {
     }
 
     if (!isPlaying) {
+        lastTime = nowTime;
+        spawnDot += nowTime - lastTime
         dots.forEach(dot => {
-            dot.add_pos(deltaPosition_x, deltaPosition_y);
+            if (spawnDot > spawnSpeed) {
+                spawnDot -= spawnSpeed;
+                dots.pop()
+            } else {
+                dot.add_pos(deltaPosition_x, deltaPosition_y);
+            }
             })
         } else {
             if (audioContext.currentTime > endTime) {
@@ -255,8 +262,6 @@ function animateDots() {
                 force_x = 0;
                 force_y = 0;
                 const nowTime = audioContext.currentTime - startTime;
-                lastTime = nowTime;
-                spawnDot += nowTime - lastTime
                 for (let i = 0; i < tracks.length; i++) {
                     const track = tracks[i];
                     const period = track.getCurrentPeriod(nowTime);
@@ -269,7 +274,9 @@ function animateDots() {
                         }
                     }
                 }
-                if (spawnDot > spawnSpeed) {spawnDot -= spawnSpeed}
+                if (spawnDot > spawnSpeed) {
+                    spawnDot -= spawnSpeed;
+                }
                 dot.add_pos(force_x, force_y);
             })
         }

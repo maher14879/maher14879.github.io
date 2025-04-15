@@ -272,6 +272,8 @@ function animateDots() {
                 if (period != null) {
                     const term1 = (dot.posX - track.posX + Math.random() - 0.5)
                     const term2 = (dot.posY - track.posY + Math.random() - 0.5)
+
+                    console.log(term1, term2, term1 * Math.sin(term1 * period) * Math.sin(term2 * period) * waveSmooth, term2 * Math.cos(term1 * period) * Math.cos(term2 * period) * waveSmooth)
                     force_x += term1 * Math.sin(term1 * period) * Math.sin(term2 * period) * waveSmooth;
                     force_y += term2 * Math.cos(term1 * period) * Math.cos(term2 * period) * waveSmooth;
                     if (spawnDot > spawnSpeed) {
@@ -279,7 +281,6 @@ function animateDots() {
                     }
                 }
             }
-            console.log(force_x, force_y)
 
             currentDots.forEach(dotOther => {
                 if (dotOther !== dot) {

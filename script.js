@@ -17,6 +17,7 @@ const mouseSmooth = 0.01
 const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 0.1;
+const despawnSpeed = 4;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -243,9 +244,9 @@ function animateDots() {
         lastTime = nowTime;
         spawnDot += nowTime - lastTime
         dots.forEach(dot => {
-            if (spawnDot > spawnSpeed) {
-                spawnDot -= spawnSpeed;
-                dots.pop()
+            if (spawnDot > despawnSpeed) {
+                spawnDot -= despawnSpeed;
+                dot.remove()
             } else {
                 dot.add_pos(deltaPosition_x, deltaPosition_y);
             }

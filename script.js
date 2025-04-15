@@ -15,9 +15,8 @@ function replaceWordsWithLinks(text) {
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
-const waveSmooth = 200;
 const dotsCount = 50;
-const periodScaler = 50;
+const periodScaler = 10;
 
 height = window.innerHeight;
 width = window.innerWidth;
@@ -26,6 +25,8 @@ let dots = [];
 let deltaPosition_x = 0;
 let deltaPosition_y = 0;
 let lastMouseMove = 0;
+
+const waveSmooth = 200;
 
 let tracks = [];
 let isPlaying = false;
@@ -183,13 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
             [width, height, 'sawtooth'],
         ];
         
-        for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
+        for (let i = 0; i < Math.min(1, midi.tracks.length); i++) {
             const [x, y, type] = trackData[i];
-            const track = midi.tracks[i];
-            if (track.notes.length === 0) {
-                continue;
-            }
-            tracks.push(new Track(x, y, type, track));
+            tracks.push(new Track(x, y, type, midi.tracks[i]));
         }
 
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();

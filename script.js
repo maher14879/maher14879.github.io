@@ -119,9 +119,9 @@ class Track {
             gainNode.connect(audioContext.destination);
             
             gainNode.gain.setValueAtTime(0, time);
-            gainNode.gain.setTargetAtTime(volume, time);
+            gainNode.gain.setTargetAtTime(volume, time, noteFadeIn);
             gainNode.gain.setValueAtTime(volume, time + duration);
-            gainNode.gain.setTargetAtTime(0, time + duration + noteFadeOut);
+            gainNode.gain.setTargetAtTime(0, time + duration, noteFadeOut);
 
             oscillator.start(time)
             oscillator.end(time + duration + noteFadeOut)

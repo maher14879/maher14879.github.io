@@ -20,7 +20,7 @@ const maxDots = 100;
 const spawnSpeed = 40 * 1000;
 const despawnSpeed = 100 * 1000;
 const attract = 0.1
-const waveSpeed = 100000;
+const waveSpeed = -200;
 const periodScaler = 1;
 
 let dots = [];

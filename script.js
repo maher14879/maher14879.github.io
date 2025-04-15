@@ -30,7 +30,7 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let noneFadeIn = 0.1;
+let noteFadeIn = 0.1;
 let noteFadeOut = 0.1;
 
 const waveSmooth = 200;
@@ -110,9 +110,10 @@ class Track {
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            oscillator.start(startTime);
-            gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noneFadeIn);
+            oscillator.start(startTime + this.notes[i].time - noteFadeIn);
+            gainNode.gain.linearRampToValueAtTime(1, startTime + this.notes[i].time + noteFadeIn);
             gainNode.gain.linearRampToValueAtTime(0, startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
+            oscillator.stop(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut);
             
             endTime = Math.max(startTime + this.notes[i].time + this.notes[i].duration + noteFadeOut, endTime);
         }
@@ -186,10 +187,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const midi = new Midi(arrayBuffer);
 
         const noteFadeOutSlider = document.getElementById('noteFadeOut');
-        const noneFadeInSlider = document.getElementById('noneFadeIn');
+        const noteFadeInSlider = document.getElementById('noteFadeIn');
 
         noteFadeOut = parseFloat(noteFadeOutSlider.value);
-        noneFadeIn = parseFloat(noneFadeInSlider.value);
+        noteFadeIn = parseFloat(noteFadeInSlider.value);
 
         isPlaying = true;
 

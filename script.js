@@ -103,12 +103,11 @@ class Track {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity));
         }
     }
-
+    
     play(startTime) {
         const real = new Float32Array([0, 1, 0.5, 0.25]);
         const imag = new Float32Array(real.length);
         const wave = audioContext.createPeriodicWave(real, imag);
-
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency
             const time = startTime + this.notes[i].time
@@ -116,19 +115,20 @@ class Track {
             const volume = this.notes[i].volume
 
             const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
             oscillator.setPeriodicWave(wave);
+            oscillator.type = this.type;
+            const gainNode = audioContext.createGain();
             oscillator.frequency.setValueAtTime(frequency, time);
-            gainNode.gain.setValueAtTime(volume * 0.05, time);
+            gainNode.gain.setValueAtTime(volume, time);
 
             oscillator.connect(gainNode).connect(audioContext.destination);
-            oscillator.start(time);
-            oscillator.stop(time + duration);
-
+            oscillator.start(time)
+            oscillator.stop(time + duration)
+            oscillator.connect(audioContext.destination)
+            
             endTime = Math.max(time + duration, endTime);
         }
     }
-
 
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {

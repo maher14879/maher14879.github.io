@@ -252,6 +252,7 @@ function animateDots() {
                 dots.pop().dot.remove()
             } else {
                 dot.add_pos(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
+                console.log(deltaPosition_x * dot.scale, deltaPosition_y * dot.scale);
             }
         })
     } else {
@@ -269,7 +270,7 @@ function animateDots() {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
-                    distance = (dot.posX - track.posX)**2 + (dot.posY - track.posY)**2
+                    distance = Math.sqrt((dot.posX - track.posX)**2 + (dot.posY - track.posY)**2)
                     const term1 = (dot.posX - track.posX + Math.random() - 0.5)
                     const term2 = (dot.posY - track.posY + Math.random() - 0.5)
                     force_x += term1 * Math.sin(term1 * period) * Math.sin(term2 * period) * waveSmooth / distance;

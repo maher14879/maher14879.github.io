@@ -259,8 +259,8 @@ function animateDots() {
         if (audioContext.currentTime > endTime) {
             audioContext.suspend();
             isPlaying = false;
-            deltaPosition_x = Math.random() * 1000
-            deltaPosition_y = Math.random() * 1000
+            deltaPosition_x = Math.random() * 100
+            deltaPosition_y = Math.random() * 100
         }
         const currentDots = [...dots];
         currentDots.forEach(dot => {

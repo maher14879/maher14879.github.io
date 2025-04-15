@@ -15,7 +15,7 @@ function replaceWordsWithLinks(text) {
 const boxShadow = `0 0 7px 1px grey, 0 0 7px 1px grey`;
 const mouseMoveDelay = 10; // Throttle mousemove event to every 10ms
 const mouseSmooth = 0.01
-const dotsCount = 50;
+const dotsCount = 20;
 const periodScaler = 50;
 
 height = window.innerHeight;
@@ -254,9 +254,13 @@ function animateDots() {
                     if (period != null) {
                         force_x += Math.cos((dot.posX - track.posX) * period) * waveSmooth;
                         force_y += Math.cos((dot.posY - track.posY) * period) * waveSmooth;
+                        if (Math.random() < 0.1) {
+                            const dot = new Dot(track.posX, track.posY, Math.random() ** 2);
+                            dots.push(dot);
+                        }
                     }
                 }
-                dot.add_pos(force_x, force_y);
+                dot.add_pos(deltaPosition_x + force_x, deltaPosition_y + force_y);
             })
         }
     requestAnimationFrame(animateDots);

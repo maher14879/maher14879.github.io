@@ -185,7 +185,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         for (let i = 0; i < Math.min(4, midi.tracks.length); i++) {
             const [x, y, type] = trackData[i];
-            tracks.push(new Track(x, y, type, midi.tracks[i]));
+            const track = midi.tracks[i];
+            if (track.notes.length === 0) {
+                continue;
+            }
+            tracks.push(new Track(x, y, type, track));
+        }
         }
 
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();

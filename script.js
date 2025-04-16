@@ -111,26 +111,21 @@ class Track {
             const time = startTime + this.notes[i].time
             const duration = this.notes[i].duration
             const volume = this.notes[i].volume
-
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = 'triangle'
-
-            oscillator.frequency.setValueAtTime(frequency, time);
-
-            //fades and stuff
-            const gainNode = audioContext.createGain();
-            gainNode.gain.setValueAtTime(0, time);
-            gainNode.gain.linearRampToValueAtTime(volume, time + fadeIn);
-            gainNode.gain.linearRampToValueAtTime(0, time + duration)
-            oscillator.connect(gainNode).connect(audioContext.destination);
-
-            oscillator.start(time)
-            oscillator.stop(time + duration)
-            oscillator.connect(audioContext.destination)
-            
-            endTime = Math.max(time + duration, endTime);
+    
+            const buffer = audioContext.createBuffer(1, audioContext.sampleRate * duration, audioContext.sampleRate)
+            const data = buffer.getChannelData(0)
+            for (let j = 0; j < data.length; j++) {
+                data[j] = Math.sin(2 * Math.PI * frequency * j / audioContext.sampleRate) * volume
+            }
+    
+            const source = audioContext.createBufferSource()
+            source.buffer = buffer
+            source.connect(audioContext.destination)
+            source.start(time)
+    
+            endTime = Math.max(time + duration, endTime)
         }
-    }
+    }    
 
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {

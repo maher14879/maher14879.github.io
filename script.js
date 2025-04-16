@@ -110,27 +110,27 @@ class Track {
             const time = startTime + this.notes[i].time
             const duration = this.notes[i].duration
             const volume = this.notes[i].volume
-    
-            const frameCount = Math.floor(audioContext.sampleRate * duration)
-            const buffer = audioContext.createBuffer(1, frameCount, audioContext.sampleRate)
-            const data = buffer.getChannelData(0)
 
-            for (let j = 0; j < frameCount; j++) {
-                const t = j / audioContext.sampleRate
-                data[j] = Math.sin(2 * Math.PI * frequency * t) * volume
-            }
-    
-            const gainNode = audioContext.createGain()
-            gainNode.gain.setValueAtTime(volume, time)
-    
-            const source = audioContext.createBufferSource()
-            source.buffer = buffer
-            source.connect(gainNode).connect(audioContext.destination)
-            source.start(time)
-    
-            endTime = Math.max(time + duration, endTime)
+            // Create a synth (Tone.js) to replace the oscillator
+            const synth = new Tone.Synth({
+                oscillator: {
+                    type: 'triangle',  // You can change this type as needed
+                },
+                envelope: {
+                    attack: 0.01,
+                    decay: 0.1,
+                    sustain: 0.8,
+                    release: 0.1
+                }
+            }).toDestination();
+
+            // Trigger the note on at the correct time
+            synth.triggerAttackRelease(frequency, duration, time, volume);
+
+            // Track the end time
+            endTime = Math.max(time + duration, endTime);
         }
-    }    
+    }
 
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {

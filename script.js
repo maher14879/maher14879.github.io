@@ -22,7 +22,7 @@ const despawnSpeed = 100 * 1000;
 const attract = 1
 const waveSpeed = -200;
 const periodScaler = 1;
-const fadeIn = 0.05
+const fadeIn = 0.01
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -117,9 +117,10 @@ class Track {
 
             oscillator.frequency.setValueAtTime(frequency, time);
 
+            //fades and stuff
             const gainNode = audioContext.createGain();
             gainNode.gain.setValueAtTime(0, time);
-            gainNode.gain.setValulinearRampToValueAtTimeeAtTime(volume, time + fadeIn);
+            gainNode.gain.linearRampToValueAtTime(volume, time + fadeIn);
             gainNode.gain.linearRampToValueAtTime(0, time + duration)
             oscillator.connect(gainNode).connect(audioContext.destination);
 

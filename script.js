@@ -34,6 +34,7 @@ let startTime = 0;
 let endTime = 0;
 let lastTime = 0;
 let spawnDot = 0;
+let Tone = null;
 
 const height = window.innerHeight;
 const width = window.innerWidth;
@@ -93,12 +94,11 @@ class Note {
 }
 
 class Track {
-    constructor(posX, posY, type, midi_trackk, Tone) {
+    constructor(posX, posY, type, midi_trackk) {
         this.posX = posX;
         this.posY = posY;
         this.type = type;
         this.notes = [];
-        this.Tone
         
         for (let note of midi_trackk.notes) {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity));
@@ -113,7 +113,7 @@ class Track {
             const volume = this.notes[i].volume
 
             // Create a synth (Tone.js) to replace the oscillator
-            const synth = new this.Tone.Synth({
+            const synth = new Tone.Synth({
                 oscillator: {
                     type: 'triangle',  // You can change this type as needed
                 },
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = parameter.target.files[0];
         if (!file) return;
         const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-        const {Tone} = await import('https://cdn.skypack.dev/tone');
+        Tone = await import('https://cdn.skypack.dev/tone');
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
 

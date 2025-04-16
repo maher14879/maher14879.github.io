@@ -22,7 +22,6 @@ const despawnSpeed = 100 * 1000;
 const attract = 1
 const waveSpeed = -200;
 const periodScaler = 1;
-const fadeIn = 0.01
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -115,6 +114,7 @@ class Track {
             const frameCount = Math.floor(audioContext.sampleRate * duration)
             const buffer = audioContext.createBuffer(1, frameCount, audioContext.sampleRate)
             const data = buffer.getChannelData(0)
+
             for (let j = 0; j < frameCount; j++) {
                 const t = j / audioContext.sampleRate
                 data[j] = Math.sin(2 * Math.PI * frequency * t) * volume
@@ -281,8 +281,8 @@ function animateDots() {
                 if (period != null) {
                     const term1 = (dot.posX - track.posX) * period
                     const term2 = (dot.posY - track.posY) * period
-                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed;
-                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed;
+                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime);
+                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
                     if (spawnDot > spawnSpeed) {
                         //dots.push(new Dot(track.posX, track.posY, Math.random() ** 2));
                     }

@@ -22,6 +22,7 @@ const despawnSpeed = 100 * 1000;
 const attract = 1
 const waveSpeed = -200;
 const periodScaler = 1;
+const fadeIn = 0.05
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -116,10 +117,11 @@ class Track {
 
             oscillator.frequency.setValueAtTime(frequency, time);
 
-            //const gainNode = audioContext.createGain();
-            //gainNode.gain.setValueAtTime(volume, time);
-            //gainNode.gain.linearRampToValueAtTime(0, time + duration)
-            //oscillator.connect(gainNode).connect(audioContext.destination);
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(0, time);
+            gainNode.gain.setValulinearRampToValueAtTimeeAtTime(volume, time + fadeIn);
+            gainNode.gain.linearRampToValueAtTime(0, time + duration)
+            oscillator.connect(gainNode).connect(audioContext.destination);
 
             oscillator.start(time)
             oscillator.stop(time + duration)
@@ -299,7 +301,6 @@ function animateDots() {
             if (spawnDot > spawnSpeed) {
                 spawnDot -= spawnSpeed;
             }
-            console.log(force_x, force_y);
             dot.add_pos(force_x, force_y);
         })
     }

@@ -104,7 +104,6 @@ class Track {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity));
         }
     }
-    
     play(startTime) {
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency
@@ -112,23 +111,20 @@ class Track {
             const duration = this.notes[i].duration
             const volume = this.notes[i].volume
 
-            // Create a synth (Tone.js) to replace the oscillator
-            const synth = new Tone.Synth({
-                oscillator: {
-                    type: 'triangle',  // You can change this type as needed
-                },
-                envelope: {
-                    attack: 0.01,
-                    decay: 0.1,
-                    sustain: 0.8,
-                    release: 0.1
-                }
-            }).toDestination();
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = 'sin'
 
-            // Trigger the note on at the correct time
-            synth.triggerAttackRelease(frequency, duration, time, volume);
+            oscillator.frequency.setValueAtTime(frequency, time);
 
-            // Track the end time
+            //const gainNode = audioContext.createGain();
+            //gainNode.gain.setValueAtTime(volume, time);
+            //gainNode.gain.linearRampToValueAtTime(0, time + duration)
+            //oscillator.connect(gainNode).connect(audioContext.destination);
+
+            oscillator.start(time)
+            oscillator.stop(time + duration)
+            oscillator.connect(audioContext.destination)
+            
             endTime = Math.max(time + duration, endTime);
         }
     }
@@ -197,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = parameter.target.files[0];
         if (!file) return;
         const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-        Tone = await import('https://cdn.skypack.dev/tone');
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
 

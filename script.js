@@ -20,7 +20,7 @@ const maxDots = 100;
 const spawnSpeed = 40 * 1000;
 const despawnSpeed = 100 * 1000;
 const attract = 1
-const waveSpeed = -200;
+const waveSpeed = -20;
 const periodScaler = 1;
 
 let dots = [];
@@ -116,10 +116,9 @@ class Track {
 
             oscillator.frequency.setValueAtTime(frequency, time);
 
-            //const gainNode = audioContext.createGain();
-            //gainNode.gain.setValueAtTime(volume, time);
-            //gainNode.gain.linearRampToValueAtTime(0, time + duration)
-            //oscillator.connect(gainNode).connect(audioContext.destination);
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(volume, time);
+            oscillator.connect(gainNode).connect(audioContext.destination);
 
             oscillator.start(time)
             oscillator.stop(time + duration)
@@ -207,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < midi.tracks.length; i++) {
             x = Math.random() * (width)
             y = Math.random() * (height)
-            const synth_types = ['sine', 'sine', 'triangle', 'triangle', 'square', 'sawtooth'];
+            const synth_types = ['square', 'sawtooth'];
             const sound_type = synth_types[Math.floor(Math.random() * synth_types.length)];
             const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {

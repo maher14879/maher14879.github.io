@@ -92,6 +92,8 @@ class Note {
     }
 }
 
+import * as Tone from 'https://cdn.skypack.dev/tone'
+
 class Track {
     constructor(posX, posY, type, midi_trackk) {
         this.posX = posX;

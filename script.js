@@ -203,16 +203,12 @@ document.addEventListener('DOMContentLoaded', function() {
             await audioContext.resume();
         }
 
-        const positions = [
-            [100, 100, 'sine'],
-            [width - 100, 100, 'triangle'],
-            [100, height - 100, 'square'],
-            [width - 100, height - 100, 'sawtooth'],
-        ];
-
         let position_index = 0;
         for (let i = 0; i < midi.tracks.length; i++) {
-            const [x, y, sound_type] = positions[position_index];
+            x = Math.random() * (width)
+            y = Math.random() * (height)
+            const synth_types = ['sine', 'sine', 'triangle', 'triangle', 'square', 'sawtooth'];
+            const sound_type = synth_types[Math.floor(Math.random() * strings.length)];
             const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);

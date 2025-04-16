@@ -92,8 +92,6 @@ class Note {
     }
 }
 
-import * as Tone from 'https://cdn.skypack.dev/tone'
-
 class Track {
     constructor(posX, posY, type, midi_trackk) {
         this.posX = posX;
@@ -195,9 +193,10 @@ window.addEventListener('beforeunload', () => {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('midiInput').addEventListener('change', async function(parameter) {
-        const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
         const file = parameter.target.files[0];
         if (!file) return;
+        const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
+        const {Tone} = await import('https://cdn.skypack.dev/tone');
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
 

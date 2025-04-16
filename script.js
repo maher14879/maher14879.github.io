@@ -112,15 +112,20 @@ class Track {
             const duration = this.notes[i].duration
             const volume = this.notes[i].volume
     
-            const buffer = audioContext.createBuffer(1, audioContext.sampleRate * duration, audioContext.sampleRate)
+            const frameCount = Math.floor(audioContext.sampleRate * duration)
+            const buffer = audioContext.createBuffer(1, frameCount, audioContext.sampleRate)
             const data = buffer.getChannelData(0)
-            for (let j = 0; j < data.length; j++) {
-                data[j] = Math.sin(2 * Math.PI * frequency * j / audioContext.sampleRate) * volume
+            for (let j = 0; j < frameCount; j++) {
+                const t = j / audioContext.sampleRate
+                data[j] = Math.sin(2 * Math.PI * frequency * t) * volume
             }
+    
+            const gainNode = audioContext.createGain()
+            gainNode.gain.setValueAtTime(volume, time)
     
             const source = audioContext.createBufferSource()
             source.buffer = buffer
-            source.connect(audioContext.destination)
+            source.connect(gainNode).connect(audioContext.destination)
             source.start(time)
     
             endTime = Math.max(time + duration, endTime)

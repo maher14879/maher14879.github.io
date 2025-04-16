@@ -93,7 +93,7 @@ class Note {
 }
 
 class Track {
-    constructor(posX, posY, type, midi_trackk) {
+    constructor(posX, posY, type, midi_trackk, Tone) {
         this.posX = posX;
         this.posY = posY;
         this.type = type;
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let position_index = 0;
         for (let i = 0; i < midi.tracks.length; i++) {
             const [x, y, sound_type] = positions[position_index];
-            const track = new Track(x, y, sound_type, midi.tracks[i]);
+            const track = new Track(x, y, sound_type, midi.tracks[i], Tone);
             if (track.notes.length > 0) {
                 tracks.push(track);
                 position_index++;

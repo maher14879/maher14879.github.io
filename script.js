@@ -98,6 +98,7 @@ class Track {
         this.posY = posY;
         this.type = type;
         this.notes = [];
+        this.Tone
         
         for (let note of midi_trackk.notes) {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity));
@@ -112,7 +113,7 @@ class Track {
             const volume = this.notes[i].volume
 
             // Create a synth (Tone.js) to replace the oscillator
-            const synth = new Tone.Synth({
+            const synth = new this.Tone.Synth({
                 oscillator: {
                     type: 'triangle',  // You can change this type as needed
                 },

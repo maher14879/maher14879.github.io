@@ -112,7 +112,7 @@ class Track {
             const volume = this.notes[i].volume
 
             const oscillator = audioContext.createOscillator();
-            oscillator.type = 'sin'
+            oscillator.type = this.type
 
             oscillator.frequency.setValueAtTime(frequency, time);
 

@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
             x = Math.random() * (width)
             y = Math.random() * (height)
             const synth_types = ['sine', 'sine', 'triangle', 'triangle', 'square', 'sawtooth'];
-            const sound_type = synth_types[Math.floor(Math.random() * strings.length)];
+            const sound_type = synth_types[Math.floor(Math.random() * synth_types.length)];
             const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);

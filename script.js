@@ -166,9 +166,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('midiInput').addEventListener('change', async function(parameter) {
         const file = parameter.target.files[0];
         if (!file) return;
-        const {MidiPlayer} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
+        const Midi = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
+        const MidiPlayer = (await import('https://cdn.jsdelivr.net/npm/midiplayer-js@2.0.6/+esm')).default
         const arrayBuffer = await file.arrayBuffer();
-        const midi = new MidiPlayer(arrayBuffer);
+        const midi = new Midi(arrayBuffer);
 
         isPlaying = true;
         document.querySelector('.content').remove()

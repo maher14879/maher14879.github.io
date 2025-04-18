@@ -29,7 +29,10 @@
         </p>
 
         <p>
-            <div id="text-container"></div>
+            
+This project is an online midi player, that takes any midi file as input and plays the music using a square oscillator and visualizes the sound.
+I was inspired by the chladni plate experiment. 
+
         </p>
         <br>
         Upload a file to play:
@@ -37,15 +40,6 @@
         <input type="file" id="midiInput" accept=".mid,.midi">
         <br>
     </div>
-    <script>
-        fetch('assets\\text\\midi_player.html')
-            .then(response => response.text())
-            .then(data => {
-                const updatedText = replaceWordsWithLinks(data);
-                document.getElementById('text-container').innerHTML = updatedText;
-            })
-            .catch(error => console.error('Error fetching text file:', error));
-    </script>
 </body>
 </html>
 

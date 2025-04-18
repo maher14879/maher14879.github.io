@@ -26,14 +26,25 @@
         <p>
             Midi Player | 11-04-2025
         </p>
-        This is a work in progress.
+
+        <p>
+            <div id="text-container"></div>
+        </p>
         <br>
         Upload a file to play:
         <br>
         <input type="file" id="midiInput" accept=".mid,.midi">
-
         <br>
     </div>
+    <script>
+        fetch('assets\\text\\example.html')
+            .then(response => response.text())
+            .then(data => {
+                const updatedText = replaceWordsWithLinks(data);
+                document.getElementById('text-container').innerHTML = updatedText;
+            })
+            .catch(error => console.error('Error fetching text file:', error));
+    </script>
 </body>
 </html>
 

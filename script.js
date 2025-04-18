@@ -193,8 +193,13 @@ async function playMidi() {
 
     let position_index = 0;
     for (let i = 0; i < midi.tracks.length; i++) {
-        x = Math.random() * width;
-        y = Math.random() * height;
+        if (i % 2) {
+            x = Math.round(Math.random()) * width;
+            y = Math.random() * height;
+        } else {
+            x = Math.random() * width;
+            y = Math.round(Math.random()) * height;
+        }
         const track = new Track(x, y, midi.tracks[i]);
         if (track.notes.length > 0) {
             tracks.push(track);
@@ -245,7 +250,7 @@ function animateDots() {
                 if (period != null) {
                     const term1 = (dot.posX - track.posX) * period;
                     const term2 = (dot.posY - track.posY) * period;
-                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime);
+                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed;
                     force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
                 }
             }

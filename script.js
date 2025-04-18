@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = parameter.target.files[0];
         if (!file) return;
         const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-        const {MidiPlayer} = await import('https://cdn.jsdelivr.net/npm/midiplayer-js@2.0.6/+esm');
+        const {default: MidiPlayer} = await import('https://cdn.skypack.dev/midi-player-js');
         const arrayBuffer = await file.arrayBuffer();
         const midi = new Midi(arrayBuffer);
 

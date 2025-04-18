@@ -193,13 +193,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const player = new MidiPlayer.Player({});
-
         player.loadArrayBuffer(arrayBuffer);
-
         player.on('playing', () => {
             startTime = audioContext.currentTime;
+            endTime = startTime + player.getSongDuration(); 
         });
-        
         player.play();
     });
 });
@@ -237,7 +235,7 @@ function animateDots() {
         })
     } else {
         if (audioContext.currentTime > endTime) {
-            audioContext.suspend();
+            player.stop();
             isPlaying = false;
             deltaPosition_x = Math.random() * 100
             deltaPosition_y = Math.random() * 100

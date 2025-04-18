@@ -113,6 +113,26 @@ class Track {
         }
         return null;
     }
+
+    play(startTime) {
+        for (let i = 0; i < this.notes.length; i++) {
+            const frequency = this.notes[i].frequency
+            const time = startTime + this.notes[i].time
+            const duration = this.notes[i].duration
+            const volume = this.notes[i].volume
+
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = this.type
+
+            oscillator.frequency.setValueAtTime(frequency, time);
+
+            oscillator.start(time)
+            oscillator.stop(time + duration * 2/3)
+            oscillator.connect(audioContext.destination)
+            
+            endTime = Math.max(time + duration, endTime);
+        }
+    }
 }
 
 function createRandomDot() {
@@ -178,27 +198,24 @@ document.addEventListener('DOMContentLoaded', function() {
             await audioContext.resume();
         }
 
-        midi.tracks.forEach((track, index) => {
-            if (track.notes.length === 0) return;
+        let position_index = 0;
+        for (let i = 0; i < midi.tracks.length; i++) {
+            x = Math.random() * (width)
+            y = Math.random() * (height)
+            const track = new Track(x, y, midi.tracks[i]);
+            if (track.notes.length > 0) {
+                tracks.push(track);
+                position_index++;
+            }
+            if (position_index >= 4) {
+                break;
+            }
+        }
 
-            // Visual track setup
-            const x = Math.random() * width;
-            const y = Math.random() * height;
-            const visualTrack = new Track(x, y, track);
-            tracks.push(visualTrack);
-
-            // Schedule notes for playback
-            track.notes.forEach(note => {
-                Tone.Transport.schedule(time => {
-                    synth.triggerAttackRelease(
-                        note.name,
-                        note.duration,
-                        time,
-                        note.velocity
-                    );
-                }, note.time);
-            });
-        });
+        startTime = audioContext.currentTime;
+        for (let track of tracks) {
+            track.play(startTime);
+        }
     });
 });
 

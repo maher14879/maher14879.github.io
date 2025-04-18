@@ -124,7 +124,7 @@ class Track {
             oscillator.frequency.setValueAtTime(frequency, time);
 
             oscillator.start(time)
-            oscillator.stop(time + max((duration * 2/3), minNote))
+            oscillator.stop(time + Math.max((duration * 2/3), minNote))
             oscillator.connect(audioContext.destination)
             
             endTime = Math.max(time + duration, endTime);

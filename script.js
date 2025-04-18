@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < midi.tracks.length; i++) {
             x = Math.random() * (width)
             y = Math.random() * (height)
-            const track = new Track(x, y, sound_type, midi.tracks[i]);
+            const track = new Track(x, y, midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);
                 position_index++;

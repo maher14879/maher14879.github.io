@@ -30,8 +30,6 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let lastTime = 0;
-let spawnDot = 0;
 let Tone = null;
 
 const height = window.innerHeight;
@@ -230,11 +228,6 @@ document.addEventListener('mousemove', (event) => {
 
 function animateDots() {
     const nowTime = audioContext.currentTime - startTime;
-    const deltaTime = Date.now() - lastTime;
-    lastTime = Date.now();
-    spawnDot += deltaTime;
-    spawnDot
-    
     if (dots.length > maxDots) {
         dots = dots.slice(0, maxDots);
     }
@@ -273,11 +266,7 @@ function animateDots() {
                     force_x += (dx / distSq) * attract
                     force_y += (dy / distSq) * attract
                 }
-            })    
-
-            if (spawnDot > spawnSpeed) {
-                spawnDot -= spawnSpeed;
-            }
+            })
             dot.add_pos(force_x, force_y);
         })
     }

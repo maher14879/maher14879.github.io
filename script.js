@@ -250,7 +250,7 @@ function animateDots() {
                 if (period != null) {
                     const term1 = (dot.posX - track.posX) * period;
                     const term2 = (dot.posY - track.posY) * period;
-                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed;
+                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime);
                     force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
                 }
             }

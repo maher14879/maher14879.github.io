@@ -19,7 +19,7 @@ const dotsCount = 20;
 const maxDots = 100;
 const spawnSpeed = 40 * 1000;
 const despawnSpeed = 100 * 1000;
-const attract = 1
+const attract = 0.1
 const waveSpeed = -20;
 const periodScaler = 1;
 
@@ -85,46 +85,21 @@ class Dot {
 }
 
 class Note {
-    constructor(frequency, time, duration, volume) {
+    constructor(frequency, time, duration) {
         this.frequency = frequency;
         this.time = time;
         this.duration = duration;
-        this.volume = volume;
     }
 }
 
 class Track {
-    constructor(posX, posY, type, midi_trackk) {
+    constructor(posX, posY, midi_trackk) {
         this.posX = posX;
         this.posY = posY;
-        this.type = type;
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
-            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration, note.velocity));
-        }
-    }
-    play(startTime) {
-        for (let i = 0; i < this.notes.length; i++) {
-            const frequency = this.notes[i].frequency
-            const time = startTime + this.notes[i].time
-            const duration = this.notes[i].duration
-            const volume = this.notes[i].volume
-
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = this.type
-
-            oscillator.frequency.setValueAtTime(frequency, time);
-
-            //const gainNode = audioContext.createGain();
-            //gainNode.gain.setValueAtTime(volume, time);
-            //oscillator.connect(gainNode).connect(audioContext.destination);
-
-            oscillator.start(time)
-            oscillator.stop(time + duration)
-            oscillator.connect(audioContext.destination)
-            
-            endTime = Math.max(time + duration, endTime);
+            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration));
         }
     }
 
@@ -191,9 +166,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('midiInput').addEventListener('change', async function(parameter) {
         const file = parameter.target.files[0];
         if (!file) return;
-        const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
+        const {MidiPlayer} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
         const arrayBuffer = await file.arrayBuffer();
-        const midi = new Midi(arrayBuffer);
+        const midi = new MidiPlayer(arrayBuffer);
 
         isPlaying = true;
         document.querySelector('.content').remove()
@@ -206,8 +181,6 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < midi.tracks.length; i++) {
             x = Math.random() * (width)
             y = Math.random() * (height)
-            const synth_types = ['square', 'sawtooth'];
-            const sound_type = synth_types[Math.floor(Math.random() * synth_types.length)];
             const track = new Track(x, y, sound_type, midi.tracks[i]);
             if (track.notes.length > 0) {
                 tracks.push(track);
@@ -219,9 +192,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         startTime = audioContext.currentTime;
-        for (let track of tracks) {
-            track.play(startTime);
-        }        
+        const reader = new FileReader()
+        reader.onload = function(e) {
+            const player = new MidiPlayer.Player()
+            player.loadArrayBuffer(e.target.result)
+            player.play()
+        }
+        reader.readAsArrayBuffer(file)
     });
 });
 

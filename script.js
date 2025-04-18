@@ -192,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        startTime = audioContext.currentTime;
         const reader = new FileReader()
         reader.onload = function(e) {
             const player = new MidiPlayer.Player()
@@ -200,6 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
             player.play()
         }
         reader.readAsArrayBuffer(file)
+
+        player.on('playing', () => {
+            startTime = audioContext.currentTime
+        })
     });
 });
 

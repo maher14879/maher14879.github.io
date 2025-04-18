@@ -192,14 +192,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        const reader = new FileReader()
-        reader.onload = function(e) {
-            const player = new MidiPlayer.Player()
-            player.loadArrayBuffer(e.target.result)
-            player.play()
-        }
-        reader.readAsArrayBuffer(file)
-        startTime = audioContext.currentTime
+        const player = new MidiPlayer.Player();
+        player.loadArrayBuffer(arrayBuffer);
+
+        player.on('playing', function() {
+            startTime = audioContext.currentTime;
+        });
+
+        player.play();
     });
 });
 

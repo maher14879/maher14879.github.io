@@ -16,6 +16,7 @@
             Midi Player | 11-04-2025
             <br>
             <br>
+            <span style="color: white; text-shadow: 0 0 10px rgb(0, 255, 4);">
             \[
             \nabla f=
             \binom
@@ -26,6 +27,7 @@
                 \Delta y T \cdot \cos(\Delta y T) \cdot \cos (\Delta x T) \cdot \cos(t) \cdot s
             }
             \]
+            </span>
             <br>
             <p>
             This project is an online MIDI player that accepts any MIDI file as input, plays the music using a square oscillator, and visualizes the sound.
@@ -47,7 +49,7 @@
             </p>
             
             <input type="file" id="midiInput" accept=".mid,.midi">
-            
+
             <br><br>
             <div style="text-align: center;">
             <button id="playButton" onclick="playMidi()" style="position: relative; padding: 12px 24px; background-color: #000000; color: #00ff00; font-size: 18px; font-family: 'Courier New', Courier, monospace; border: 2px solid #00ff00; border-radius: 6px; box-shadow: 0 0 10px #00ff00; cursor: url('assets/images/curser/curser_select.png') 10 10, auto; text-transform: uppercase; transition: transform 0.3s ease, background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#33ff33'; this.style.transform='scale(1.1)';" onmouseout="this.style.backgroundColor='#000000'; this.style.transform='scale(1)';" onmousedown="this.style.backgroundColor='#00ff00'; this.style.color='#000000'; this.style.boxShadow='0 0 15px #33ff33';" onmouseup="this.style.backgroundColor='#33ff33'; this.style.color='#00ff00'; this.style.boxShadow='0 0 10px #00ff00';">PLAY!</button>                            

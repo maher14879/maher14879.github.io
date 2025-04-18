@@ -179,42 +179,33 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('midiInput').addEventListener('change', async function(parameter) {
-        const file = parameter.target.files[0];
-        if (!file) return;
-        const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-        const {default: MidiPlayer} = await import('https://cdn.skypack.dev/midi-player-js');
-        const arrayBuffer = await file.arrayBuffer();
-        const midi = new Midi(arrayBuffer);
+async function playMidi() {
+    let file = document.getElementById('midiInput').files[0];
+    if (!file) file = await fetch('assets/midi/v2.mid').then(res => res.blob());
+    const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
+    const arrayBuffer = await file.arrayBuffer();
+    const midi = new Midi(arrayBuffer);
 
-        isPlaying = true;
-        document.querySelector('.content').remove()
+    isPlaying = true;
+    document.querySelector('.content').remove();
 
-        if (audioContext.state === 'suspended') {
-            await audioContext.resume();
+    if (audioContext.state === 'suspended') await audioContext.resume();
+
+    let position_index = 0;
+    for (let i = 0; i < midi.tracks.length; i++) {
+        x = Math.random() * width;
+        y = Math.random() * height;
+        const track = new Track(x, y, midi.tracks[i]);
+        if (track.notes.length > 0) {
+            tracks.push(track);
+            position_index++;
         }
+        if (position_index >= 4) break;
+    }
 
-        let position_index = 0;
-        for (let i = 0; i < midi.tracks.length; i++) {
-            x = Math.random() * (width)
-            y = Math.random() * (height)
-            const track = new Track(x, y, midi.tracks[i]);
-            if (track.notes.length > 0) {
-                tracks.push(track);
-                position_index++;
-            }
-            if (position_index >= 4) {
-                break;
-            }
-        }
-
-        startTime = audioContext.currentTime;
-        for (let track of tracks) {
-            track.play(startTime);
-        }
-    });
-});
+    startTime = audioContext.currentTime;
+    for (let track of tracks) track.play(startTime);
+}
 
 document.addEventListener('mousemove', (event) => {
     const now = Date.now();

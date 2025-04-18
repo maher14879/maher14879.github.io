@@ -20,6 +20,7 @@ const maxDots = 100;
 const attract = 0.4
 const waveSpeed = -20;
 const periodScaler = 1;
+const minNote = 0.1;
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -123,7 +124,7 @@ class Track {
             oscillator.frequency.setValueAtTime(frequency, time);
 
             oscillator.start(time)
-            oscillator.stop(time + (duration * 2/3))
+            oscillator.stop(time + max((duration * 2/3), minNote))
             oscillator.connect(audioContext.destination)
             
             endTime = Math.max(time + duration, endTime);

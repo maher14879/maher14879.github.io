@@ -122,7 +122,7 @@ class Track {
             const volume = this.notes[i].volume
 
             const oscillator = audioContext.createOscillator();
-            oscillator.type = this.type
+            oscillator.type = 'square'
 
             oscillator.frequency.setValueAtTime(frequency, time);
 

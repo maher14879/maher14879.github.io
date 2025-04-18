@@ -178,27 +178,27 @@ document.addEventListener('DOMContentLoaded', function() {
             await audioContext.resume();
         }
 
-        let position_index = 0;
-        for (let i = 0; i < midi.tracks.length; i++) {
-            x = Math.random() * (width)
-            y = Math.random() * (height)
-            const track = new Track(x, y, midi.tracks[i]);
-            if (track.notes.length > 0) {
-                tracks.push(track);
-                position_index++;
-            }
-            if (position_index >= 4) {
-                break;
-            }
-        }
+        midi.tracks.forEach((track, index) => {
+            if (track.notes.length === 0) return;
 
-        const player = new MidiPlayer.Player({});
-        player.loadArrayBuffer(arrayBuffer);
-        player.on('playing', () => {
-            startTime = audioContext.currentTime;
-            endTime = startTime + player.getSongDuration(); 
+            // Visual track setup
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const visualTrack = new Track(x, y, track);
+            tracks.push(visualTrack);
+
+            // Schedule notes for playback
+            track.notes.forEach(note => {
+                Tone.Transport.schedule(time => {
+                    synth.triggerAttackRelease(
+                        note.name,
+                        note.duration,
+                        time,
+                        note.velocity
+                    );
+                }, note.time);
+            });
         });
-        player.play();
     });
 });
 
@@ -235,10 +235,10 @@ function animateDots() {
         })
     } else {
         if (audioContext.currentTime > endTime) {
-            player.stop();
+            audioContext.suspend();
             isPlaying = false;
-            deltaPosition_x = Math.random() * 100
-            deltaPosition_y = Math.random() * 100
+            deltaPosition_x = Math.random() * 100;
+            deltaPosition_y = Math.random() * 100;
         }
         const currentDots = [...dots];
         currentDots.forEach(dot => {
@@ -248,8 +248,8 @@ function animateDots() {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
-                    const term1 = (dot.posX - track.posX) * period
-                    const term2 = (dot.posY - track.posY) * period
+                    const term1 = (dot.posX - track.posX) * period;
+                    const term2 = (dot.posY - track.posY) * period;
                     force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime);
                     force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
                     if (spawnDot > spawnSpeed) {

@@ -17,7 +17,7 @@ const mouseSmooth = 0.01
 const mouseSpeed = 0.1
 const dotsCount = 20;
 const maxDots = 100;
-const attract = 0.4
+const attract = -0.1
 const waveSpeed = -20;
 const periodScaler = 1;
 const minNote = 0.1;
@@ -259,7 +259,7 @@ function animateDots() {
                 if (dotOther !== dot) {
                     const dx = dotOther.posX - dot.posX
                     const dy = dotOther.posY - dot.posY
-                    const distSq = Math.max(1, dx * dx + dy * dy)
+                    const distSq = Math.max(0.01, dx * dx + dy * dy)
                     force_x += (dx / distSq) * attract
                     force_y += (dy / distSq) * attract
                 }

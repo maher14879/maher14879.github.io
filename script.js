@@ -102,7 +102,7 @@ class Track {
     getCurrentPeriod(nowTime) {
         for (let note of this.notes) {
             const start = note.time;
-            const end = note.time + note.duration;
+            const end = note.time + (note.duration * 2/3);
             if (start <= nowTime && nowTime <= end) {
                 return periodScaler / note.frequency;
             }
@@ -123,7 +123,7 @@ class Track {
             oscillator.frequency.setValueAtTime(frequency, time);
 
             oscillator.start(time)
-            oscillator.stop(time + duration * 2/3)
+            oscillator.stop(time + (duration * 2/3))
             oscillator.connect(audioContext.destination)
             
             endTime = Math.max(time + duration, endTime);

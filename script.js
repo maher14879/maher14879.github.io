@@ -13,14 +13,14 @@ const dotsCount = 20;
 
 const dotAttract = -7;
 const waveSpeed = -20;
-const periodScaler = 3;
+const periodScaler = 1.7;
 const minNote = 0.1;
 
 const scaleX = 100;
 const scaleY = Math.round((height * scaleX) / width);
 
-const mouseAttract = 0.1;
-const imageAttract = 10;
+const mouseAttract = 1;
+const imageAttract = 100;
 const allignDelay = 10;
 
 let dots = [];
@@ -306,7 +306,6 @@ function animateDots() {
     }    
 
     if (isShowing) {
-        const align = now - lastAllign > allignDelay;
         for (let i = 0; i < dots.length; i++) {
             const dot = dots[i];
             force_x = (dot.posX - mouseX) * mouseAttract;

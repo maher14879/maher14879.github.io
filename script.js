@@ -223,7 +223,7 @@ async function playMidi() {
 }
 
 async function ImageView() {
-    const file = document.getElementById('imageInput').files[0] || await fetch('assets/images/me_and_bird.JPG').then(res => res.blob())
+    const file = document.getElementById('imageInput').files[0] || await fetch('assets/images/test_image.png').then(res => res.blob())
     const img = new Image()
     img.onload = () => {
         const canvas = document.createElement('canvas')

@@ -258,6 +258,19 @@ async function ImageView() {
         }
         pixelBrightness.sort((a, b) => a.brightness - b.brightness)
         imageDots = pixelBrightness.slice(Math.floor(pixelBrightness.length * thresholdPercent))
+
+        for (let k = 0; k < imageDots.length; k++) {
+            const {x, y, brightness} = imageDots[k];
+            dot = document.createElement('div');
+            dot.style.position = 'absolute';
+            dot.style.width = '10px';
+            dot.style.height = '10px';
+            dot.style.backgroundColor = 'red';
+            dot.style.left = `${x - 5}px`;
+            dot.style.top = `${y - 5}px`;
+            document.body.appendChild(this.dot);
+        }
+
         console.log("x", scaleX, ", y", scaleY)
         console.log("total: ", pixelBrightness.length, "of which", imageDots.length)
     }

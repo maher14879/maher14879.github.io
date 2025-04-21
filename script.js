@@ -240,54 +240,39 @@ async function ImageView() {
         canvas.width = scaleX
         canvas.height = scaleY
         const ctx = canvas.getContext('2d')
+
+        // Apply high contrast by using a filter
+        ctx.filter = 'contrast(200%)'
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
+
         const imageData = ctx.getImageData(0, 0, scaleX, scaleY)
         const data = imageData.data
+
+        // Apply threshold to remove low brightness pixels
         const edges = []
-        for (let y = 1; y < scaleY - 1; y++) {
-            for (let x = 1; x < scaleX - 1; x++) {
-                const i = (y * scaleX + x) * 4
-                const gx = (
-                    -data[((y - 1) * scaleX + (x - 1)) * 4] - 2 * data[(y * scaleX + (x - 1)) * 4] - data[((y + 1) * scaleX + (x - 1)) * 4] +
-                    data[((y - 1) * scaleX + (x + 1)) * 4] + 2 * data[(y * scaleX + (x + 1)) * 4] + data[((y + 1) * scaleX + (x + 1)) * 4]
-                )
-                const gy = (
-                    -data[((y - 1) * scaleX + (x - 1)) * 4] - 2 * data[((y - 1) * scaleX + x) * 4] - data[((y - 1) * scaleX + (x + 1)) * 4] +
-                    data[((y + 1) * scaleX + (x - 1)) * 4] + 2 * data[((y + 1) * scaleX + x) * 4] + data[((y + 1) * scaleX + (x + 1)) * 4]
-                )
-                const mag = Math.sqrt(gx * gx + gy * gy)
-                if (mag > 100) edges.push([x, y])
-            }
-        }
-        const accumulator = {}
-        const thetaSteps = 180
-        for (const [x, y] of edges) {
-            for (let t = 0; t < thetaSteps; t++) {
-                const theta = t * Math.PI / thetaSteps
-                const r = Math.round(x * Math.cos(theta) + y * Math.sin(theta))
-                const key = `${r},${t}`
-                accumulator[key] = (accumulator[key] || 0) + 1
-            }
-        }
-        const lines = []
-        for (const key in accumulator) {
-            if (accumulator[key] > 100) {
-                const [r, t] = key.split(',').map(Number)
-                lines.push({ r, t })
-            }
-        }
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
-                for (const { r, t } of lines) {
-                    const theta = t * Math.PI / thetaSteps
-                    const dist = Math.abs(x * Math.cos(theta) + y * Math.sin(theta) - r)
-                    if (dist < 1) {
-                        imageDots.push([x, y])
-                        break
-                    }
+                const i = (y * scaleX + x) * 4
+                const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3  // Average brightness
+                if (brightness > 100) {  // Threshold to keep only high brightness pixels
+                    edges.push([x, y])
                 }
             }
         }
+
+        // Now `edges` holds all high-brightness pixel positions
+
+        // Set the canvas as the background
+        document.body.style.backgroundImage = `url(${canvas.toDataURL()})`
+        document.body.style.backgroundSize = 'cover'
+        document.body.style.backgroundPosition = 'center'
+
+        // If you want to show the canvas on screen instead of as a background
+        document.body.innerHTML = ''  // Clear the body content
+        document.body.appendChild(canvas)  // Append the canvas to the body
+
+        // Log the edges or imageDots
+        imageDots = edges  // Set imageDots as the detected high-brightness pixel positions
         console.log(imageDots)
     }
     isShowing = true

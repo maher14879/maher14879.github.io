@@ -13,8 +13,9 @@ const minNote = 0.1;
 
 const scaleX = 100
 const scaleY = (height * scaleX) / width
-let mouseAttract = 0.1 //const
-let imageAttract = 1 //const
+const mouseAttract = 0.1
+const imageAttract = 1
+const allignDelay = 10;
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -31,6 +32,7 @@ let force_y = 0;
 let audioContext = null
 
 let isShowing = false
+let lastAllign = false
 let imageDots = []
 let mouseX = 0
 let mouseY = 0
@@ -180,6 +182,7 @@ window.addEventListener('beforeunload', () => {
 document.addEventListener('mousemove', (event) => {
     const now = Date.now();
     if (now - lastMouseMove > mouseMoveDelay) {
+        lastMouseMove = now
         mouseX = event.clientX
         mouseY = event.clientY
         const targetX = mouseX - width / 2;
@@ -299,17 +302,21 @@ function animateDots() {
                 }
             })
 
-            imageDots.forEach(imageDot => {
-                const [x, y, s] = imageDot
-                const dx = dot.posX - (x * width / scaleX)
-                const dy = dot.posY - (y * height / scaleY)
-                const distSq = Math.max(1, dx * dx + dy * dy)
-                const ds = Math.max(1, Math.abs(s - dot.scale))**3
-                //force_x += (dx / (distSq * ds)) * imageAttract;
-                //force_y += (dy / (distSq * ds)) * imageAttract;
-                console.log(dx / (distSq * ds)) * imageAttract;
-                console.log(dy / (distSq * ds)) * imageAttract;
-            })
+            const now = Date.now();
+            if (now - lastAllign > allignDelay) {
+                lastAllign = now
+                imageDots.forEach(imageDot => {
+                    const [x, y, s] = imageDot
+                    const dx = dot.posX - (x * width / scaleX)
+                    const dy = dot.posY - (y * height / scaleY)
+                    const distSq = Math.max(1, dx * dx + dy * dy)
+                    const ds = Math.max(1, Math.abs(s - dot.scale))**3
+                    force_x += (dx / (distSq * ds)) * imageAttract;
+                    force_y += (dy / (distSq * ds)) * imageAttract;
+                    console.log(dx / (distSq * ds)) * imageAttract;
+                    console.log(dy / (distSq * ds)) * imageAttract;
+                })
+            }
 
             dot.add_pos(force_x, force_y);
         })

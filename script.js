@@ -257,7 +257,8 @@ async function ImageView() {
         }
         pixelBrightness.sort((a, b) => a.brightness - b.brightness)
         imageDots = pixelBrightness.slice(Math.floor(pixelBrightness.length * thresholdPercent))
-        console.log(imageDots)
+        console.log("x", scaleX, ", y", scaleY)
+        console.log("total: ", pixelBrightness.length, "of which", imageDots.length)
     }
     isShowing = true
     img.src = URL.createObjectURL(file)

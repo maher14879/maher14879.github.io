@@ -303,7 +303,7 @@ function animateDots() {
                 const dx = dot.posX - (x * width / scaleX)
                 const dy = dot.posY - (y * width / scaleX)
                 const distSq = Math.max(1, dx * dx + dy * dy)
-                ds = Math.abs(s - dot.scale) 
+                const ds = Math.max(1, Math.abs(s - dot.scale))**3
                 force_x += (dx / (distSq * ds)) * imageAttract;
                 force_y += (dy / (distSq * ds)) * imageAttract;
             })

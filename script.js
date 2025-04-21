@@ -198,8 +198,6 @@ document.addEventListener('mousemove', (event) => {
     const targetY = mouseY - height / 2;
     deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
     deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-    force_x = deltaPosition_x * dot.scale * mouseSpeed;
-    force_y = deltaPosition_y * dot.scale * mouseSpeed;
 })
 
 async function playMidi() {
@@ -275,14 +273,15 @@ function animateDots() {
             deltaPosition_x = Math.random() * 100;
             deltaPosition_y = Math.random() * 100;
         }
-
-        const currentDots = [...dots];
-        currentDots.forEach(dot => {
+    
+        const nowTime = audioContext.currentTime;
+        for (let i = 0; i < dots.length; i++) {
+            const dot = dots[i];
             force_x = 0;
             force_y = 0;
-            for (let i = 0; i < tracks.length; i++) {
-                const track = tracks[i];
-                const nowTime = audioContext.currentTime
+    
+            for (let j = 0; j < tracks.length; j++) {
+                const track = tracks[j];
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
                     const term1 = (dot.posX - track.posX) * period;
@@ -291,19 +290,20 @@ function animateDots() {
                     force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
                 }
             }
-
-            currentDots.forEach(dotOther => {
-                if (dotOther !== dot) {
-                    const dx = dot.posX - dotOther.posX
-                    const dy = dot.posY - dotOther.posY
-                    const distSq = Math.max(1, dx * dx + dy * dy)
-                    force_x += (dx / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
-                    force_y += (dy / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
-                }
-            })
+    
+            for (let k = 0; k < dots.length; k++) {
+                if (i === k) continue;
+                const dotOther = dots[k];
+                const dx = dot.posX - dotOther.posX;
+                const dy = dot.posY - dotOther.posY;
+                const distSq = Math.max(1, dx * dx + dy * dy);
+                force_x += (dx / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
+                force_y += (dy / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
+            }
+    
             dot.add_pos(force_x, force_y);
-        })
-    }
+        }
+    }    
 
     if (isShowing) {
         const align = now - lastAllign > allignDelay;
@@ -321,16 +321,14 @@ function animateDots() {
                 force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
             }
     
-            if (align) {
-                for (let k = 0; k < imageDots.length; k++) {
-                    const [x, y, s] = imageDots[k];
-                    const dx = dot.posX - (x * width / scaleX);
-                    const dy = dot.posY - (y * height / scaleY);
-                    const distSq = Math.max(1, dx * dx + dy * dy) ** 3;
-                    const ds = Math.max(1, Math.abs(s - dot.scale)) ** 3;
-                    force_x += (dx / (distSq * ds)) * imageAttract;
-                    force_y += (dy / (distSq * ds)) * imageAttract;
-                }
+            for (let k = 0; k < imageDots.length; k++) {
+                const [x, y, s] = imageDots[k];
+                const dx = dot.posX - (x * width / scaleX);
+                const dy = dot.posY - (y * height / scaleY);
+                const distSq = Math.max(1, dx * dx + dy * dy) ** 3;
+                const ds = Math.max(1, Math.abs(s - dot.scale)) ** 3;
+                force_x += (dx / (distSq * ds)) * imageAttract;
+                force_y += (dy / (distSq * ds)) * imageAttract;
             }
             dot.add_pos(force_x, force_y);
         }
@@ -338,7 +336,7 @@ function animateDots() {
 
     if (!(isPlaying || isShowing)) {
         dots.forEach(
-            dot => {dot.add_pos(force_x, force_y)
+            dot => {dot.add_pos(deltaPosition_x * dot.scale * mouseSpeed, deltaPosition_y * dot.scale * mouseSpeed)
         });
     }
 

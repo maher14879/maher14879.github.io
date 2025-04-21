@@ -17,6 +17,7 @@ const periodScaler = 1;
 const minNote = 0.1;
 
 const scaleX = 100
+const scaleY = Math.round((height * scaleX) / width)
 
 const mouseAttract = 0.1
 const imageAttract = 1
@@ -243,8 +244,6 @@ async function ImageView() {
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
         const imageData = ctx.getImageData(0, 0, scaleX, scaleY);
         const data = imageData.data;
-
-        const scaleY = Math.round((height * scaleX) / width)
 
         // Test 1: Verify canvas creation
         console.assert(canvas instanceof HTMLCanvasElement, "Canvas creation failed");

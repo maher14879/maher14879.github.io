@@ -237,7 +237,7 @@ async function ImageView() {
                 const i = (y * scaleX + x) * 4
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
                 const bw = avg > 127 ? 255 : 0
-                imageDots.push([x, y, bw])
+                imageDots.push([x, y, avg / 255])
             }
         }
     }

@@ -232,37 +232,67 @@ async function playMidi() {
     startTime = audioContext.currentTime;
     for (let track of tracks) track.play(startTime);
 }
-
 async function ImageView() {
     const file = document.getElementById('imageInput').files[0] || await fetch('assets/images/test_image.png').then(res => res.blob())
     const img = new Image()
     img.onload = () => {
         const canvas = document.createElement('canvas')
-        canvas.width = scaleX;
-        canvas.height = scaleY;
+        canvas.width = scaleX
+        canvas.height = scaleY
         const ctx = canvas.getContext('2d')
-        ctx.filter = 'contrast(200%)'
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
-        const imageData = ctx.getImageData(0, 0, scaleX, scaleY);
-        const data = imageData.data;
+        const imageData = ctx.getImageData(0, 0, scaleX, scaleY)
+        const data = imageData.data
+        const edges = []
+        for (let y = 1; y < scaleY - 1; y++) {
+            for (let x = 1; x < scaleX - 1; x++) {
+                const i = (y * scaleX + x) * 4
+                const gx = (
+                    -data[((y - 1) * scaleX + (x - 1)) * 4] - 2 * data[(y * scaleX + (x - 1)) * 4] - data[((y + 1) * scaleX + (x - 1)) * 4] +
+                    data[((y - 1) * scaleX + (x + 1)) * 4] + 2 * data[(y * scaleX + (x + 1)) * 4] + data[((y + 1) * scaleX + (x + 1)) * 4]
+                )
+                const gy = (
+                    -data[((y - 1) * scaleX + (x - 1)) * 4] - 2 * data[((y - 1) * scaleX + x) * 4] - data[((y - 1) * scaleX + (x + 1)) * 4] +
+                    data[((y + 1) * scaleX + (x - 1)) * 4] + 2 * data[((y + 1) * scaleX + x) * 4] + data[((y + 1) * scaleX + (x + 1)) * 4]
+                )
+                const mag = Math.sqrt(gx * gx + gy * gy)
+                if (mag > 100) edges.push([x, y])
+            }
+        }
+        const accumulator = {}
+        const thetaSteps = 180
+        for (const [x, y] of edges) {
+            for (let t = 0; t < thetaSteps; t++) {
+                const theta = t * Math.PI / thetaSteps
+                const r = Math.round(x * Math.cos(theta) + y * Math.sin(theta))
+                const key = `${r},${t}`
+                accumulator[key] = (accumulator[key] || 0) + 1
+            }
+        }
+        const lines = []
+        for (const key in accumulator) {
+            if (accumulator[key] > 100) {
+                const [r, t] = key.split(',').map(Number)
+                lines.push({ r, t })
+            }
+        }
+        imageDots.length = 0
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
-                const i = (y * scaleX + x) * 4
-                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
-                const brightness  = avg / 255
-                imageDots.push([x, y, brightness])
+                for (const { r, t } of lines) {
+                    const theta = t * Math.PI / thetaSteps
+                    const dist = Math.abs(x * Math.cos(theta) + y * Math.sin(theta) - r)
+                    if (dist < 1) {
+                        imageDots.push([x, y])
+                        break
+                    }
+                }
             }
         }
     }
     isShowing = true
     img.src = URL.createObjectURL(file)
-    document.querySelector('.content').remove();
-    console.log("imageDots created:", {
-        count: imageDots.length,
-        first: imageDots[0],
-        last: imageDots[imageDots.length - 1],
-        dimensions: `${scaleX}x${scaleY}`
-    });
+    document.querySelector('.content').remove()
 }
 
 function animateDots() {
@@ -321,11 +351,10 @@ function animateDots() {
             }
     
             for (let k = 0; k < imageDots.length; k++) {
-                const [x, y, s] = imageDots[k];
+                const [x, y] = imageDots[k];
                 const dx = dot.posX - (x * width / scaleX);
                 const dy = dot.posY - (y * height / scaleY);
                 const distSq = Math.max(1, dx * dx + dy * dy) ** 3;
-                const ds = Math.max(1, Math.abs(s - dot.scale)) ** 3;
                 force_x += (dx / (distSq * ds)) * imageAttract;
                 force_y += (dy / (distSq * ds)) * imageAttract;
             }

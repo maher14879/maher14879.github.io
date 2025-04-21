@@ -20,7 +20,7 @@ const scaleX = 100;
 const scaleY = Math.round((height * scaleX) / width);
 
 const mouseAttract = 1;
-const imageAttract = 100;
+const imageAttract = 1000;
 const allignDelay = 10;
 
 const thresholdPercent = 0.95
@@ -266,8 +266,8 @@ async function ImageView() {
             dot.style.width = '10px';
             dot.style.height = '10px';
             dot.style.backgroundColor = 'red';
-            dot.style.left = `${x - 5}px`;
-            dot.style.top = `${y - 5}px`;
+            dot.style.left = `${x * width / scaleX - 5}px`;
+            dot.style.top = `${y * height / scaleY - 5}px`;
             document.body.appendChild(this.dot);
         }
 

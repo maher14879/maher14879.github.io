@@ -20,7 +20,7 @@ const scaleX = 100
 const scaleY = Math.round((height * scaleX) / width)
 
 const mouseAttract = 0.1
-const imageAttract = 100
+const imageAttract = 1
 const allignDelay = 10;
 
 let dots = [];

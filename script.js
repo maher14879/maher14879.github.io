@@ -7,20 +7,20 @@ window.addEventListener('resize', () => {
 })
 
 const mouseMoveDelay = 10;
-const mouseSmooth = 0.01
-const mouseSpeed = 10
+const mouseSmooth = 0.01;
+const mouseSpeed = 1;
 const dotsCount = 20;
 
-const dotAttract = -2
+const dotAttract = -20;
 const waveSpeed = -20;
 const periodScaler = 1;
 const minNote = 0.1;
 
-const scaleX = 100
-const scaleY = Math.round((height * scaleX) / width)
+const scaleX = 100;
+const scaleY = Math.round((height * scaleX) / width);
 
-const mouseAttract = 0.1
-const imageAttract = 10
+const mouseAttract = 0.1;
+const imageAttract = 10;
 const allignDelay = 10;
 
 let dots = [];
@@ -35,13 +35,13 @@ let endTime = 0;
 let Tone = null;
 let force_x = 0;
 let force_y = 0;
-let audioContext = null
+let audioContext = null;
 
-let isShowing = false
-let lastAllign = 0
-let imageDots = []
-let mouseX = 0
-let mouseY = 0
+let isShowing = false;
+let lastAllign = 0;
+let imageDots = [];
+let mouseX = 0;
+let mouseY = 0;
 
 class Dot {
     constructor(x, y, scale, color = 'white') {

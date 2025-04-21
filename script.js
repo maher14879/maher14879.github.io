@@ -256,7 +256,12 @@ async function ImageView() {
     isShowing = true
     img.src = URL.createObjectURL(file)
     document.querySelector('.content').remove();
-    console.log("imageDots", imageDots.length)
+    console.log("imageDots created:", {
+        count: imageDots.length,
+        first: imageDots[0],
+        last: imageDots[imageDots.length - 1],
+        dimensions: `${scaleX}x${scaleY}`
+    });
 }
 
 function animateDots() {

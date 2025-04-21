@@ -8,9 +8,9 @@ const waveSpeed = -20;
 const periodScaler = 1;
 const minNote = 0.1;
 
-const mouseAttract = 0.1
-const imageAttract = 1
-const scaleX = 100
+let mouseAttract = 0.1 //const
+let imageAttract = 1 //const
+let scaleX = 100 //const
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -237,7 +237,8 @@ async function ImageView() {
                 const i = (y * scaleX + x) * 4
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
                 const bw = avg > 127 ? 255 : 0
-                imageDots.push([x, y, avg / 255])
+                const s = avg / 255
+                imageDots.push([x, y, s])
             }
         }
     }

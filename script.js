@@ -17,10 +17,10 @@ const periodScaler = 1;
 const minNote = 0.1;
 
 const scaleX = 100
-const scaleY = (height * scaleX) / width
+
 const mouseAttract = 0.1
 const imageAttract = 1
-const allignDelay = 1000;
+const allignDelay = 100;
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -244,7 +244,9 @@ async function ImageView() {
         const imageData = ctx.getImageData(0, 0, scaleX, scaleY);
         const data = imageData.data;
 
-                // Test 1: Verify canvas creation
+        const scaleY = Math.round((height * scaleX) / width)
+
+        // Test 1: Verify canvas creation
         console.assert(canvas instanceof HTMLCanvasElement, "Canvas creation failed");
         console.assert(canvas.width === scaleX, `Canvas width mismatch (expected ${scaleX}, got ${canvas.width})`);
         console.assert(canvas.height === scaleY, `Canvas height mismatch (expected ${scaleY}, got ${canvas.height})`);
@@ -257,11 +259,11 @@ async function ImageView() {
         console.assert(imageData instanceof ImageData, "Failed to get ImageData");
         console.assert(data.length === scaleX * scaleY * 4, 
             `ImageData size mismatch (expected ${scaleX * scaleY * 4}, got ${data.length})`);
-            
+
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
-                console.log("working on", i)
                 const i = (y * scaleX + x) * 4
+                console.log("working on", i)
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
                 const brightness  = avg / 255
                 imageDots.push([x, y, brightness])

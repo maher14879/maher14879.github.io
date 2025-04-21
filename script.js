@@ -256,10 +256,6 @@ async function ImageView() {
                 }
             }
         }
-        
-        document.body.innerHTML = ''  // Clear the body content
-        document.body.appendChild(canvas)  // Append the canvas to the body
-        console.log(imageDots)
     }
     isShowing = true
     img.src = URL.createObjectURL(file)

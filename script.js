@@ -193,17 +193,13 @@ document.addEventListener('mousemove', (event) => {
         return
     };
     lastMouseMove = now
-        
-    if (!(isPlaying || isShowing)) {
-        dots.forEach(dot => {
-            const targetX = mouseX - width / 2;
-            const targetY = mouseY - height / 2;
-            deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
-            deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-            force_x = deltaPosition_x * dot.scale * mouseSpeed;
-            force_y = deltaPosition_y * dot.scale * mouseSpeed;
-        })
-    }
+
+    const targetX = mouseX - width / 2;
+    const targetY = mouseY - height / 2;
+    deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
+    deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+    force_x = deltaPosition_x * dot.scale * mouseSpeed;
+    force_y = deltaPosition_y * dot.scale * mouseSpeed;
 })
 
 async function playMidi() {
@@ -305,42 +301,47 @@ function animateDots() {
                     force_y += (dy / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
                 }
             })
+            dot.add_pos(force_x, force_y);
         })
     }
 
     if (isShowing) {
-        dots.forEach(dot => {
+        const align = now - lastAllign > allignDelay;
+        for (let i = 0; i < dots.length; i++) {
+            const dot = dots[i];
             force_x = (dot.posX - mouseX) * mouseAttract;
             force_y = (dot.posY - mouseY) * mouseAttract;
-
-            const currentDots = [...dots];
-            currentDots.forEach(dotOther => {
-                if (dotOther !== dot) {
-                    const dx = dot.posX - dotOther.posX
-                    const dy = dot.posY - dotOther.posY
-                    const distSq = Math.max(1, dx * dx + dy * dy)
-                    force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
-                    force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
-                }
-            })
-
-            if (now - lastAllign > allignDelay) {
-                imageDots.forEach(imageDot => {
-                    const [x, y, s] = imageDot
-                    const dx = dot.posX - (x * width / scaleX)
-                    const dy = dot.posY - (y * height / scaleY)
-                    const distSq = Math.max(1, dx * dx + dy * dy)**3
-                    const ds = Math.max(1, Math.abs(s - dot.scale))**3
+    
+            for (let j = 0; j < dots.length; j++) {
+                if (i === j) continue;
+                const dx = dot.posX - dots[j].posX;
+                const dy = dot.posY - dots[j].posY;
+                const distSq = Math.max(1, dx * dx + dy * dy);
+                force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
+                force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
+            }
+    
+            if (align) {
+                for (let k = 0; k < imageDots.length; k++) {
+                    const [x, y, s] = imageDots[k];
+                    const dx = dot.posX - (x * width / scaleX);
+                    const dy = dot.posY - (y * height / scaleY);
+                    const distSq = Math.max(1, dx * dx + dy * dy) ** 3;
+                    const ds = Math.max(1, Math.abs(s - dot.scale)) ** 3;
                     force_x += (dx / (distSq * ds)) * imageAttract;
                     force_y += (dy / (distSq * ds)) * imageAttract;
-                })
+                }
             }
-        })
+            dot.add_pos(force_x, force_y);
+        }
     }
 
-    dots.forEach(dot => {
-        dot.add_pos(force_x, force_y);
-    })
+    if (!(isPlaying || isShowing)) {
+        dots.forEach(
+            dot => {dot.add_pos(force_x, force_y)
+        });
+    }
+
     requestAnimationFrame(animateDots);
 }
 

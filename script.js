@@ -312,8 +312,6 @@ function animateDots() {
                     const ds = Math.max(1, Math.abs(s - dot.scale))**3
                     force_x += (dx / (distSq * ds)) * imageAttract;
                     force_y += (dy / (distSq * ds)) * imageAttract;
-                    console.log(dx / (distSq * ds)) * imageAttract;
-                    console.log(dy / (distSq * ds)) * imageAttract;
                 })
             }
             dot.add_pos(force_x, force_y);

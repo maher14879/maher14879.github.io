@@ -276,7 +276,6 @@ async function ImageView() {
                 lines.push({ r, t })
             }
         }
-        imageDots.length = 0
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
                 for (const { r, t } of lines) {
@@ -289,11 +288,11 @@ async function ImageView() {
                 }
             }
         }
+        console.log(imageDots)
     }
     isShowing = true
     img.src = URL.createObjectURL(file)
     document.querySelector('.content').remove()
-    console.log(imageDots)
 }
 
 function animateDots() {

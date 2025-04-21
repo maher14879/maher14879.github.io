@@ -1,22 +1,7 @@
-const wordLinks = {
-    "Orbita": '<a href="orbita.html" >Orbita</a>',
-    "Cluster": '<a href="cluster.html" >Cluster</a>',
-    "GitHub": '<a href="https://github.com/maher14879" target="_blank" >GitHub</a>',
-};
-
-function replaceWordsWithLinks(text) {
-    Object.keys(wordLinks).forEach(word => {
-        const regex = new RegExp(`\\b${word}\\b`, 'g');
-        text = text.replace(regex, wordLinks[word]);
-    });
-    return text;
-}
-
 const mouseMoveDelay = 10;
 const mouseSmooth = 0.01
 const mouseSpeed = 0.1
 const dotsCount = 20;
-const maxDots = 100;
 const attract = -2
 const waveSpeed = -20;
 const periodScaler = 1;
@@ -32,6 +17,13 @@ let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
 let Tone = null;
+let force_x = 0;
+let force_y = 0;
+
+let isShowing = false
+let imageDots = []
+let mouseX = 0
+let mouseY = 0
 
 const height = window.innerHeight;
 const width = window.innerWidth;
@@ -179,6 +171,19 @@ window.addEventListener('beforeunload', () => {
     saveDotsToStorage();
 });
 
+document.addEventListener('mousemove', (event) => {
+    const now = Date.now();
+    if (now - lastMouseMove > mouseMoveDelay) {
+        mouseX = event.clientX
+        mouseY = event.clientY
+        const targetX = mouseX - width / 2;
+        const targetY = mouseY - height / 2;
+        deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
+        deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+    };
+  }
+);
+
 async function playMidi() {
     let file = document.getElementById('midiInput').files[0];
     if (!file) file = await fetch('assets/midi/v2.mid').then(res => res.blob());
@@ -212,28 +217,12 @@ async function playMidi() {
     for (let track of tracks) track.play(startTime);
 }
 
-document.addEventListener('mousemove', (event) => {
-    const now = Date.now();
-    if (now - lastMouseMove > mouseMoveDelay) {
-        const targetX = event.clientX - width / 2;
-        const targetY = event.clientY - height / 2;
-        deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
-        deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-    };
-  }
-);
+async function ImageView() {
+    isShowing = true
+}
 
 function animateDots() {
-    const nowTime = audioContext.currentTime - startTime;
-    if (dots.length > maxDots) {
-        dots = dots.slice(0, maxDots);
-    }
-
-    if (!isPlaying) {
-        dots.forEach(dot => {
-            dot.add_pos(deltaPosition_x * dot.scale * mouseSpeed, deltaPosition_y * dot.scale * mouseSpeed);
-        })
-    } else {
+    if (isPlaying) {
         if (audioContext.currentTime > endTime) {
             audioContext.suspend();
             isPlaying = false;
@@ -242,8 +231,8 @@ function animateDots() {
         }
         const currentDots = [...dots];
         currentDots.forEach(dot => {
-            let force_x = 0;
-            let force_y = 0;
+            force_x = 0;
+            force_y = 0;
             for (let i = 0; i < tracks.length; i++) {
                 const track = tracks[i];
                 const period = track.getCurrentPeriod(nowTime);
@@ -265,6 +254,20 @@ function animateDots() {
                 }
             })
             dot.add_pos(force_x, force_y);
+        })
+    } else if (isShowing) {
+        dots.forEach(dot => {
+            force_x = (mouseX - dot.x)**2;
+            force_y = (mouseY - dot.y)**3;
+            imageDots.forEach(imageDot => {
+                x, y, s = imageDot 
+            })
+            dot.add_pos(force_x, force_y);
+        })
+    }
+    else {
+        dots.forEach(dot => {
+            dot.add_pos(deltaPosition_x * dot.scale * mouseSpeed, deltaPosition_y * dot.scale * mouseSpeed);
         })
     }
     requestAnimationFrame(animateDots);

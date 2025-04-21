@@ -11,9 +11,9 @@ const mouseSmooth = 0.01;
 const mouseSpeed = 0.1;
 const dotsCount = 20;
 
-const dotAttract = -10;
+const dotAttract = -7;
 const waveSpeed = -20;
-const periodScaler = 1;
+const periodScaler = 3;
 const minNote = 0.1;
 
 const scaleX = 100;

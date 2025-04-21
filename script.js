@@ -293,16 +293,7 @@ async function ImageView() {
     isShowing = true
     img.src = URL.createObjectURL(file)
     document.querySelector('.content').remove()
-
-    document.body.style.backgroundImage = ''
-    document.body.innerHTML = ''
-    document.body.appendChild(canvas)
-    canvas.style.position = 'fixed'
-    canvas.style.top = '0'
-    canvas.style.left = '0'
-    canvas.style.width = '100vw'
-    canvas.style.height = '100vh'
-    
+    console.log(imageDots)
 }
 
 function animateDots() {

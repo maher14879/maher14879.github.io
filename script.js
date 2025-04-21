@@ -255,6 +255,7 @@ async function ImageView() {
     }
     isShowing = true
     img.src = URL.createObjectURL(file)
+    document.querySelector('.content').remove();
     console.log("imageDots", imageDots.length)
 }
 

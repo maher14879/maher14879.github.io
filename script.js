@@ -10,6 +10,7 @@ const minNote = 0.1;
 
 const mouseAttract = 0.1
 const imageAttract = 1
+const scaleX = 100
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -227,14 +228,14 @@ async function ImageView() {
     img.onload = () => {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
-        canvas.width = width
-        canvas.height = height
         ctx.filter = 'contrast(200%)'
-        ctx.drawImage(img, 0, 0, width, height)
-        const data = ctx.getImageData(0, 0, width, height).data
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                const i = (y * width + x) * 4
+        scaleX
+        const scaleY = (height * scaleX) / width
+        ctx.drawImage(img, 0, 0, scaleX, scaleY)
+        const data = ctx.getImageData(0, 0, scaleX, scaleY).data
+        for (let y = 0; y < scaleY; y++) {
+            for (let x = 0; x < scaleX; x++) {
+                const i = (y * scaleX + x) * 4
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
                 const bw = avg > 127 ? 255 : 0
                 imageDots.push([x, y, bw])
@@ -299,7 +300,9 @@ function animateDots() {
             })
 
             imageDots.forEach(imageDot => {
-                const [x, y, s] = imageDot 
+                const [x, y, s] = imageDot
+                x * scaleX
+                y * scaleX
             })
 
             dot.add_pos(force_x, force_y);

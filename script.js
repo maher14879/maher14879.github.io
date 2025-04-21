@@ -37,7 +37,7 @@ let force_y = 0;
 let audioContext = null
 
 let isShowing = false
-let lastAllign = false
+let lastAllign = 0
 let imageDots = []
 let mouseX = 0
 let mouseY = 0
@@ -236,17 +236,19 @@ async function ImageView() {
     const img = new Image()
     img.onload = () => {
         const canvas = document.createElement('canvas')
+        canvas.width = scaleX;
+        canvas.height = scaleY;
         const ctx = canvas.getContext('2d')
         ctx.filter = 'contrast(200%)'
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
-        const data = ctx.getImageData(0, 0, scaleX, scaleY).data
+        const imageData = ctx.getImageData(0, 0, scaleX, scaleY);
+        const data = imageData.data;
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
                 const i = (y * scaleX + x) * 4
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
-                const bw = avg > 127 ? 255 : 0
-                const s = avg / 255
-                imageDots.push([x, y, s])
+                const brightness  = avg / 255
+                imageDots.push([x, y, brightness])
             }
         }
     }

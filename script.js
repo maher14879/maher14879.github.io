@@ -8,7 +8,8 @@ const waveSpeed = -20;
 const periodScaler = 1;
 const minNote = 0.1;
 
-let mouseAttract = 0.1
+const mouseAttract = 0.1
+const imageAttract = 1
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -30,7 +31,6 @@ let mouseY = 0
 
 const height = window.innerHeight;
 const width = window.innerWidth;
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -188,11 +188,11 @@ document.addEventListener('mousemove', (event) => {
 );
 
 async function playMidi() {
-    let file = document.getElementById('midiInput').files[0];
-    if (!file) file = await fetch('assets/midi/v2.mid').then(res => res.blob());
+    const file = document.getElementById('midiInput').files[0] || await fetch('assets/midi/v2.mid').then(res => res.blob());
     const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
     const arrayBuffer = await file.arrayBuffer();
     const midi = new Midi(arrayBuffer);
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     isPlaying = true;
     document.querySelector('.content').remove();
@@ -221,7 +221,27 @@ async function playMidi() {
 }
 
 async function ImageView() {
+    const file = document.getElementById('imageInput').files[0] || await fetch('assets/images/me_and_bird.JPG').then(res => res.blob())
+    const img = new Image()
+    img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        canvas.width = width
+        canvas.height = height
+        ctx.filter = 'contrast(200%)'
+        ctx.drawImage(img, 0, 0, width, height)
+        const data = ctx.getImageData(0, 0, width, height).data
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const i = (y * width + x) * 4
+                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
+                const bw = avg > 127 ? 255 : 0
+                imageDots.push([x, y, bw])
+            }
+        }
+    }
     isShowing = true
+    img.src = URL.createObjectURL(file)
 }
 
 function animateDots() {

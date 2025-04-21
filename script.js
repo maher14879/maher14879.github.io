@@ -263,8 +263,8 @@ function animateDots() {
         })
     } else if (isShowing) {
         dots.forEach(dot => {
-            force_x = (mouseX - dot.x)**3 * mouseAttract;
-            force_y = (mouseY - dot.y)**3 * mouseAttract;
+            force_x = (mouseX - dot.posX)**2 * mouseAttract;
+            force_y = (mouseY - dot.posY)**2 * mouseAttract;
 
             const currentDots = [...dots];
             currentDots.forEach(dotOther => {

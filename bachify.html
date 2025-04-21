@@ -24,18 +24,44 @@
             <img src="assets/images/musical_notes_bach.png" alt="Image off simplified melody of toccata and fugue in d minor by Bach">
         </div>
         <p>
-            <div id="text-container"></div>
+            In this machine learning project I will sample a lot of Bach pieces and create a model that can predict what Bach would have written.
+            By doing this i can "Bachify" (trademarked) any piece of music. 
+            You can view my project on <a href="https://github.com/maher14879" target="_blank" >GitHub</a>
+            <br><br>
+            
+            ¤ Part 1: Importing the data
+            <br><br>
+            
+            I am currently using www.jsbach.net to gather data, but I will probably switch to another source.
+            The other source must have midi data, because i use note- and not sound data.
+            <br><br>
+            
+            ¤ Part 2: Preparing the data
+            <br><br>
+            
+            I centered all my data around C and removed octave information.
+            Then i grouped all notes by bar in order and saved them in a json file. 
+            <br><br>
+            
+            ¤ Part 3: Training the model
+            <br><br>
+            
+            My first attempt was to use two simple Neural Network, one for the chords and the other for the melody.
+            The hypothesis was that the chords would be easier to predict than the melody, so if i created a model on all the notes it would predict the chords.
+            I could then use the chord model to remove chord notes and predict the melody.
+            This attempt obviously failed because the model was not able to predict the chords or the melody correctly, but it was an easy implementation and a good starting point.
+            I will still try to have this model run on this website, so i can "finish" the project, in hope of getting using a markovian model and a larger dataset in the future.
+            <br><br>
+            
+            ¤ Part 4: Using the model
+            <br><br>
+            
+            To use the model on another midi file, i went through the same steps as in part 2, but then something horrible happened.
+            My chord model would predict [0, 2, 3, 5, 7, 8, 10] for every bar, i.e. the C major scale.
+            Even worse was my note model, which would predict the C note for every bar.
+            I am throwing the towel in the ring for now, but i will come back to this.
         </p>
     </div>
-    <script>
-        fetch('assets\\text\\bachify.html')
-            .then(response => response.text())
-            .then(data => {
-                const updatedText = replaceWordsWithLinks(data);
-                document.getElementById('text-container').innerHTML = updatedText;
-            })
-            .catch(error => console.error('Error fetching text file:', error));
-    </script>
 </body>
 </html>
 

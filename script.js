@@ -8,7 +8,7 @@ const waveSpeed = -20;
 const periodScaler = 1;
 const minNote = 0.1;
 
-const mouseAttract = 0.1
+const mouseAttract = 0.001
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -263,8 +263,8 @@ function animateDots() {
         })
     } else if (isShowing) {
         dots.forEach(dot => {
-            force_x = (mouseX - dot.posX)**2 * mouseAttract;
-            force_y = (mouseY - dot.posY)**2 * mouseAttract;
+            force_x = (dot.posX - mouseX) * mouseAttract;
+            force_y = (dot.posY - mouseY) * mouseAttract;
 
             const currentDots = [...dots];
             currentDots.forEach(dotOther => {

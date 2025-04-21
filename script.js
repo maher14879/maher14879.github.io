@@ -229,7 +229,6 @@ async function ImageView() {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
         ctx.filter = 'contrast(200%)'
-        scaleX
         const scaleY = (height * scaleX) / width
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
         const data = ctx.getImageData(0, 0, scaleX, scaleY).data
@@ -294,15 +293,19 @@ function animateDots() {
                     const dx = dot.posX - dotOther.posX
                     const dy = dot.posY - dotOther.posY
                     const distSq = Math.max(1, dx * dx + dy * dy)
-                    force_x += (dx / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
-                    force_y += (dy / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
+                    force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
+                    force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
                 }
             })
 
             imageDots.forEach(imageDot => {
                 const [x, y, s] = imageDot
-                x * scaleX
-                y * scaleX
+                const dx = dot.posX - (x * width / scaleX)
+                const dy = dot.posY - (y * width / scaleX)
+                const distSq = Math.max(1, dx * dx + dy * dy)
+                ds = Math.abs(s - dot.scale) 
+                force_x += (dx / (distSq * ds)) * imageAttract;
+                force_y += (dy / (distSq * ds)) * imageAttract;
             })
 
             dot.add_pos(force_x, force_y);

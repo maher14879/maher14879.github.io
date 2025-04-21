@@ -23,6 +23,7 @@ let endTime = 0;
 let Tone = null;
 let force_x = 0;
 let force_y = 0;
+let audioContext = null
 
 let isShowing = false
 let imageDots = []

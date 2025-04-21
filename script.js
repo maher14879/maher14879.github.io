@@ -20,7 +20,7 @@ const scaleX = 100
 const scaleY = Math.round((height * scaleX) / width)
 
 const mouseAttract = 0.1
-const imageAttract = 1
+const imageAttract = 10
 const allignDelay = 10;
 
 let dots = [];
@@ -247,7 +247,6 @@ async function ImageView() {
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
                 const i = (y * scaleX + x) * 4
-                console.log("working on", i)
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
                 const brightness  = avg / 255
                 imageDots.push([x, y, brightness])
@@ -318,7 +317,7 @@ function animateDots() {
                     const [x, y, s] = imageDot
                     const dx = dot.posX - (x * width / scaleX)
                     const dy = dot.posY - (y * height / scaleY)
-                    const distSq = Math.max(1, dx * dx + dy * dy)
+                    const distSq = Math.max(1, dx * dx + dy * dy)**3
                     const ds = Math.max(1, Math.abs(s - dot.scale))**3
                     force_x += (dx / (distSq * ds)) * imageAttract;
                     force_y += (dy / (distSq * ds)) * imageAttract;

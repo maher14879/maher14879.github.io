@@ -192,7 +192,7 @@ async function playMidi() {
     const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
     const arrayBuffer = await file.arrayBuffer();
     const midi = new Midi(arrayBuffer);
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     isPlaying = true;
     document.querySelector('.content').remove();

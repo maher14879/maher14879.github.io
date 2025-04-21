@@ -15,7 +15,7 @@ const scaleX = 100
 const scaleY = (height * scaleX) / width
 const mouseAttract = 0.1
 const imageAttract = 1
-const allignDelay = 10;
+const allignDelay = 1000;
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -283,10 +283,11 @@ function animateDots() {
                     force_y += (dy / distSq) * dotAttract * dotOther.scale / Math.max(0.2, dot.scale);
                 }
             })
-
             dot.add_pos(force_x, force_y);
         })
+
     } else if (isShowing) {
+        const now = Date.now();
         dots.forEach(dot => {
             force_x = (dot.posX - mouseX) * mouseAttract;
             force_y = (dot.posY - mouseY) * mouseAttract;
@@ -302,9 +303,7 @@ function animateDots() {
                 }
             })
 
-            const now = Date.now();
             if (now - lastAllign > allignDelay) {
-                lastAllign = now
                 imageDots.forEach(imageDot => {
                     const [x, y, s] = imageDot
                     const dx = dot.posX - (x * width / scaleX)
@@ -317,11 +316,14 @@ function animateDots() {
                     console.log(dy / (distSq * ds)) * imageAttract;
                 })
             }
-
             dot.add_pos(force_x, force_y);
         })
-    }
-    else {
+
+        if (now - lastAllign > allignDelay) {
+            lastAllign = now
+        }
+
+    } else {
         dots.forEach(dot => {
             dot.add_pos(deltaPosition_x * dot.scale * mouseSpeed, deltaPosition_y * dot.scale * mouseSpeed);
         })

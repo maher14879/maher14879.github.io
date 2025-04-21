@@ -293,6 +293,10 @@ async function ImageView() {
     isShowing = true
     img.src = URL.createObjectURL(file)
     document.querySelector('.content').remove()
+
+    document.body.style.backgroundImage = `url(${URL.createObjectURL(file)})`
+    document.body.style.backgroundSize = 'cover'
+    document.body.style.backgroundPosition = 'center'
 }
 
 function animateDots() {

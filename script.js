@@ -333,20 +333,19 @@ function animateDots() {
                 force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
                 force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
             }
-    
-            let nearest = {dx:0,dy:0,dist:Infinity};
-            for (let p of imageDots) {
-                const tx = p.x*width/scaleX, ty = p.y*height/scaleY;
-                const dx0 = tx - dot.posX, dy0 = ty - dot.posY;
-                const d0 = dx0*dx0 + dy0*dy0;
-                if (d0 < nearest.dist) nearest = {dx:dx0, dy:dy0, dist:d0};
+            
+            let shortest_distance = 1000
+            for (let k = 0; k < imageDots.length; k++) {
+                const {x, y, brightness} = imageDots[k];
+                const dx = dot.posX - (x * width / scaleX);
+                const dy = dot.posY - (y * height / scaleY);
+                const distSq = Math.max(1, dx * dx + dy * dy);
+                force_x += (dx / distSq) * imageAttract;
+                force_y += (dy / distSq) * imageAttract;
+                Math.min(shortest_distance, distSq)
             }
-            if (nearest.dist > 0) {
-                const d = Math.sqrt(nearest.dist), k = 0.05;
-                force_x += nearest.dx * d * k;
-                force_y += nearest.dy * d * k;
-            }
-            dot.add_pos(force_x, force_y);
+            shortest_distance = shortest_distance / 1000
+            dot.add_pos(force_x * shortest_distance, force_y * shortest_distance);
         }
     }
 

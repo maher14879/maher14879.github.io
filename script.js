@@ -254,6 +254,7 @@ async function ImageView() {
     }
     isShowing = true
     img.src = URL.createObjectURL(file)
+    console.log("ImageDots created successfully, with length", length(imageDots));
 }
 
 function animateDots() {

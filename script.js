@@ -298,7 +298,7 @@ function animateDots() {
             })
 
             imageDots.forEach(imageDot => {
-                x, y, s = imageDot 
+                const [x, y, s] = imageDot 
             })
 
             dot.add_pos(force_x, force_y);

@@ -1,3 +1,6 @@
+const height = window.innerHeight;
+const width = window.innerWidth;
+
 const mouseMoveDelay = 10;
 const mouseSmooth = 0.01
 const mouseSpeed = 0.1
@@ -9,6 +12,7 @@ const periodScaler = 1;
 const minNote = 0.1;
 
 const scaleX = 100
+const scaleY = (height * scaleX) / width
 let mouseAttract = 0.1 //const
 let imageAttract = 1 //const
 
@@ -30,9 +34,6 @@ let isShowing = false
 let imageDots = []
 let mouseX = 0
 let mouseY = 0
-
-const height = window.innerHeight;
-const width = window.innerWidth;
 
 class Dot {
     constructor(x, y, scale, color = 'white') {
@@ -132,7 +133,7 @@ class Track {
 function createRandomDot() {
     const randomX = Math.random() * width;
     const randomY = Math.random() * height;
-    const dot = new Dot(randomX, randomY, Math.random() ** 2);
+    const dot = new Dot(randomX, randomY, Math.random()**2);
     dots.push(dot);
 }
 
@@ -229,7 +230,6 @@ async function ImageView() {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
         ctx.filter = 'contrast(200%)'
-        const scaleY = (height * scaleX) / width
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
         const data = ctx.getImageData(0, 0, scaleX, scaleY).data
         for (let y = 0; y < scaleY; y++) {
@@ -302,7 +302,7 @@ function animateDots() {
             imageDots.forEach(imageDot => {
                 const [x, y, s] = imageDot
                 const dx = dot.posX - (x * width / scaleX)
-                const dy = dot.posY - (y * width / scaleX)
+                const dy = dot.posY - (y * height / scaleY)
                 const distSq = Math.max(1, dx * dx + dy * dy)
                 const ds = Math.max(1, Math.abs(s - dot.scale))**3
                 force_x += (dx / (distSq * ds)) * imageAttract;

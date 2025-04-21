@@ -23,6 +23,8 @@ const mouseAttract = 1;
 const imageAttract = 100;
 const allignDelay = 10;
 
+const thresholdPercent = 0.95
+
 let dots = [];
 let deltaPosition_x = 0;
 let deltaPosition_y = 0;
@@ -245,7 +247,6 @@ async function ImageView() {
 
         const imageData = ctx.getImageData(0, 0, scaleX, scaleY)
         const data = imageData.data
-        const thresholdPercent = 0.95
 
         let pixelBrightness = []
         for (let y = 0; y < scaleY; y++) {
@@ -325,8 +326,8 @@ function animateDots() {
                 const dx = dot.posX - (x * width / scaleX);
                 const dy = dot.posY - (y * height / scaleY);
                 const distSq = Math.max(1, dx * dx + dy * dy) ** 3;
-                force_x += (dx / (distSq * ds)) * imageAttract;
-                force_y += (dy / (distSq * ds)) * imageAttract;
+                force_x += (dx / distSq) * imageAttract;
+                force_y += (dy / distSq) * imageAttract;
             }
             dot.add_pos(force_x, force_y);
         }

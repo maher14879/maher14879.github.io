@@ -240,39 +240,25 @@ async function ImageView() {
         canvas.width = scaleX
         canvas.height = scaleY
         const ctx = canvas.getContext('2d')
-
-        // Apply high contrast by using a filter
         ctx.filter = 'contrast(200%)'
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
 
         const imageData = ctx.getImageData(0, 0, scaleX, scaleY)
         const data = imageData.data
+        const threshold = 100
 
-        // Apply threshold to remove low brightness pixels
-        const edges = []
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
                 const i = (y * scaleX + x) * 4
-                const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3  // Average brightness
-                if (brightness > 100) {  // Threshold to keep only high brightness pixels
-                    edges.push([x, y])
+                const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3
+                if (brightness > threshold) {
+                    imageDots.push([x, y])
                 }
             }
         }
-
-        // Now `edges` holds all high-brightness pixel positions
-
-        // Set the canvas as the background
-        document.body.style.backgroundImage = `url(${canvas.toDataURL()})`
-        document.body.style.backgroundSize = 'cover'
-        document.body.style.backgroundPosition = 'center'
-
-        // If you want to show the canvas on screen instead of as a background
+        
         document.body.innerHTML = ''  // Clear the body content
         document.body.appendChild(canvas)  // Append the canvas to the body
-
-        // Log the edges or imageDots
-        imageDots = edges  // Set imageDots as the detected high-brightness pixel positions
         console.log(imageDots)
     }
     isShowing = true

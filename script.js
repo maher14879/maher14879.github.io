@@ -8,9 +8,9 @@ const waveSpeed = -20;
 const periodScaler = 1;
 const minNote = 0.1;
 
+const scaleX = 100
 let mouseAttract = 0.1 //const
 let imageAttract = 1 //const
-let scaleX = 100 //const
 
 let dots = [];
 let deltaPosition_x = 0;

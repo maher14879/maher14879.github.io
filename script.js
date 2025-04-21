@@ -16,6 +16,7 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
+let nowTime = 0
 let Tone = null;
 let force_x = 0;
 let force_y = 0;
@@ -222,8 +223,9 @@ async function ImageView() {
 }
 
 function animateDots() {
+    nowTime = audioContext.currentTime
     if (isPlaying) {
-        if (audioContext.currentTime > endTime) {
+        if (nowTime > endTime) {
             audioContext.suspend();
             isPlaying = false;
             deltaPosition_x = Math.random() * 100;

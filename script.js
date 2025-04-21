@@ -19,7 +19,6 @@ let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let nowTime = 0
 let Tone = null;
 let force_x = 0;
 let force_y = 0;
@@ -226,10 +225,8 @@ async function ImageView() {
 }
 
 function animateDots() {
-    nowTime = audioContext.currentTime
-
     if (isPlaying) {
-        if (nowTime > endTime) {
+        if (audioContext.currentTime > endTime) {
             audioContext.suspend();
             isPlaying = false;
             deltaPosition_x = Math.random() * 100;
@@ -242,6 +239,7 @@ function animateDots() {
             force_y = 0;
             for (let i = 0; i < tracks.length; i++) {
                 const track = tracks[i];
+                const nowTime = audioContext.currentTime
                 const period = track.getCurrentPeriod(nowTime);
                 if (period != null) {
                     const term1 = (dot.posX - track.posX) * period;

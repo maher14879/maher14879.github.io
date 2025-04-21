@@ -20,7 +20,7 @@ const scaleX = 100;
 const scaleY = Math.round((height * scaleX) / width);
 
 const mouseAttract = 1;
-let imageAttract = 10;
+const imageAttract = 10;
 const allignDelay = 10;
 
 const thresholdPercent = 0.95
@@ -334,13 +334,17 @@ function animateDots() {
                 force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
             }
     
-            for (let k = 0; k < imageDots.length; k++) {
-                const {x, y, brightness} = imageDots[k];
-                const dx = dot.posX - (x * width / scaleX);
-                const dy = dot.posY - (y * height / scaleY);
-                const distSq = Math.max(1, dx * dx + dy * dy);
-                force_x += (dx / distSq) * imageAttract;
-                force_y += (dy / distSq) * imageAttract;
+            let nearest = {dx:0,dy:0,dist:Infinity};
+            for (let p of imageDots) {
+                const tx = p.x*width/scaleX, ty = p.y*height/scaleY;
+                const dx0 = tx - dot.posX, dy0 = ty - dot.posY;
+                const d0 = dx0*dx0 + dy0*dy0;
+                if (d0 < nearest.dist) nearest = {dx:dx0, dy:dy0, dist:d0};
+            }
+            if (nearest.dist > 0) {
+                const d = Math.sqrt(nearest.dist), k = 0.05;
+                force_x += nearest.dx * d * k;
+                force_y += nearest.dy * d * k;
             }
             dot.add_pos(force_x, force_y);
         }

@@ -21,6 +21,7 @@ const scaleY = Math.round((height * scaleX) / width)
 
 const mouseAttract = 0.1
 const imageAttract = 10
+const allignDelay = 10;
 
 let dots = [];
 let deltaPosition_x = 0;
@@ -37,6 +38,7 @@ let force_y = 0;
 let audioContext = null
 
 let isShowing = false
+let lastAllign = 0
 let imageDots = []
 let mouseX = 0
 let mouseY = 0
@@ -186,39 +188,40 @@ window.addEventListener('beforeunload', () => {
 document.addEventListener('mousemove', (event) => {
     mouseX = event.clientX
     mouseY = event.clientY
-    const targetX = mouseX - width / 2;
-    const targetY = mouseY - height / 2;
-    deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
-    deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-
     const now = Date.now();
     if (!(now - lastMouseMove > mouseMoveDelay)) {
         return
     };
     lastMouseMove = now
         
-    if (isShowing) {
-        if (!(isPlaying || isShowing)) {
-            dots.forEach(dot => {
-                dot.add_pos(deltaPosition_x * dot.scale * mouseSpeed, deltaPosition_y * dot.scale * mouseSpeed);
-            })
-        }
+    if (!(isPlaying || isShowing)) {
+        dots.forEach(dot => {
+            const targetX = mouseX - width / 2;
+            const targetY = mouseY - height / 2;
+            deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
+            deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
+            force_x = deltaPosition_x * dot.scale * mouseSpeed;
+            force_y = deltaPosition_y * dot.scale * mouseSpeed;
+        })
+    }
         
-        if (isShowing) {
-            dots.forEach(dot => {
-                force_x = (dot.posX - mouseX) * mouseAttract;
-                force_y = (dot.posY - mouseY) * mouseAttract;
+    if (isShowing) {
+        dots.forEach(dot => {
+            force_x = (dot.posX - mouseX) * mouseAttract;
+            force_y = (dot.posY - mouseY) * mouseAttract;
 
-                const currentDots = [...dots];
-                currentDots.forEach(dotOther => {
-                    if (dotOther !== dot) {
-                        const dx = dot.posX - dotOther.posX
-                        const dy = dot.posY - dotOther.posY
-                        const distSq = Math.max(1, dx * dx + dy * dy)
-                        force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
-                        force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
-                    }
-                })
+            const currentDots = [...dots];
+            currentDots.forEach(dotOther => {
+                if (dotOther !== dot) {
+                    const dx = dot.posX - dotOther.posX
+                    const dy = dot.posY - dotOther.posY
+                    const distSq = Math.max(1, dx * dx + dy * dy)
+                    force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
+                    force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
+                }
+            })
+
+            if (now - lastAllign > allignDelay) {
                 imageDots.forEach(imageDot => {
                     const [x, y, s] = imageDot
                     const dx = dot.posX - (x * width / scaleX)
@@ -228,9 +231,9 @@ document.addEventListener('mousemove', (event) => {
                     force_x += (dx / (distSq * ds)) * imageAttract;
                     force_y += (dy / (distSq * ds)) * imageAttract;
                 })
-                dot.add_pos(force_x, force_y);
-            })
-        }
+            }
+            dot.add_pos(force_x, force_y);
+        })
     }
 })
 

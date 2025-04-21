@@ -227,6 +227,7 @@ async function ImageView() {
 
 function animateDots() {
     nowTime = audioContext.currentTime
+
     if (isPlaying) {
         if (nowTime > endTime) {
             audioContext.suspend();
@@ -234,6 +235,7 @@ function animateDots() {
             deltaPosition_x = Math.random() * 100;
             deltaPosition_y = Math.random() * 100;
         }
+
         const currentDots = [...dots];
         currentDots.forEach(dot => {
             force_x = 0;
@@ -265,7 +267,8 @@ function animateDots() {
         dots.forEach(dot => {
             force_x = (mouseX - dot.x)**3 * mouseAttract;
             force_y = (mouseY - dot.y)**3 * mouseAttract;
-            
+
+            const currentDots = [...dots];
             currentDots.forEach(dotOther => {
                 if (dotOther !== dot) {
                     const dx = dot.posX - dotOther.posX

@@ -1,5 +1,10 @@
-const height = window.innerHeight;
-const width = window.innerWidth;
+let height = window.innerHeight
+let width = window.innerWidth
+
+window.addEventListener('resize', () => {
+    height = window.innerHeight
+    width = window.innerWidth
+})
 
 const mouseMoveDelay = 10;
 const mouseSmooth = 0.01

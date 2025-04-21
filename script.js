@@ -8,7 +8,7 @@ const waveSpeed = -20;
 const periodScaler = 1;
 const minNote = 0.1;
 
-const mouseAttract = 0.1
+let mouseAttract = 0.1
 
 let dots = [];
 let deltaPosition_x = 0;

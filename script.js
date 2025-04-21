@@ -243,8 +243,24 @@ async function ImageView() {
         ctx.drawImage(img, 0, 0, scaleX, scaleY)
         const imageData = ctx.getImageData(0, 0, scaleX, scaleY);
         const data = imageData.data;
+
+                // Test 1: Verify canvas creation
+        console.assert(canvas instanceof HTMLCanvasElement, "Canvas creation failed");
+        console.assert(canvas.width === scaleX, `Canvas width mismatch (expected ${scaleX}, got ${canvas.width})`);
+        console.assert(canvas.height === scaleY, `Canvas height mismatch (expected ${scaleY}, got ${canvas.height})`);
+
+        // Test 2: Verify context
+        console.assert(ctx !== null, "Failed to get 2D context");
+        console.assert(ctx.filter === 'contrast(200%)', "Context filter not applied");
+
+        // Test 3: Verify image data
+        console.assert(imageData instanceof ImageData, "Failed to get ImageData");
+        console.assert(data.length === scaleX * scaleY * 4, 
+            `ImageData size mismatch (expected ${scaleX * scaleY * 4}, got ${data.length})`);
+            
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
+                console.log("working on", i)
                 const i = (y * scaleX + x) * 4
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
                 const brightness  = avg / 255
@@ -254,7 +270,6 @@ async function ImageView() {
     }
     isShowing = true
     img.src = URL.createObjectURL(file)
-    console.log("ImageDots created successfully, with length", length(imageDots));
 }
 
 function animateDots() {

@@ -245,17 +245,19 @@ async function ImageView() {
 
         const imageData = ctx.getImageData(0, 0, scaleX, scaleY)
         const data = imageData.data
-        const threshold = 100
+        const thresholdPercent = 0.1
 
+        let pixelBrightness = []
         for (let y = 0; y < scaleY; y++) {
             for (let x = 0; x < scaleX; x++) {
                 const i = (y * scaleX + x) * 4
                 const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3
-                if (brightness > threshold) {
-                    imageDots.push([x, y])
-                }
+                pixelBrightness.push({x, y, brightness})
             }
         }
+        pixelBrightness.sort((a, b) => a.brightness - b.brightness)
+        imageDots = pixelBrightness.slice(Math.floor(pixelBrightness.length * thresholdPercent))
+        console.log(imageDots)
     }
     isShowing = true
     img.src = URL.createObjectURL(file)
@@ -318,7 +320,7 @@ function animateDots() {
             }
     
             for (let k = 0; k < imageDots.length; k++) {
-                const [x, y] = imageDots[k];
+                const [x, y, brightness] = imageDots[k];
                 const dx = dot.posX - (x * width / scaleX);
                 const dy = dot.posY - (y * height / scaleY);
                 const distSq = Math.max(1, dx * dx + dy * dy) ** 3;

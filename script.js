@@ -12,7 +12,7 @@ const mouseSpeed = 0.1;
 const dotsCount = 20;
 
 const dotAttract = -4;
-const waveSpeed = -3000;
+const waveSpeed = -100;
 const periodScaler = 1.7;
 const minNote = 0.1;
 const max_track = 10;
@@ -108,7 +108,7 @@ class Track {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration));
         }
 
-        this.strength = 1 / this.notes.length
+        this.strength = 1 / Math.sqrt(this.notes.length)
     }
 
     getCurrentPeriod(nowTime) {

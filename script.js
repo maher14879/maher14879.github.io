@@ -99,9 +99,10 @@ class Note {
 }
 
 class Track {
-    constructor(posX, posY, midi_trackk) {
+    constructor(posX, posY, midi_trackk, strength) {
         this.posX = posX;
         this.posY = posY;
+        this.strength = strength
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
@@ -224,10 +225,11 @@ async function playMidi() {
             x = Math.random() * width;
             y = Math.round(Math.random()) * height;
         }
-        const track = new Track(x, y, midi.tracks[i]);
+        const strength = 1 / midi.tracks[i].length
+        const track = new Track(x, y, midi.tracks[i], strength);
         if (track.notes.length > 0) {
             tracks.push(track);
-            console.log(`Track ${position_index}: x=${x}, y=${y}`);
+            console.log(`Track ${position_index}: x=${x}, y=${y}, strength=${strength}`);
             position_index++;
         }
         if (position_index >= max_track) break;
@@ -303,8 +305,8 @@ function animateDots() {
                 if (period != null) {
                     const term1 = (dot.posX - track.posX) * period;
                     const term2 = (dot.posY - track.posY) * period;
-                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime);
-                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
+                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime) * track.strength;
+                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime) * track.strength;
                 }
             }
     

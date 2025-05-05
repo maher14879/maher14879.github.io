@@ -206,7 +206,7 @@ document.addEventListener('mousemove', (event) => {
 })
 
 async function playMidi() {
-    const file = document.getElementById('midiInput').files[0] || await fetch('assets/midi/v2.mid').then(res => res.blob());
+    const file = document.getElementById('midiInput').files[0] || await fetch('assets/midi/mozart_lacrimosa.mid').then(res => res.blob());
     const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
     const arrayBuffer = await file.arrayBuffer();
     const midi = new Midi(arrayBuffer);

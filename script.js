@@ -13,7 +13,7 @@ const dotsCount = 20;
 
 const dotAttract = -4;
 const waveSpeed = -20;
-const periodScaler = 1.7;
+const periodScaler = 5;
 const minNote = 0.1;
 const max_track = 10;
 
@@ -99,15 +99,16 @@ class Note {
 }
 
 class Track {
-    constructor(posX, posY, midi_trackk, strength) {
+    constructor(posX, posY, midi_trackk) {
         this.posX = posX;
         this.posY = posY;
-        this.strength = strength
         this.notes = [];
         
         for (let note of midi_trackk.notes) {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration));
         }
+
+        this.strength = 1 / this.notes.length
     }
 
     getCurrentPeriod(nowTime) {
@@ -225,8 +226,7 @@ async function playMidi() {
             x = Math.random() * width;
             y = Math.round(Math.random()) * height;
         }
-        const strength = 1 / midi.tracks[i].length
-        const track = new Track(x, y, midi.tracks[i], strength);
+        const track = new Track(x, y, midi.tracks[i]);
         if (track.notes.length > 0) {
             tracks.push(track);
             console.log(`Track ${position_index}: x=${x}, y=${y}, strength=${strength}`);

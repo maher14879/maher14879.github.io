@@ -15,6 +15,7 @@ const dotAttract = -4;
 const waveSpeed = -20;
 const periodScaler = 1.7;
 const minNote = 0.1;
+const max_track = 10;
 
 const scaleX = 100;
 const scaleY = Math.round((height * scaleX) / width);
@@ -228,12 +229,13 @@ async function playMidi() {
             tracks.push(track);
             position_index++;
         }
-        if (position_index >= 4) break;
+        if (position_index >= max_track) break;
     }
 
     startTime = audioContext.currentTime;
     for (let track of tracks) track.play(startTime);
 }
+
 async function ImageView() {
     const file = document.getElementById('imageInput').files[0] || await fetch('assets/images/test_image.png').then(res => res.blob())
     const img = new Image()

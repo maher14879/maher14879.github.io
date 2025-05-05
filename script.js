@@ -229,7 +229,7 @@ async function playMidi() {
         const track = new Track(x, y, midi.tracks[i]);
         if (track.notes.length > 0) {
             tracks.push(track);
-            console.log(`Track ${position_index}: x=${x}, y=${y}, strength=${strength}`);
+            console.log(`Track ${position_index}: x=${x}, y=${y}`);
             position_index++;
         }
         if (position_index >= max_track) break;

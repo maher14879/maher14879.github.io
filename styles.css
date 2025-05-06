@@ -134,6 +134,18 @@ iframe {
 }
 
 .hover-text {
-    display: flex;
-    flex-direction: column;
-  }
+    position: relative;
+    display: inline-block;
+}
+
+.hover-text span {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    white-space: nowrap;
+}
+
+.hover-text a:hover + span {
+    display: block;
+}

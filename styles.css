@@ -138,12 +138,18 @@ iframe {
     display: inline-block;
 }
 
+.hover-text a {
+    font-size: 20px;
+}
+
 .hover-text span {
     display: none;
     position: absolute;
     left: 100%;
     top: 0;
     white-space: nowrap;
+    font-style: italic;
+    font-size: 12px;
 }
 
 .hover-text a:hover + span {

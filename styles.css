@@ -132,3 +132,8 @@ iframe {
 	object-fit: contain;
 	flex: 1 1 auto;
 }
+
+.hover-text {
+    display: flex;
+    flex-direction: column;
+  }

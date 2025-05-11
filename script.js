@@ -220,11 +220,11 @@ async function playMidi() {
     let position_index = 0;
     for (let i = 0; i < midi.tracks.length; i++) {
         if (i % 2) {
-            x = Math.round(Math.random()) * width;
-            y = Math.random() * height;
-        } else {
             x = Math.random() * width;
             y = Math.round(Math.random()) * height;
+        } else {
+            x = Math.round(Math.random()) * width;
+            y = Math.random() * height;
         }
         const track = new Track(x, y, midi.tracks[i]);
         if (track.notes.length > 0) {

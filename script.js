@@ -9,7 +9,7 @@ window.addEventListener('resize', () => {
 const mouseMoveDelay = 10;
 const mouseSmooth = 0.01;
 const mouseSpeed = 0.1;
-const dotsCount = 20;
+const dotsCount = 40;
 
 const dotAttract = -4;
 const waveSpeed = -100;

@@ -155,3 +155,10 @@ iframe {
 .hover-text a:hover + span {
     display: block;
 }
+
+img {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: calc(10 * 100%);
+  height: auto;
+}

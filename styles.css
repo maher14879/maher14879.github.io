@@ -165,14 +165,14 @@ img {
 
 #showAnswerButton {
     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 5px 12px; 
+    font-size: 13px;
     font-family: 'Courier New', Courier, monospace;
     color: black;
     background-color: #00ff00;
     border: none;
-    border-radius: 5px;
-    box-shadow: 0 0 10px #00ff00;
+    border-radius: 4px;
+    box-shadow: 0 0 6px #00ff00;
     transition: background-color 0.3s ease, color 0.3s ease;
     cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
 }

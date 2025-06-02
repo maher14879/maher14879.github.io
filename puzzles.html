@@ -1,0 +1,43 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Site</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <script src="script.js"></script>
+    <script> function goToMainMenu() {window.location.href = "index.html";}</script>
+    <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
+    <div class="content">
+        <p>
+            PUZZLES | 02-06-2025
+        </p>
+        <div class="images">
+            <img src="assets/images/pixel_art/example.jpg" alt="Image 1">
+        </div>
+        <p>
+            I really like puzzles that makes you think laterally. Here are some of the ones i have made so far:
+            <br>
+            What is the secret number?
+            <ul>
+                <li>Each even digit is equal to the number of occurrences of itself</li>
+                <li>The middle digit is the number of digits greater than 5</li>
+                <li>The number is palindromic</li>
+                <li>The sum of prime digits is palindromic and has more than 1 digit</li>
+                <li>The length of the number is a square number</li>
+                <li>All primes digits are touching at least one other prime</li>
+            </ul>
+                <button onclick="document.getElementById('answer').style.display = 'block'">
+                    Show Answer
+                </button>
+
+                <div id="answer" style="display: none; margin-top: 10px;">
+                    The answer is: 666272666
+                </div>
+        </p>
+    </div>
+</body>
+</html>
+

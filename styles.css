@@ -162,3 +162,22 @@ img {
   width: calc(10 * 100%);
   height: auto;
 }
+
+#showAnswerButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    background-color: #00ff00;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #00ff00;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
+}
+
+#showAnswerButton:hover {
+    background-color: #33ff33;
+    color: #000000;
+}

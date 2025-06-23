@@ -25,16 +25,13 @@
 
             <br><br> <div style="border-top: 1px solid #00ff00; width: 100%;"></div>
             <p>
-                Shannon entropy is a probabilistic method of calculating uncertainty in an information system \(H(x) = -\sum_i p(x_i) \log p(x_i)\).
+                Shannon entropy is a probabilistic method of calculating uncertainty in an information system. For discrete cases, the formula is given by \(H(x) = -\sum_i p(X=x_i) \log p(X=x_i)\), where \(p\) is the propability function.
             </p>
-
             <p>
                 Imagine three different bins:
-                <ul style="list-style: none; padding-left: 0;">
-                <li>XXXX <strong>Bin 1</strong> — 4 marked</li>
-                <li>XXXO <strong>Bin 2</strong> — 3 marked, 1 unmarked</li>
-                <li>XXOO <strong>Bin 3</strong> — 2 marked, 2 unmarked</li>
-                </ul>
+                > 1 <div class="hover-text">>XXXX</a> <span>— 4 marked, 0 unmarked</span></div><br>
+                > 2 <div class="hover-text">>XXXO</a> <span>— 3 marked, 1 unmarked</span></div><br>
+                > 3 <div class="hover-text">>XXOO</a> <span>— 2 marked, 2 unmarked</span></div><br>
             </p>
 
             <p>
@@ -44,7 +41,7 @@
 
             <p>
                 The probability of losing is analogous to Shannon entropy. The more uniform the bin, the higher its entropy and the harder it is to guess the exact sequence.
-                <strong>Bin 3</strong> is the most unpredictable and has the highest entropy. <strong>Bin 1</strong> is fully predictable and has the lowest.
+                Bin 3 is the most unpredictable and has the highest entropy. Bin 1 is fully predictable and has the lowest.
             </p>
             <div style="border-top: 1px solid #00ff00; width: 100%;"></div>
             <br><br>

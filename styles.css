@@ -7,7 +7,7 @@ a, button, [role="button"], .clickable {
 }
 
 body {
-    font-family: JetBrains Mono, Fira Code, monospace;
+    font-family: 'Courier New', monospace;
     letter-spacing: 0.05em;
     background-color: #000000;
     color: #00ff00;

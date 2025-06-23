@@ -73,12 +73,6 @@ h1 {
     margin-bottom: 10px;
 }
 
-.links {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
 a {
     color: #00ff00;
     text-decoration: none;

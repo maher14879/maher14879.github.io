@@ -7,8 +7,8 @@ a, button, [role="button"], .clickable {
 }
 
 body {
-    font-family: Consolas, Menlo, monospace;
-    letter-spacing: 0.05em;
+    font-family: Monaco, Lucida Console, monospace;
+    letter-spacing: 0.03em;
     background-color: #000000;
     color: #00ff00;
     display: flex;

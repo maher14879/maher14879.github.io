@@ -11,12 +11,11 @@ body {
     letter-spacing: 0.05em;
     background-color: #000000;
     color: #00ff00;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    display: block; 
     min-height: 100vh;
     margin: 20px 0 0 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     z-index: 0;
 }
 

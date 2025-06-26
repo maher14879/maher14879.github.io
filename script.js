@@ -6,7 +6,7 @@ window.addEventListener('resize', () => {
     width = window.innerWidth
 })
 
-const mouseMoveDelay = 10;
+const mouseMoveDelay = 30;
 const mouseSmooth = 0.01;
 const mouseSpeed = 0.1;
 const dotsCount = 40;

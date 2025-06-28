@@ -1,0 +1,44 @@
+I am currently in the idea phase of an open world game called Cluster.
+            <br><br>
+            
+            ¤ Part 1: Main Concept
+            <br><br>
+            
+            I have always liked Minecraft. A limitless game that abstracts the world in such an elegant way: everything is divided into one block. 
+            I want to do something similar, but with a different scale, perspective, and inspiration. 
+            Each tile would be analogous to a 20cm x 20cm voxel, and the perspective is locked. I.e., the game would be isometric. 
+            Although the artistic style for Minecraft is nice, I would make it even more world-simulator-like. 
+            I would be inspired by the game Noita, where everything is a pixel of certain material. 
+            My game would fall between somewhere between an adventure game like Minecraft and particle simulator like Noita.
+            <br><br>
+            
+            ¤ Part 2: Wait, I'm Different!
+            <br><br>
+            
+            Some of the things I want in my game are: 
+            <p style="font-size: 14px;">
+                &gt; No natural health regeneration. Healing must be deliberate.<br>
+                &gt; Potion recipes vary by world, discovered through clues in the world.<br>
+                &gt; Crafting is shapeless and simple, focused on using basic items creatively.<br>
+                &gt; Upon revival, abilities are temporarily hindered.
+            </p>
+            I feel like these changes are unusual for most games since they require an approach similar to what i am doing. 
+            <br><br>
+            
+            ¤ Part 3: Graver's Son and Other Goofy Guys
+            <br><br>
+            
+            The gameplay should starts on a small island.
+            I will create handcrafted characters who inhabit this island and teach basic mechanics. 
+            From this island, you would be able to generate a world for you to play in.
+            <br><br>
+            One of these characters is The Graver's Son, who is a strong and optimistic guy based on my friend Mikkel Graversen.
+            He works for his dad as the caretaker for the graveyard. 
+            Although this role might seem easy at first, all the buried corpses keep rising at night, messing up the graves and stampeding the plants. 
+            This has led the Graver's Son becoming a very skilled zombie killer. 
+            Most people might not like this job, but the Graver's Son finds it quite exciting to fight off monsters. 
+            He also does not want to disturb his old dad, who would be devastated to find out that his burial ceremonies lead to the rise of evil monsters, so instead, he accepts that his dad thinks of him as a terrible gardener. 
+            The Graver's Son will teach you how to kill monsters and how to use a shovel.
+            <br><br>
+            I will also add a sailer called Sun Berry, a scientist called Valentine, and a potion maker called Pling Pling.
+        </p>

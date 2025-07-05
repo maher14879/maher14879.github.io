@@ -123,65 +123,55 @@ class Track {
     }
 
     play(startTime) {
-        const notesCount = this.notes.length;
-        let endTime = startTime;
+        for (let i = 0; i < this.notes.length; i++) {
+            const frequency = this.notes[i].frequency;
+            const time = startTime + this.notes[i].time;
+            const duration = this.notes[i].duration;
+            const volume = this.notes[i].volume || 0.5; // Default volume
 
-        for (let i = 0; i < notesCount; i++) {
-            const { frequency, time: noteTime, duration } = this.notes[i];
-            const start = startTime + noteTime;
-            
-            // Create a main oscillator (sine for fundamental tone)
+            // Create main oscillator (triangle for softer sound)
             const mainOsc = audioContext.createOscillator();
-            mainOsc.type = 'sine'; // Base tone
-            mainOsc.frequency.setValueAtTime(frequency, start);
+            mainOsc.type = 'triangle';
+            mainOsc.frequency.setValueAtTime(frequency, time);
 
-            // Create 2 detuned oscillators for richness (like piano strings)
+            // Create detuned oscillators for richness
             const detuneOsc1 = audioContext.createOscillator();
             detuneOsc1.type = 'sine';
-            detuneOsc1.frequency.setValueAtTime(frequency * 1.005, start); // Slightly sharp
+            detuneOsc1.frequency.setValueAtTime(frequency * 1.002, time);
 
             const detuneOsc2 = audioContext.createOscillator();
             detuneOsc2.type = 'sine';
-            detuneOsc2.frequency.setValueAtTime(frequency * 0.995, start); // Slightly flat
+            detuneOsc2.frequency.setValueAtTime(frequency * 0.998, time);
 
-            // Create a noise burst for the "hammer attack" sound
-            const noise = audioContext.createBufferSource();
-            const noiseBuffer = audioContext.createBuffer(1, 0.02 * audioContext.sampleRate, audioContext.sampleRate);
-            const noiseData = noiseBuffer.getChannelData(0);
-            for (let j = 0; j < noiseData.length; j++) {
-                noiseData[j] = Math.random() * 2 - 1; // White noise
-            }
-            noise.buffer = noiseBuffer;
+            // Create gain node for volume envelope
+            const gainNode = audioContext.createGain();
+            
+            // Set the original duration for particle synchronization
+            const originalDuration = Math.max(duration * 2/3, minNote);
+            
+            // Piano-like volume envelope
+            gainNode.gain.setValueAtTime(0.001, time); // Start silent
+            gainNode.gain.linearRampToValueAtTime(volume, time + 0.01); // Fast attack
+            gainNode.gain.exponentialRampToValueAtTime(0.001, time + originalDuration); // Natural decay
 
-            // Apply a fast-decaying envelope to the noise (mimics hammer strike)
-            const noiseGain = audioContext.createGain();
-            noiseGain.gain.setValueAtTime(0.3, start);
-            noiseGain.gain.exponentialRampToValueAtTime(0.001, start + 0.02);
+            // Connect all oscillators to gain node
+            mainOsc.connect(gainNode);
+            detuneOsc1.connect(gainNode);
+            detuneOsc2.connect(gainNode);
+            
+            // Connect to output
+            gainNode.connect(audioContext.destination);
 
-            // Apply an ADSR envelope to the oscillators (piano-like decay)
-            const noteGain = audioContext.createGain();
-            noteGain.gain.setValueAtTime(0, start);
-            noteGain.gain.linearRampToValueAtTime(1, start + 0.01); // Fast attack
-            noteGain.gain.exponentialRampToValueAtTime(0.3, start + 0.1); // Initial decay
-            noteGain.gain.exponentialRampToValueAtTime(0.001, start + duration); // Long fade
-
-            // Connect everything
-            noise.connect(noiseGain).connect(audioContext.destination);
-            mainOsc.connect(noteGain).connect(audioContext.destination);
-            detuneOsc1.connect(noteGain).connect(audioContext.destination);
-            detuneOsc2.connect(noteGain).connect(audioContext.destination);
-
-            // Start/stop sounds
-            noise.start(start);
-            noise.stop(start + 0.02);
-            mainOsc.start(start);
-            detuneOsc1.start(start);
-            detuneOsc2.start(start);
-            mainOsc.stop(start + duration);
-            detuneOsc1.stop(start + duration);
-            detuneOsc2.stop(start + duration);
-
-            endTime = Math.max(start + duration, endTime);
+            // Start/stop with original timing
+            mainOsc.start(time);
+            detuneOsc1.start(time);
+            detuneOsc2.start(time);
+            
+            mainOsc.stop(time + originalDuration);
+            detuneOsc1.stop(time + originalDuration);
+            detuneOsc2.stop(time + originalDuration);
+            
+            endTime = Math.max(time + duration, endTime);
         }
     }
 }

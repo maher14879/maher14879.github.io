@@ -123,28 +123,49 @@ class Track {
     }
 
     play(startTime) {
-    // Create a shared gentle low-pass filter to smooth all notes
-    const filter = audioContext.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = 3000; // Cuts harsh high frequencies
-    filter.connect(audioContext.destination);
+    // Create shared reverb (more efficient than per-note)
+    const reverb = audioContext.createConvolver();
+    const wetGain = audioContext.createGain();
+    wetGain.gain.value = 0.3; // Blend amount
+    
+    // Generate simple impulse response (instead of loading a file)
+    const impulseLength = audioContext.sampleRate * 0.5;
+    const impulse = audioContext.createBuffer(2, impulseLength, audioContext.sampleRate);
+    const left = impulse.getChannelData(0);
+    const right = impulse.getChannelData(1);
+    
+    for (let i = 0; i < impulseLength; i++) {
+        // Exponential decay curve with noise
+        const n = Math.random() * 2 - 1;
+        const decay = Math.pow(1 - i / impulseLength, 2);
+        left[i] = n * decay;
+        right[i] = n * decay * 0.8; // Slightly different for stereo
+    }
+    reverb.buffer = impulse;
+    
+    // Routing
+    wetGain.connect(reverb);
+    reverb.connect(audioContext.destination);
 
     for (let i = 0; i < this.notes.length; i++) {
         const frequency = this.notes[i].frequency;
         const time = startTime + this.notes[i].time;
         const duration = Math.max(this.notes[i].duration * 2/3, minNote);
         
+        // Oscillator with triangle wave (smoother than sine)
         const osc = audioContext.createOscillator();
-        osc.type = 'triangle'; // Warmer than sine
+        osc.type = 'triangle';
         
+        // Gain envelope
         const gain = audioContext.createGain();
-        gain.gain.setValueAtTime(0.001, time); // Start silent to avoid click
-        gain.gain.linearRampToValueAtTime(0.7, time + 0.02); // Smoother attack
-        gain.gain.exponentialRampToValueAtTime(0.001, time + duration); // Natural decay
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.linearRampToValueAtTime(0.5, time + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
         
-        osc.frequency.setValueAtTime(frequency, time);
+        // Connect both dry and wet paths
         osc.connect(gain);
-        gain.connect(filter); // Route through filter
+        gain.connect(audioContext.destination); // Dry signal
+        gain.connect(wetGain); // Reverb signal
         
         osc.start(time);
         osc.stop(time + duration);

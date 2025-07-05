@@ -6,6 +6,11 @@ a, button, [role="button"], .clickable {
     cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
 }
 
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
 body {
     font-family: 'Courier New', monospace;
     letter-spacing: 0.05em;

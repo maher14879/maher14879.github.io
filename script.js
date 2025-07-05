@@ -123,28 +123,42 @@ class Track {
     }
 
     play(startTime) {
-        for (let i = 0; i < this.notes.length; i++) {
-            const frequency = this.notes[i].frequency;
-            const time = startTime + this.notes[i].time;
-            const duration = Math.max(this.notes[i].duration * 2/3, minNote);
-            
-            const osc = audioContext.createOscillator();
-            osc.type = 'sine';
-            
-            const gain = audioContext.createGain();
-            gain.gain.setValueAtTime(0.5, time);
-            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
-            
-            osc.frequency.setValueAtTime(frequency, time);
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            osc.start(time);
-            osc.stop(time + duration);
-            
-            endTime = Math.max(time + duration, endTime);
-        }
+    // Create a single, shared gain node to prevent clipping
+    const masterGain = audioContext.createGain();
+    masterGain.gain.value = 0.8; // Prevent distortion
+    masterGain.connect(audioContext.destination);
+
+    for (let i = 0; i < this.notes.length; i++) {
+        const frequency = this.notes[i].frequency;
+        const time = startTime + this.notes[i].time;
+        const duration = Math.max(this.notes[i].duration * 2/3, minNote);
+        
+        // Create oscillator with triangle wave (softer than sine)
+        const osc = audioContext.createOscillator();
+        osc.type = 'triangle';
+        
+        // Smoother envelope with proper initial state
+        const gain = audioContext.createGain();
+        gain.gain.setValueAtTime(0.001, time); // Start silent
+        gain.gain.linearRampToValueAtTime(0.7, time + 0.02); // Quick attack
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration); // Natural decay
+        
+        // Connect through master gain
+        osc.frequency.setValueAtTime(frequency, time);
+        osc.connect(gain);
+        gain.connect(masterGain);
+        
+        // Ensure proper cleanup
+        osc.start(time);
+        osc.stop(time + duration);
+        osc.onended = () => {
+            osc.disconnect();
+            gain.disconnect();
+        };
+        
+        endTime = Math.max(time + this.notes[i].duration, endTime);
     }
+}
 }
 
 function createRandomDot() {

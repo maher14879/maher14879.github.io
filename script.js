@@ -128,16 +128,13 @@ class Track {
             const time = startTime + this.notes[i].time;
             const duration = Math.max(this.notes[i].duration * 2/3, minNote);
             
-            // 1. Create oscillator with softer wave
             const osc = audioContext.createOscillator();
-            osc.type = 'square'; // Softer than square
+            osc.type = 'square';
             
-            // 2. Very simple gain node with quick fade
             const gain = audioContext.createGain();
-            gain.gain.setValueAtTime(0.5, time);
+            gain.gain.setValueAtTime(0.7, time);
             gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
             
-            // 3. Connect and schedule exactly like original
             osc.frequency.setValueAtTime(frequency, time);
             osc.connect(gain);
             gain.connect(audioContext.destination);

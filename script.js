@@ -126,50 +126,24 @@ class Track {
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency;
             const time = startTime + this.notes[i].time;
-            const duration = this.notes[i].duration;
-            const volume = this.notes[i].volume || 0.5; // Default volume
-
-            // Create main oscillator (triangle for softer sound)
-            const mainOsc = audioContext.createOscillator();
-            mainOsc.type = 'triangle';
-            mainOsc.frequency.setValueAtTime(frequency, time);
-
-            // Create detuned oscillators for richness
-            const detuneOsc1 = audioContext.createOscillator();
-            detuneOsc1.type = 'sine';
-            detuneOsc1.frequency.setValueAtTime(frequency * 1.002, time);
-
-            const detuneOsc2 = audioContext.createOscillator();
-            detuneOsc2.type = 'sine';
-            detuneOsc2.frequency.setValueAtTime(frequency * 0.998, time);
-
-            // Create gain node for volume envelope
-            const gainNode = audioContext.createGain();
+            const duration = Math.max(this.notes[i].duration * 2/3, minNote);
             
-            // Set the original duration for particle synchronization
-            const originalDuration = Math.max(duration * 2/3, minNote);
+            // 1. Create oscillator with softer wave
+            const osc = audioContext.createOscillator();
+            osc.type = 'sine'; // Softer than square
             
-            // Piano-like volume envelope
-            gainNode.gain.setValueAtTime(0.001, time); // Start silent
-            gainNode.gain.linearRampToValueAtTime(volume, time + 0.01); // Fast attack
-            gainNode.gain.exponentialRampToValueAtTime(0.001, time + originalDuration); // Natural decay
-
-            // Connect all oscillators to gain node
-            mainOsc.connect(gainNode);
-            detuneOsc1.connect(gainNode);
-            detuneOsc2.connect(gainNode);
+            // 2. Very simple gain node with quick fade
+            const gain = audioContext.createGain();
+            gain.gain.setValueAtTime(0.5, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
             
-            // Connect to output
-            gainNode.connect(audioContext.destination);
-
-            // Start/stop with original timing
-            mainOsc.start(time);
-            detuneOsc1.start(time);
-            detuneOsc2.start(time);
+            // 3. Connect and schedule exactly like original
+            osc.frequency.setValueAtTime(frequency, time);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
             
-            mainOsc.stop(time + originalDuration);
-            detuneOsc1.stop(time + originalDuration);
-            detuneOsc2.stop(time + originalDuration);
+            osc.start(time);
+            osc.stop(time + duration);
             
             endTime = Math.max(time + duration, endTime);
         }

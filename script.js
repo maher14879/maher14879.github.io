@@ -131,7 +131,7 @@ class Track {
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency;
             const time = startTime + this.notes[i].time;
-            const duration = Math.max(this.notes[i].duration * 2/3, minNote);
+            const duration = Math.max(this.notes[i].duration * 2, minNote);
             
             const osc = audioContext.createOscillator();
             osc.type = 'sine';

@@ -129,7 +129,7 @@ class Track {
             const duration = Math.max(this.notes[i].duration * 2/3, minNote);
             
             const osc = audioContext.createOscillator();
-            osc.type = 'square';
+            osc.type = 'sine';
             
             const gain = audioContext.createGain();
             gain.gain.setValueAtTime(0.5, time);

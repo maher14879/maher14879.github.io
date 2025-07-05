@@ -123,28 +123,35 @@ class Track {
     }
 
     play(startTime) {
-        for (let i = 0; i < this.notes.length; i++) {
-            const frequency = this.notes[i].frequency;
-            const time = startTime + this.notes[i].time;
-            const duration = Math.max(this.notes[i].duration * 2/3, minNote);
-            
-            const osc = audioContext.createOscillator();
-            osc.type = 'sine';
-            
-            const gain = audioContext.createGain();
-            gain.gain.setValueAtTime(0.5, time);
-            gain.gain.exponentialRampToValueAtTime(0.1, time + duration);
-            
-            osc.frequency.setValueAtTime(frequency, time);
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            osc.start(time);
-            osc.stop(time + duration);
-            
-            endTime = Math.max(time + duration, endTime);
-        }
+    // Create a shared gentle low-pass filter to smooth all notes
+    const filter = audioContext.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 3000; // Cuts harsh high frequencies
+    filter.connect(audioContext.destination);
+
+    for (let i = 0; i < this.notes.length; i++) {
+        const frequency = this.notes[i].frequency;
+        const time = startTime + this.notes[i].time;
+        const duration = Math.max(this.notes[i].duration * 2/3, minNote);
+        
+        const osc = audioContext.createOscillator();
+        osc.type = 'triangle'; // Warmer than sine
+        
+        const gain = audioContext.createGain();
+        gain.gain.setValueAtTime(0.001, time); // Start silent to avoid click
+        gain.gain.linearRampToValueAtTime(0.7, time + 0.02); // Smoother attack
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration); // Natural decay
+        
+        osc.frequency.setValueAtTime(frequency, time);
+        osc.connect(gain);
+        gain.connect(filter); // Route through filter
+        
+        osc.start(time);
+        osc.stop(time + duration);
+        
+        endTime = Math.max(time + duration, endTime);
     }
+}
 }
 
 function createRandomDot() {

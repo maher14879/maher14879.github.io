@@ -138,7 +138,7 @@ class Track {
             
             const gain = audioContext.createGain();
             gain.gain.setValueAtTime(0.5, time);
-            gain.gain.exponentialRampToValueAtTime(0.1, time + duration);
+            gain.gain.exponentialRampToValueAtTime(0.0000001, time + duration);
             
             osc.frequency.setValueAtTime(frequency, time);
             osc.connect(gain);

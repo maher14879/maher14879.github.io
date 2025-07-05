@@ -123,22 +123,65 @@ class Track {
     }
 
     play(startTime) {
-        for (let i = 0; i < this.notes.length; i++) {
-            const frequency = this.notes[i].frequency
-            const time = startTime + this.notes[i].time
-            const duration = this.notes[i].duration
-            const volume = this.notes[i].volume
+        const notesCount = this.notes.length;
+        let endTime = startTime;
 
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = 'square'
-
-            oscillator.frequency.setValueAtTime(frequency, time);
-
-            oscillator.start(time)
-            oscillator.stop(time + Math.max((duration * 2/3), minNote))
-            oscillator.connect(audioContext.destination)
+        for (let i = 0; i < notesCount; i++) {
+            const { frequency, time: noteTime, duration } = this.notes[i];
+            const start = startTime + noteTime;
             
-            endTime = Math.max(time + duration, endTime);
+            // Create a main oscillator (sine for fundamental tone)
+            const mainOsc = audioContext.createOscillator();
+            mainOsc.type = 'sine'; // Base tone
+            mainOsc.frequency.setValueAtTime(frequency, start);
+
+            // Create 2 detuned oscillators for richness (like piano strings)
+            const detuneOsc1 = audioContext.createOscillator();
+            detuneOsc1.type = 'sine';
+            detuneOsc1.frequency.setValueAtTime(frequency * 1.005, start); // Slightly sharp
+
+            const detuneOsc2 = audioContext.createOscillator();
+            detuneOsc2.type = 'sine';
+            detuneOsc2.frequency.setValueAtTime(frequency * 0.995, start); // Slightly flat
+
+            // Create a noise burst for the "hammer attack" sound
+            const noise = audioContext.createBufferSource();
+            const noiseBuffer = audioContext.createBuffer(1, 0.02 * audioContext.sampleRate, audioContext.sampleRate);
+            const noiseData = noiseBuffer.getChannelData(0);
+            for (let j = 0; j < noiseData.length; j++) {
+                noiseData[j] = Math.random() * 2 - 1; // White noise
+            }
+            noise.buffer = noiseBuffer;
+
+            // Apply a fast-decaying envelope to the noise (mimics hammer strike)
+            const noiseGain = audioContext.createGain();
+            noiseGain.gain.setValueAtTime(0.3, start);
+            noiseGain.gain.exponentialRampToValueAtTime(0.001, start + 0.02);
+
+            // Apply an ADSR envelope to the oscillators (piano-like decay)
+            const noteGain = audioContext.createGain();
+            noteGain.gain.setValueAtTime(0, start);
+            noteGain.gain.linearRampToValueAtTime(1, start + 0.01); // Fast attack
+            noteGain.gain.exponentialRampToValueAtTime(0.3, start + 0.1); // Initial decay
+            noteGain.gain.exponentialRampToValueAtTime(0.001, start + duration); // Long fade
+
+            // Connect everything
+            noise.connect(noiseGain).connect(audioContext.destination);
+            mainOsc.connect(noteGain).connect(audioContext.destination);
+            detuneOsc1.connect(noteGain).connect(audioContext.destination);
+            detuneOsc2.connect(noteGain).connect(audioContext.destination);
+
+            // Start/stop sounds
+            noise.start(start);
+            noise.stop(start + 0.02);
+            mainOsc.start(start);
+            detuneOsc1.start(start);
+            detuneOsc2.start(start);
+            mainOsc.stop(start + duration);
+            detuneOsc1.stop(start + duration);
+            detuneOsc2.stop(start + duration);
+
+            endTime = Math.max(start + duration, endTime);
         }
     }
 }

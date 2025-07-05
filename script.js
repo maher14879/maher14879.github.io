@@ -123,53 +123,29 @@ class Track {
     }
 
     play(startTime) {
-        // Create shared reverb for all notes (more efficient)
-        const reverb = audioContext.createConvolver();
-        const wetGain = audioContext.createGain();
-        wetGain.gain.value = 0.3; // Just a hint of reverb
-        
-        // Simple impulse response for piano-like ambiance
-        const impulse = audioContext.createBuffer(2, audioContext.sampleRate * 0.5, audioContext.sampleRate);
-        const left = impulse.getChannelData(0);
-        const right = impulse.getChannelData(1);
-        for (let i = 0; i < impulse.length; i++) {
-            left[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / impulse.length, 2);
-            right[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / impulse.length, 2);
-        }
-        reverb.buffer = impulse;
-
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency;
             const time = startTime + this.notes[i].time;
             const duration = Math.max(this.notes[i].duration * 2/3, minNote);
             
-            // Main oscillator with gentle vibrato
+            // 1. Create oscillator with softer wave
             const osc = audioContext.createOscillator();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(frequency, time);
+            osc.type = 'square'; // Softer than square
             
-            // Subtle vibrato for natural sound
-            if (duration > 0.3) { // Only on sustained notes
-                osc.frequency.setValueAtTime(frequency * 0.995, time + duration * 0.2);
-                osc.frequency.linearRampToValueAtTime(frequency * 1.005, time + duration * 0.8);
-            }
-
-            // Perfectly timed envelope
+            // 2. Very simple gain node with quick fade
             const gain = audioContext.createGain();
-            gain.gain.setValueAtTime(0.001, time);
-            gain.gain.linearRampToValueAtTime(0.7, time + 0.02); // Quick attack
-            gain.gain.exponentialRampToValueAtTime(0.001, time + duration); // Natural decay
+            gain.gain.setValueAtTime(0.5, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
             
-            // Connect with parallel dry/wet mix
+            // 3. Connect and schedule exactly like original
+            osc.frequency.setValueAtTime(frequency, time);
             osc.connect(gain);
-            gain.connect(audioContext.destination); // Dry signal
-            gain.connect(wetGain).connect(reverb).connect(audioContext.destination); // Wet signal
+            gain.connect(audioContext.destination);
             
-            // Start/stop with original timing
             osc.start(time);
             osc.stop(time + duration);
             
-            endTime = Math.max(time + this.notes[i].duration, endTime); // Note: Using original duration
+            endTime = Math.max(time + duration, endTime);
         }
     }
 }

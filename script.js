@@ -123,56 +123,28 @@ class Track {
     }
 
     play(startTime) {
-    // Create shared reverb (more efficient than per-note)
-    const reverb = audioContext.createConvolver();
-    const wetGain = audioContext.createGain();
-    wetGain.gain.value = 0.3; // Blend amount
-    
-    // Generate simple impulse response (instead of loading a file)
-    const impulseLength = audioContext.sampleRate * 0.5;
-    const impulse = audioContext.createBuffer(2, impulseLength, audioContext.sampleRate);
-    const left = impulse.getChannelData(0);
-    const right = impulse.getChannelData(1);
-    
-    for (let i = 0; i < impulseLength; i++) {
-        // Exponential decay curve with noise
-        const n = Math.random() * 2 - 1;
-        const decay = Math.pow(1 - i / impulseLength, 2);
-        left[i] = n * decay;
-        right[i] = n * decay * 0.8; // Slightly different for stereo
+        for (let i = 0; i < this.notes.length; i++) {
+            const frequency = this.notes[i].frequency;
+            const time = startTime + this.notes[i].time;
+            const duration = Math.max(this.notes[i].duration * 2/3, minNote);
+            
+            const osc = audioContext.createOscillator();
+            osc.type = 'square';
+            
+            const gain = audioContext.createGain();
+            gain.gain.setValueAtTime(0.5, time);
+            gain.gain.exponentialRampToValueAtTime(0.1, time + duration);
+            
+            osc.frequency.setValueAtTime(frequency, time);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.start(time);
+            osc.stop(time + duration);
+            
+            endTime = Math.max(time + duration, endTime);
+        }
     }
-    reverb.buffer = impulse;
-    
-    // Routing
-    wetGain.connect(reverb);
-    reverb.connect(audioContext.destination);
-
-    for (let i = 0; i < this.notes.length; i++) {
-        const frequency = this.notes[i].frequency;
-        const time = startTime + this.notes[i].time;
-        const duration = Math.max(this.notes[i].duration * 2/3, minNote);
-        
-        // Oscillator with triangle wave (smoother than sine)
-        const osc = audioContext.createOscillator();
-        osc.type = 'triangle';
-        
-        // Gain envelope
-        const gain = audioContext.createGain();
-        gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.5, time + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
-        
-        // Connect both dry and wet paths
-        osc.connect(gain);
-        gain.connect(audioContext.destination); // Dry signal
-        gain.connect(wetGain); // Reverb signal
-        
-        osc.start(time);
-        osc.stop(time + duration);
-        
-        endTime = Math.max(time + duration, endTime);
-    }
-}
 }
 
 function createRandomDot() {

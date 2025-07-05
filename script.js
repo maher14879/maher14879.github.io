@@ -122,7 +122,12 @@ class Track {
         return null;
     }
 
-    play(startTime) {        
+    play(startTime) {
+        const filter = audioContext.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.value = 1000;
+        filter.connect(audioContext.destination);
+        
         for (let i = 0; i < this.notes.length; i++) {
             const frequency = this.notes[i].frequency;
             const time = startTime + this.notes[i].time;
@@ -137,7 +142,8 @@ class Track {
             
             osc.frequency.setValueAtTime(frequency, time);
             osc.connect(gain);
-            gain.connect(audioContext.destination);
+            filter.connect(audioContext.destination);
+            gain.connect(filter);
             
             osc.start(time);
             osc.stop(time + duration);

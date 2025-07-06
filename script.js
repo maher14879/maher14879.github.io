@@ -12,7 +12,7 @@ const mouseSpeed = 0.1;
 const dotsCount = 40;
 
 const dotAttract = -4;
-const waveSpeed = -100;
+const waveSpeed = -80;
 const periodScaler = 1.7;
 const minNote = 0.1;
 const max_track = 10;
@@ -107,8 +107,6 @@ class Track {
         for (let note of midi_trackk.notes) {
             this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration));
         }
-
-        this.strength = 1 / Math.sqrt(this.notes.length)
     }
 
     getCurrentPeriod(nowTime) {
@@ -315,8 +313,8 @@ function animateDots() {
                 if (period != null) {
                     const term1 = (dot.posX - track.posX) * period;
                     const term2 = (dot.posY - track.posY) * period;
-                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime) * track.strength;
-                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime) * track.strength;
+                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime);
+                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
                 }
             }
     

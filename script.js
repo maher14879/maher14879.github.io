@@ -12,7 +12,7 @@ const mouseSpeed = 0.1;
 const dotsCount = 40;
 
 const dotAttract = -4;
-const waveSpeed = 40;
+const waveSpeed = 10;
 const periodScaler = 1.7;
 const minNote = 0.1;
 const max_track = 10;

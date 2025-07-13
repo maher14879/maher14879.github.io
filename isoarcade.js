@@ -614,7 +614,7 @@ class IsoArcade {
 // Usage:
 const textureSheet = new Image();
 textureSheet.crossOrigin = 'anonymous';
-textureSheet.src = 'assets/pixel_art/texture_sheet.png';
+textureSheet.src = 'assets/images/pixel_art/texture_sheet.png';
 
 const textureArray = [
     [0, 0],

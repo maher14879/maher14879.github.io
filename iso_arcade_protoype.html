@@ -10,15 +10,20 @@
       }
       canvas {
         display: block;
-        width: 100vw;
-        height: 100vh;
       }
     </style>
   </head>
   <body>
     <canvas id="game" style="background-color: transparent;"></canvas>
     <script type="module">
-      import './isoarcade.js';
+      const canvas = document.getElementById('game');
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      import('./isoarcade.js');
     </script>
   </body>
 </html>

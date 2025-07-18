@@ -25,25 +25,25 @@
             <br><br>
             See the working prototype <a href="iso_arcade_protoype.html" target="_blank">Iso Arcade Prototype</a>, by using WASD to move around. 
             <br><br>
-            0 Isometric Tiling
+            ¤ part 0: Isometric Tiling
             <br><br>
             In true isometric drawing, the front corner of a voxcel would be in the exact same line of sight as the back corner.
             My libary allows for any non-perspective drawing of a voxcel in coords \((x', y')\) based on the formula:
-            \[x' =  \frac{w,2} * (x - y) \]
-            \[y' = -z * (h - 2 * o) + (x + y) * o,\]
+            \[x' =  \frac{w}{2} (x - y) \]
+            \[y' = -z (h - 2o) + (x + y) o,\]
             where w, h are the width and height of the block texture and o is the offset of the front corner and back corner in pixels.
             Each solid block is also split into 3 sides (one for each visible axis).
             This allows each block to have a seperate light level for each side.
             <br><br>
-            1 Sorting blocks
+            ¤ part 1: Sorting blocks
             <br><br>
             Most blocks cannot be drawn at the same time and must be sorted in order of firstly z position.
             Then we must order each pair of blocks in terms of \(x_1 + x_2 - (y_1 + y_2)\). 
             We would also like to remove all blocks that are covered by a solid block.
-            This is done by first calculating the direction vector of the block \(y - x, z - x\) and the magnitude of that vector \(x + y + z\).
+            This is done by first calculating the direction vector of the block \((y - x, z - x)\) and the magnitude of that vector \(x + y + z\).
             Then we only draw the solid blocks with the highest magnitude and any non-solid block with a higher magnitude.
             <br><br>
-            1 Chunks
+            ¤ part 2: Chunks
             <br><br>
             Wait...
         </p>

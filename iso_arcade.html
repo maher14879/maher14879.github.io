@@ -19,11 +19,10 @@
             <img src="assets/images/pixel_art/isoarcade.png" alt="Logo of IsoArcade">
         </div>
         <p>
-            I am making a JS libary for creating isometric games called IsoArcade. 
-            You can view it on my <a href="https://github.com/maher14879/IsoArcade" target="_blank">github</a>.
-            A tutorial will soon be avaliable on this page.
-            <br><br>
-            See the working prototype <a href="iso_arcade_protoype.html" target="_blank">Iso Arcade Prototype</a>, by using WASD to move around. 
+            I am making a JS libary for creating isometric games in browser called IsoArcade.
+            This is so i can create my own video game, and make it easier for others to make isometric games. 
+            You can view my work so far on <a href="https://github.com/maher14879/IsoArcade" target="_blank">github</a> or see the working prototype <a href="iso_arcade_protoype.html" target="_blank">Iso Arcade Prototype</a> (move around using WASD) 
+            I am still working on this project, so the following chapters are still a work in progress.
             <br><br>
             ¤ part 0: Isometric Tiling
             <br><br>
@@ -35,7 +34,7 @@
             Each solid block is also split into 3 sides (one for each visible axis).
             This allows each block to have a seperate light level for each side.
             <br><br>
-            ¤ part 1: Sorting blocks
+            ¤ part 1: Sorting the Blocks
             <br><br>
             Most blocks cannot be drawn at the same time and must be sorted in order of firstly z position.
             Then we must order each pair of blocks in terms of \(x_1 + x_2 - (y_1 + y_2)\). 
@@ -45,7 +44,17 @@
             <br><br>
             ¤ part 2: Chunks
             <br><br>
-            Wait...
+            Chunks are also essensial for loading and saving parts of open world games.
+            Games like minecraft use a 16x16 chunk system, which i also did. 
+            This is because it saves time on looking for what chunk a certain block belongs.
+            This is because for a value \(x\), we have that \(\left\lceil x \mod y \right\rceil = x \gg \sqrt(y)\) if \(y\) is even and a power of \(2\).
+            Since \(\sqrt(16)=4\), we can bitshift any number by \(4\) and get the chunk index of that coordinate. 
+            <br>
+            I also implemeted a system for soft loading chunks, since a lightsource can affect a neighboor chunk before it has been loaded. 
+            By soft loading chunks all chunks around the render distance, we avoid chunk-border light issues and similar problems.
+            <br><br>
+            ¤ part 3: Light Propagation
+            <br><br>
         </p>
     </div>
 </body>

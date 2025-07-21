@@ -19,41 +19,41 @@
             <img src="assets/images/pixel_art/isoarcade.png" alt="Logo of IsoArcade">
         </div>
         <p>
-            I am making a JS libary for creating isometric games in browser called IsoArcade.
-            This is so i can create my own video game, and make it easier for others to make isometric games. 
-            You can view my work so far on <a href="https://github.com/maher14879/IsoArcade" target="_blank">github</a> or see the working prototype <a href="iso_arcade_protoype.html" target="_blank">Iso Arcade Prototype</a> (move around using WASD) 
+            ¤ part 0: Introduction
+            <br><br>
+            I am making a JS library for creating isometric games in browser called IsoArcade.
+            This is so I can create my own video game, and make it easier for others to make isometric games. 
+            You can view my work so far on <a href="https://github.com/maher14879/IsoArcade" target="_blank">github</a> or see the working prototype <a href="iso_arcade_prototype.html" target="_blank">Iso Arcade Prototype</a> (move around using WASD) 
             I am still working on this project, so the following chapters are still a work in progress.
             <br><br>
-            ¤ part 0: Isometric Tiling
+            ¤ part 1: Isometric Tiling
             <br><br>
-            In true isometric drawing, the front corner of a voxcel would be in the exact same line of sight as the back corner.
-            My libary allows for any non-perspective drawing of a voxcel in coords \((x', y')\) based on the formula:
+            In true isometric drawing, the front corner of a voxel would be in the exact same line of sight as the back corner.
+            My library allows for any non-perspective drawing of a voxel in coords \((x', y')\) based on the formula:
             \[x' =  \frac{w}{2} (x - y) \]
             \[y' = -z (h - 2o) + (x + y) o,\]
-            where w, h are the width and height of the block texture and o is the offset of the front corner and back corner in pixels.
-            Each solid block is also split into 3 sides (one for each visible axis).
-            This allows each block to have a seperate light level for each side.
+            where w, h are the width and height of the voxel texture and o is the offset of the front corner and back corner in pixels.
+            Each solid voxel is also split into 3 sides (one for each visible axis).
+            This allows each voxel to have a separate light level for each side.
             <br><br>
-            ¤ part 1: Sorting the Blocks
+            ¤ part 2: Sorting the voxels
             <br><br>
-            Most blocks cannot be drawn at the same time and must be sorted in order of firstly z position.
-            Then we must order each pair of blocks in terms of \(x_1 + x_2 - (y_1 + y_2)\). 
-            We would also like to remove all blocks that are covered by a solid block.
-            This is done by first calculating the direction vector of the block \((y - x, z - x)\) and the magnitude of that vector \(x + y + z\).
-            Then we only draw the solid blocks with the highest magnitude and any non-solid block with a higher magnitude.
+            Most voxels cannot be drawn at the same time and must be sorted in order of firstly z position.
+            Then we must order each pair of voxels in terms of \(x_1 + x_2 - (y_1 + y_2)\). 
+            We would also like to remove all voxels that are covered by a solid voxel.
+            This is done by first calculating the direction vector of the voxel \((y - x, z - x)\) and the magnitude of that vector \(x + y + z\).
+            Then we only draw the solid voxels with the highest magnitude and any non-solid voxel with a higher magnitude.
             <br><br>
-            ¤ part 2: Chunks
+            ¤ part 3: Chunks
             <br><br>
-            Chunks are also essensial for loading and saving parts of open world games.
-            Games like minecraft use a 16x16 chunk system, which i also did. 
-            This is because it saves time on looking for what chunk a certain block belongs.
-            This is because for a value \(x\), we have that \(\left\lceil x \mod y \right\rceil = x \gg \sqrt(y)\) if \(y\) is even and a power of \(2\).
-            Since \(\sqrt(16)=4\), we can bitshift any number by \(4\) and get the chunk index of that coordinate. 
-            <br>
-            I also implemeted a system for soft loading chunks, since a lightsource can affect a neighboor chunk before it has been loaded. 
-            By soft loading chunks all chunks around the render distance, we avoid chunk-border light issues and similar problems.
+            Chunks are essential for loading and saving parts of open world games.
+            Games like minecraft use a 16x16 chunk system, which I also did. 
+            This is because it saves time when determining which chunk a voxel belongs to.
+            This is because for a value \(x\), we have that \(\left\lceil \frac{x}{y} \right\rceil = x \gg \log_2{y}\) if \(y\) is even and a power of \(2\).
+            Since \(\\log_2{16}=4\), we can bitshift any number by \(4\) and get the chunk index of that coordinate. 
+            I also implemented a system for soft loading chunks to avoid chunk-border light issues.
             <br><br>
-            ¤ part 3: Light Propagation
+            ¤ part 4: Light Propagation
             <br><br>
         </p>
     </div>

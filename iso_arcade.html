@@ -48,7 +48,9 @@
             Chunks are essential for loading and saving parts of open world games.
             Minecraft use a 16x16 chunk system, which I also did. 
             This is because it saves time when determining which chunk a voxel belongs to.
-            This is because for a value \(x\), we have that \(\left\lfloor \frac{x}{y} \right\rfloor = x \gg \log_2{y}\) if \(y\) is even and a power of \(2\).
+            This is because for a value \(x\), we have that 
+            \[\left\lfloor \frac{x}{y} \right\rfloor = x \gg \log_2{y}\]
+            if \(y\) is even and a power of \(2\).
             Since \(\log_2{16}=4\), we can bitshift any number by \(4\) and get the chunk index of that coordinate. 
             I also implemented a system for soft loading chunks to avoid chunk-border light issues.
             <br><br>

@@ -38,8 +38,7 @@
             <br><br>
             ¤ part 2: Sorting the voxels
             <br><br>
-            Most voxels cannot be drawn at the same time and must be sorted in order of firstly z position.
-            Then we must order each pair of voxels in terms of \(x_1 + x_2 - (y_1 + y_2)\). 
+            Most voxels cannot be drawn at the same time and must be sorted in order of z position, then we must order each pair of voxels in terms of \(x_1 + x_2 - (y_1 + y_2)\). 
             We would also like to remove all voxels that are covered by a solid voxel.
             This is done by first calculating the direction vector of the voxel \((y - x, z - x)\) and the magnitude of that vector \(x + y + z\).
             Then we only draw the solid voxels with the highest magnitude and any non-solid voxel with a higher magnitude.
@@ -47,10 +46,10 @@
             ¤ part 3: Chunks
             <br><br>
             Chunks are essential for loading and saving parts of open world games.
-            Games like minecraft use a 16x16 chunk system, which I also did. 
+            Minecraft use a 16x16 chunk system, which I also did. 
             This is because it saves time when determining which chunk a voxel belongs to.
-            This is because for a value \(x\), we have that \(\left\lceil \frac{x}{y} \right\rceil = x \gg \log_2{y}\) if \(y\) is even and a power of \(2\).
-            Since \(\\log_2{16}=4\), we can bitshift any number by \(4\) and get the chunk index of that coordinate. 
+            This is because for a value \(x\), we have that \(\left\lfloor \frac{x}{y} \right\rfloor = x \gg \log_2{y}\) if \(y\) is even and a power of \(2\).
+            Since \(\log_2{16}=4\), we can bitshift any number by \(4\) and get the chunk index of that coordinate. 
             I also implemented a system for soft loading chunks to avoid chunk-border light issues.
             <br><br>
             ¤ part 4: Light Propagation

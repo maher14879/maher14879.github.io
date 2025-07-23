@@ -32,7 +32,7 @@
             My library allows for any non-perspective drawing of a voxel in coords \((x', y')\) based on the formula:
             \[x' =  \frac{w}{2} (x - y) \]
             \[y' = -z (h - 2o) + (x + y) o,\]
-            where w, h are the width and height of the voxel texture and o is the offset of the front corner and back corner in pixels.
+            where \(w\) and \(h\) are the width and height of the voxel texture and \(o\) is the offset of in the perspective in pixels compared to kardinal perspective.
             Each solid voxel is also split into 3 sides (one for each visible axis).
             This allows each voxel to have a separate light level for each side.
             <br><br>

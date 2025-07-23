@@ -65,11 +65,22 @@
             For camera movement we rotate the cardinal axis of the intended movement, so they are on the diagonals instead.
             This is because isometric projection shifts the view, so the diagonals of voxels are facing towards you. 
             To get which voxel, and what side of that voxel, the mouse is hovering at, we must first get the position of the mouse inside the voxel texture.
-            Let that position be \((dx, dy)\).
+            Let that position be \(P=(dx, dy)\).
             For the \(x\) axis side, we must first test if \(dx \le \frac w 2 \wedge dy \ge o\).
             Then we must test if the point is in either one of the two triangles that are not included in the texture.
-            We do that by defining the triangle points as \((0, o)\), \((\frac w 2, o)\) and \((\frac w 2, 2o)\) for the first triangle, and \((0, h-o)\), \(0, h\) and \((\frac w 2, h)\) for the second. 
-            Doing something similar for the \(y\) and \(z\) axis, the user can place and destroy voxels. 
+            We do that by defining the triangle points as \(A=(0, o)\), \(B=(\frac w 2, o)\) and \(C=(\frac w 2, 2o)\) for the top triangle.
+            To then test if the point is not in triangle \(ABC\) we find the signed values,
+            \[
+            \begin{aligned}
+            d_1 &= \operatorname{sign}(P, A, B) = (P_x - B_x)(A_y - B_y) - (A_x - B_x)(P_y - B_y) \\
+            d_2 &= \operatorname{sign}(P, B, C) = (P_x - C_x)(B_y - C_y) - (B_x - C_x)(P_y - C_y) \\
+            d_3 &= \operatorname{sign}(P, C, A) = (P_x - A_x)(C_y - A_y) - (C_x - A_x)(P_y - A_y)
+            \end{aligned}
+            \]
+            that gives us the following expression for if the point is outside the triangle
+            \[(d_1 < 0 \lor d_2 < 0 \lor d_3 < 0) \land (d_1 > 0 \lor d_2 > 0 \lor d_3 > 0).\]
+            The signed values can be reduced a lot, given that all voxels have the same texture.
+            Doing something similar for the \(y\) and \(z\) axis, the user can place and destroy voxels from a given player input.
             <br><br>
             ¤ part 6: Rotating the View
             <br><br>

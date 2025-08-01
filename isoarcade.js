@@ -51,7 +51,7 @@ class IsoArcade {
         this.cameraDirection = [0, 0];
         this.voxelsArray = [];
         this.enqueuedVoxel= [];
-        self.rotateDirection = false
+        this.rotateDirection = false
     }
 
     async init(id, initialCapacity = 10000) {
@@ -343,17 +343,6 @@ class IsoArcade {
     deleteVoxel(x, y, z) {
         const [cx, cy] = this.roundChunk(x, y)
         this.getChunk(cx, cy)?.get(x)?.get(y)?.delete(z);
-        const sources = this.lightSourceMap.get(cx)?.get(cy);
-        if (!sources) return;
-
-        for (let i = 0; i < sources.length; i++) {
-            const [lx, ly, lz, luminosity, axis, direction, selfLuminosity] = sources[i];
-            if (lx === x && ly === y && lz === z) {
-                sources.splice(i, 1);
-                this.propagateLight(x, y, z, luminosity, axis, direction, selfLuminosity, true)
-                break;
-            }
-        }
     }
 
     getSkyLight(x, y) {
@@ -462,7 +451,6 @@ class IsoArcade {
         }
 
         const filtered = [];
-
         for (const [x, y, z, voxel, magnitude, isoX, isoY, key] of nonSolid) {
             const existing = visibilityMap.get(key);
             if (!existing || magnitude > existing[4]) {
@@ -594,7 +582,7 @@ class IsoArcade {
         }
     }
 
-    updateChunks() {
+    async updateChunks() {
         const startTime = performance.now();
         const [cxCam, cyCam] = this.roundChunk(this.camera[0], this.camera[1]);
         for (let cx = -this.renderDistance + cxCam - 1; cx <= this.renderDistance + cxCam + 1; cx++) {
@@ -619,17 +607,17 @@ class IsoArcade {
                         (this.getChunkLoadState(cx+1, cy-1) > 0)
                     );
 
-                    if (neighborsLoaded) {this.chunkLight(cx, cy);}
+                    if (neighborsLoaded) {await this.chunkLight(cx, cy)};
                 };
             }
         }
-        if (self.diagnostics) {
+        if (this.diagnostics) {
             const updateChunksTime = (performance.now() - startTime).toFixed(2);
             console.log("Update chunks took:", updateChunksTime);
         }
     }
 
-    async propagateLight(startX, startY, startZ, startLuminosity, startAxis, startDirection, selfLuminosity, shadow) {
+    propagateLight(startX, startY, startZ, startLuminosity, startAxis, startDirection, selfLuminosity, shadow) {
         const attenuation =  this.attenuation
 
         const directions = [ //x, y, z, axis, direction
@@ -723,6 +711,52 @@ class IsoArcade {
             }
         }
         return lightSourceArray;
+    }
+
+    async placeVoxel() {
+        if (this.dtVoxelPlaced < this.voxelPlaceTime) {return};
+        this.dtVoxelPlaced -= this.voxelPlaceTime
+        if (this.enqueuedVoxel.length == 0) {return};
+
+        const [px, py, pz, voxel] = this.enqueuedVoxel;
+        const [cx, cy] = this.roundChunk(px, py);
+        if (!this.hasChunk(cx, cy)) {return};
+        this.enqueuedVoxel = [];
+
+        const lightSourceArray = this.getAffectedSources(px, py, pz);
+        for (const [x, y, z, luminosity, axis, direction, selfLuminosity] of lightSourceArray) {
+            if (luminosity == 0) {continue};
+            this.propagateLight(x, y, z, luminosity, axis, direction, selfLuminosity, true);
+        }
+        for (let dx = -this.sunLuminosity; dx <= this.sunLuminosity; dx++) {
+            for (let dy = -this.sunLuminosity; dy <= this.sunLuminosity; dy++) {
+                const z = this.getSkyLight(px + dx, py + dy);
+                this.propagateLight(px + dx, py + dy, z + 1, this.sunLuminosity, this.sunAxis, this.sunDirection, this.sunSelfLuminosity, true);
+            }
+        }
+
+        if (voxel) {
+            this.setVoxel(px, py, pz, voxel);
+            const [luminosity, axis, direction, selfLuminosity] = this.luminosityArray[voxel];
+            this.propagateLight(px, py, pz, luminosity, axis, direction, selfLuminosity, false);
+        } else {
+            const deletedVoxel = this.getVoxel(px, py, pz)
+            this.deleteVoxel(px, py, pz);
+            const [luminosity, axis, direction, selfLuminosity] = this.luminosityArray[deletedVoxel];
+            this.propagateLight(px, py, pz, luminosity, axis, direction, selfLuminosity, true);
+        }
+
+        for (const [x, y, z, luminosity, axis, direction, selfLuminosity] of lightSourceArray) {
+            if (luminosity == 0) {continue};
+            this.propagateLight(x, y, z, luminosity, axis, direction, selfLuminosity, false);
+        };
+
+        for (let dx = -this.sunLuminosity; dx <= this.sunLuminosity; dx++) {
+            for (let dy = -this.sunLuminosity; dy <= this.sunLuminosity; dy++) {
+                const z = this.getSkyLight(px + dx, py + dy);
+                this.propagateLight(px + dx, py + dy, z + 1, this.sunLuminosity, this.sunAxis, this.sunDirection, this.sunSelfLuminosity, false);
+            }
+        }
     }
 
     noise(x, y) {
@@ -852,40 +886,6 @@ class IsoArcade {
         }
     }
 
-    async placeVoxel() {
-        if (this.dtVoxelPlaced >= this.voxelPlaceTime) {this.dtVoxelPlaced -= this.voxelPlaceTime}
-        else {return};
-        if (this.enqueuedVoxel.length == 0) {return};
-
-        const [x, y, z, voxel] = this.enqueuedVoxel;
-        const [cx, cy] = this.roundChunk(x, y)
-        if (!this.hasChunk(cx, cy)) {return};
-        this.enqueuedVoxel= [];
-
-        const lightSourceArray = this.getAffectedSources(x, y, z);
-        for (const [x, y, z, luminosity, axis, direction, selfLuminosity] of lightSourceArray) this.propagateLight(x, y, z, luminosity, axis, direction, selfLuminosity, true);
-        for (let dx = -this.sunLuminosity; dx <= this.sunLuminosity; dx++) {
-            for (let dy = -this.sunLuminosity; dy <= this.sunLuminosity; dy++) {
-                const z = this.getSkyLight(x + dx, y + dy)
-                await this.propagateLight(x + dx, y + dy, z + 1, this.sunLuminosity, this.sunAxis, this.sunDirection, this.sunSelfLuminosity, true)
-            }
-        }
-        if (voxel) {
-            this.setVoxel(x, y, z, voxel)
-            const [luminosity, axis, direction, selfLuminosity] = this.luminosityArray[voxel]
-            await this.propagateLight(x, y, z, luminosity, axis, direction, selfLuminosity)
-        } else {
-            await this.deleteVoxel(x, y, z)
-        };
-        for (let dx = -this.sunLuminosity; dx <= this.sunLuminosity; dx++) {
-            for (let dy = -this.sunLuminosity; dy <= this.sunLuminosity; dy++) {
-                const z = this.getSkyLight(x + dx, y + dy)
-                this.propagateLight(x + dx, y + dy, z + 1, this.sunLuminosity, this.sunAxis, self.sunDirection, this.sunSelfLuminosity, false)
-            }
-        }
-        for (const [x, y, z, luminosity, axis, direction, selfLuminosity] of lightSourceArray) this.propagateLight(x, y, z, luminosity, axis, direction, selfLuminosity);
-    }
-
     interact(mx, my, key) {
         const hoverVoxel = this.getHoveredVoxel(mx, my)
         if (hoverVoxel) {
@@ -962,17 +962,22 @@ class IsoArcade {
     }
 
     async tick() {
-        this.dt -= this.tickTime
-        if (self.rotateDirection) {
-            const x = this.direction.x
-            const y = this.direction.y
-            this.direction.x = y
-            this.direction.y = -x
-            self.rotateDirection = false
+        if (this.dt < this.tickTime) {return};
+        this.dt -= this.tickTime;
+
+        this.placeVoxel();
+
+        if (this.rotateDirection) {
+            const x = this.direction.x;
+            const y = this.direction.y;
+            this.direction.x = y;
+            this.direction.y = -x;
+            console.log(this.direction)
+            this.rotateDirection = false;
         }
 
-        void arcade.updateChunks();
-        await Promise.all(arcade.sortVoxels());
+        await arcade.updateChunks();
+        await arcade.sortVoxels();
 
         const [cxCam, cyCam] = this.roundChunk(this.camera[0], this.camera[1]);
         for (let cx = -this.renderDistance + cxCam; cx <= this.renderDistance + cxCam; cx++) {
@@ -988,19 +993,13 @@ class IsoArcade {
     }
 
     update(dt) {
-        this.dt += dt
-        this.dtVoxelPlaced += dt
+        this.dt += dt;
+        this.dtVoxelPlaced += dt;
 
         this.camera[0] += this.direction.x * this.cameraDirection[0] * this.CameraSpeed * dt;
         this.camera[1] += this.direction.y * this.cameraDirection[1] * this.CameraSpeed * dt;
 
-        if (this.dt >= this.tickTime) {
-            this.dt -= this.tickTime
-            this.tick()
-        }
-
-        void this.placeVoxel();
-        this.updateVoxels()
+        this.updateVoxels();
         this.draw();
     }
 }
@@ -1041,8 +1040,9 @@ const luminosityArray = [ //startLuminosity, startAxis, startDirection, selfLumi
     [0, 0, 0, 0],
     [0, 0, 0, 0],
 ];
+
 const arcade = new IsoArcade(4, 16, 16, textureArray, solidArray, luminosityArray);
-arcade.diagnostics = true
+arcade.diagnostics = false
 
 await arcade.init("game");
 await arcade.setTexture(textureSheet);
@@ -1086,8 +1086,10 @@ window.addEventListener("mousedown", (e) => {
 
 });
 
+let fpsSum = 0;
+let fpsCount = 0;
 function gameLoop(timestamp) {
-    const dt = timestamp - (gameLoop.lastTime || timestamp)
+    const dt = timestamp - (gameLoop.lastTime || timestamp);
 
     let dx = 0, dy = 0;
     if (keyW) { dx += -1; dy += -1; }
@@ -1099,17 +1101,36 @@ function gameLoop(timestamp) {
         const len = Math.hypot(dx, dy);
         dx /= len;
         dy /= len;
-        arcade.cameraDirection = [dx, dy]
+        arcade.cameraDirection = [dx, dy];
     } else {arcade.cameraDirection = [0, 0]}
 
     arcade.update(dt / 1000)
     gameLoop.lastTime = timestamp;
 
-    if (arcade.diagnostics) {
-        const fps = (1000 / dt).toFixed(2);
-        console.log("fps:", fps);
+    if (arcade.diagnostics && !dt == 0) {
+        const fps = (1000 / dt);
+        fpsSum += fps;
+        fpsCount += 1;
+        const average = fpsSum / fpsCount;
+        console.log("fps:", fps.toFixed(2), "average fps:", average.toFixed(2));
     }
+
     requestAnimationFrame(gameLoop);
 }
 
+let lastTick = performance.now();
+const tickTestInterval = 100;
+
+async function tickLoop() {
+    while (true) {
+        const now = performance.now();
+        if (now - lastTick >= tickTestInterval) {
+            lastTick = now;
+            await arcade.tick();
+        }
+        await new Promise(r => setTimeout(r, 0));
+    }
+}
+
+tickLoop();
 requestAnimationFrame(gameLoop);

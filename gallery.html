@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Background stars */
+    body {
+      background: black url('assets/images/stars.png') repeat top center;
+      background-size: cover;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .image-card {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(0,255,0,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .image-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        image-rendering: optimizeQuality; /* better scaling */
+    }
+
+    @media (max-width: 480px) {
+      .image-card img {
+        height: 160px;
+      }
+    }
+
+    .image-card p {
+      margin: 0;
+      padding: 10px 12px;
+      color: #00ff00;
+      background: transparent;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <script src="script.js"></script>
+  <script>
+    function goToMainMenu() { window.location.href = "index.html"; }
+  </script>
+  <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
+
+  <div class="content">
+    <p>GALLERY | 29-09-2025</p>
+        <main class="gallery">
+        <section class="image-card">
+          <img src="assets/images/nature/svane_sluseholmen.jpg">
+          <p>Swan with its cygnets.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/blomst_ørestad.jpg">
+          <p>Flower resembling a vagina.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/hvidovre_himmel.jpg">
+          <p>Chemtrails over Hvidovre.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/kofod_fælled_regn.jpg">
+          <p>Kofod Fælled with distant rain clouds.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/kofod_fælled_solnedgang.jpg">
+          <p>Kofod Fælled sunset.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/krave_frederiksberg.jpg">
+          <p>Crow Krave eating another bird in Frederiksberg.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/marielyst.jpg">
+          <p>Marielyst beach.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/norge.jpg">
+          <p>Random town in Norway.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/ørestad_bjerget.jpg">
+          <p>Bjerget in Ørestad.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/sten.jpg">
+          <p>Stone in Växjö.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/taastrup.jpg">
+          <p>Taastrup Station.</p>
+        </section>
+        <section class="image-card">
+          <img src="assets/images/nature/vestamager_metro.jpg">
+          <p>Vestamager Metro Station with godrays.</p>
+        </section>
+      </main>
+    </div>
+</body>
+</html>

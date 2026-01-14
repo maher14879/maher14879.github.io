@@ -349,7 +349,7 @@ class Game {
     }
 }
 
-const canvas = document.getElementById("canvas")
+const canvas = document.getElementById("tarot")
 const ctx = canvas.getContext("2d")
 const game = new Game()
 
@@ -367,9 +367,7 @@ async function boot() {
     }
 
     function deleteRandomCard() {
-        if (game.addedCards.length === 0) return
-        const card = game.addedCards[Math.floor(Math.random() * game.addedCards.length)]
-        game.removeCard(card)
+        for (const card of game.addedCards) game.removeCard(card)
     }
 
     const inputHandler = () => addRandomAvailableCard()

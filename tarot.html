@@ -8,12 +8,11 @@
 </head>
 <body>
     <script src="script.js"></script>
-    <script src="script.js"></script>
     <script> function goToMainMenu() {window.location.href = "index.html";}</script>
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
-    <canvas id="canvas"></canvas>
+    <canvas id="tarot"></canvas>
         <script>
-            var c = document.getElementById('canvas');
+            var c = document.getElementById('tarot');
             function resize() {
                 var w = window.innerWidth;
                 var h = window.innerHeight;
@@ -23,8 +22,7 @@
             resize();
             window.addEventListener('resize', resize);
         </script>
-
-    <script src="tarot.js"></script>
     </body>
+    <script src="tarot.js"></script>
 </html>
 

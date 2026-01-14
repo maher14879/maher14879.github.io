@@ -55,6 +55,7 @@ class Dot {
         this.dot.style.height = `${this.scale * 3 + 1}px`;
         this.dot.style.backgroundColor = color;
         this.dot.style.pointerEvents = 'none';
+        this.dot.style.zIndex = '-9999';
         const grey_scale = `rgb(${255 * (this.scale / 3 + 0.1)}, ${255 * (this.scale / 3 + 0.1)}, ${255 * (this.scale / 3 + 0.1)})`;
         this.dot.style.boxShadow = `0 0 ${this.scale * 2 + 1}px 1px ${grey_scale}, 0 0 ${this.scale * 2 + 1}px 1px ${grey_scale}`;
 

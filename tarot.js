@@ -1,9 +1,8 @@
 const CARD_CONFIG = {
-    moveLerp: 2,
-    windResponse: 90,
-    windSkewMax: 22,
-    windRotMax: 12,
-    windSpeedNorm: 200,
+    moveLerp: 1,
+    windResponse: 10,
+    windRotMax: 5,
+    windSpeedNorm: 10,
     fragmentCount: 5,
     fragmentSpeed: 300,
     fragmentGravity: 1000,
@@ -28,7 +27,6 @@ class Card {
         this.scale = 1
         this.rotation = 0
         this.wind = 0
-        this.skew = 0
 
         this.broken = false
         this.fragments = []
@@ -71,7 +69,6 @@ class Card {
         this.scale = 1
         this.rotation = 0
         this.wind = 0
-        this.skew = 0
 
         this.broken = false
         this.fragments = []
@@ -93,7 +90,7 @@ class Card {
             return
         }
 
-        const { moveLerp, windSpeedNorm, windResponse, windSkewMax, windRotMax } = this.cfg
+        const { moveLerp, windSpeedNorm, windResponse, windRotMax } = this.cfg
         const px = this.position.x
         const py = this.position.y
 
@@ -108,8 +105,6 @@ class Card {
         const windTarget = Math.max(0, Math.min(1, (speedLeft + speedMag) / windSpeedNorm))
         const hold = 0.96
         this.wind = Math.max(this.wind * hold, this.wind + (windTarget - this.wind) * windResponse * dt)
-
-        this.skew = this.wind * windSkewMax
         this.rotation += ((this.wind * windRotMax) - this.rotation) * dt
 
         if (this.flipping) {
@@ -153,7 +148,7 @@ class Card {
 
             ctx.translate(0, -lift)
             ctx.rotate(this.rotation)
-            ctx.transform(1, 0, this.skew + flipSkew, 1, 0, 0)
+            ctx.transform(1, 0, flipSkew, 1, 0, 0)
             ctx.scale(scaleX, 1)
             ctx.drawImage(this.currentImage, -this.currentImage.width / 2, -this.currentImage.height / 2)
         }
@@ -337,14 +332,14 @@ class Game {
     }
 
     draw(ctx) {
-        for (let i = this.removedCards.length - 1; i >= 0; i--) {
-            this.removedCards[i].draw(ctx);
+        for (let i = this.placedCards.length - 1; i >= 0; i--) {
+            this.placedCards[i].draw(ctx);
         }
         for (let i = this.addedCards.length - 1; i >= 0; i--) {
             this.addedCards[i].draw(ctx);
         }
-        for (let i = this.placedCards.length - 1; i >= 0; i--) {
-            this.placedCards[i].draw(ctx);
+        for (let i = this.removedCards.length - 1; i >= 0; i--) {
+            this.removedCards[i].draw(ctx);
         }
     }
 }

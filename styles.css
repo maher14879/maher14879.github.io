@@ -180,3 +180,22 @@ img {
   background-color: #33ff33;
   color: #000000;
 }
+
+#tarot_instructions{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:16px;
+  font-family:'Uncial Antiqua', cursive;
+  color:rgba(255, 193, 23, 0.8);
+  text-shadow:0 0 9px rgba(160,80,255,0.8);
+  z-index:10;
+  opacity:1;
+  transition:opacity 0.6s ease;
+  pointer-events:none;
+}
+
+#tarot_instructions.fade{
+  opacity:0;
+}

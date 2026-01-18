@@ -9,7 +9,8 @@ const CARD_CONFIG = {
     fragmentSpin: 1,
     flipSpeed: 8,
     flip3DDepth: 0.3,
-    flipLift: 15
+    flipLift: 15,
+    rotationScale: 0.5
 }
 
 class Card {
@@ -25,7 +26,6 @@ class Card {
         this.currentImage = backImage
 
         this.scale = 1
-        this.rotation = 0
         this.wind = 0
 
         this.broken = false
@@ -67,7 +67,6 @@ class Card {
         this.currentImage = this.backImage
 
         this.scale = 1
-        this.rotation = 0
         this.wind = 0
 
         this.broken = false
@@ -105,7 +104,6 @@ class Card {
         const windTarget = Math.max(0, Math.min(1, (speedLeft + speedMag) / windSpeedNorm))
         const hold = 0.96
         this.wind = Math.max(this.wind * hold, this.wind + (windTarget - this.wind) * windResponse * dt)
-        this.rotation += ((this.wind * windRotMax) - this.rotation) * dt
 
         if (this.flipping) {
             this.flipAngle += this.cfg.flipSpeed * dt
@@ -147,7 +145,7 @@ class Card {
             const scaleX = this.flipping ? Math.max(Math.abs(Math.cos(a)), 0.001) : 1
 
             ctx.translate(0, -lift)
-            ctx.rotate(this.rotation)
+            ctx.rotate(((this.position.x - this.position.y) / 100) * this.cfg.rotationScale)
             ctx.transform(1, 0, flipSkew, 1, 0, 0)
             ctx.scale(scaleX, 1)
             ctx.drawImage(this.currentImage, -this.currentImage.width / 2, -this.currentImage.height / 2)

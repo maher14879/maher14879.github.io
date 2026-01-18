@@ -1,28 +1,61 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarot</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <style>
+        #overlay{
+            position:fixed;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            font-size:16px;
+            font-family:'Uncial Antiqua', cursive;
+            color:rgba(255, 193, 23, 0.8);
+            text-shadow:0 0 9px rgba(160,80,255,0.8);
+            z-index:10;
+            opacity:1;
+            transition:opacity 0.6s ease;
+            pointer-events:none;
+        }
+        #overlay.fade{
+            opacity:0;
+        }
+    </style>
 </head>
-<body>
+<body onclick="fadeOverlay()">
+    <div id="overlay">click to reveal your future</div>
+
     <script src="script.js"></script>
-    <script> function goToMainMenu() {window.location.href = "index.html";}</script>
+    <script>
+        function goToMainMenu(){window.location.href="index.html"}
+        function fadeOverlay(){
+            var o=document.getElementById("overlay")
+            if(o){
+                o.classList.add("fade")
+                setTimeout(function(){o.remove()},600)
+            }
+            document.body.onclick=null
+        }
+    </script>
+
     <button id="backButton" onclick="goToMainMenu()">> main_menu</button>
     <canvas id="tarot"></canvas>
-        <script>
-            var c = document.getElementById('tarot');
-            function resize() {
-                var w = window.innerWidth;
-                var h = window.innerHeight;
-                if (w > 100) c.width = w;
-                if (h > 100) c.height = h;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-        </script>
-    </body>
-    <script src="tarot.js"></script>
-</html>
 
+    <script>
+        var c=document.getElementById("tarot")
+        function resize(){
+            var w=window.innerWidth
+            var h=window.innerHeight
+            if(w>100)c.width=w
+            if(h>100)c.height=h
+        }
+        resize()
+        window.addEventListener("resize",resize)
+    </script>
+</body>
+<script src="tarot.js"></script>
+</html>

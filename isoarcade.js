@@ -20,7 +20,7 @@ class Arcade {
         this.fogScale = 200;
         this.chunkSize = 4; //root of actual size
         this.direction = {x: 1, y: 1, z: 1}
-        this.renderDistance = 5;
+        this.renderDistance = 3;
         this.worldHeight = 64;
         this.minLight = 6;
         this.taskPerSecond = 5;

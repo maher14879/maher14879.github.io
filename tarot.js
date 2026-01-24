@@ -159,6 +159,7 @@ class Game {
     constructor() {
         this.cards = {}
         this.backImg = null
+        this.placedQueue = []
         this.placedCards = []
         this.addedCards = []
         this.removedCards = []
@@ -255,6 +256,43 @@ class Game {
         this.sounds = await this.loadSounds(soundManifest)
     }
 
+    playSound(name) {
+        const sound = this.sounds[name]
+        if (!sound.paused) {
+            for (let vol = 1; vol > 10; vol -= 0.1) {
+                setTimeout(() => {
+                    sound.volume = max(sound.volume - 0.1, 0)
+                }, 5)
+            }
+            setTimeout(() => {
+                sound.pause()
+                sound.currentTime = 0
+                sound.volume = 1.0
+                sound.play()
+            })
+        } else {
+            sound.currentTime = 0
+            sound.volume = 1.0
+            sound.play()
+        }
+    }
+
+    getHoverCard(mx, my) {
+        const sx = mx * 100 / ctx.canvas.width
+        const sy = my * 100 / ctx.canvas.height
+        const allCards = [...this.placedCards, ...this.addedCards].reverse()
+        for (const card of allCards) {
+            const dx = card.position.x - sx
+            const dy = card.position.y - sy
+            const w = card.currentImage.width * 100 / ctx.canvas.width / 2
+            const h = card.currentImage.height * 100 / ctx.canvas.height / 2
+            if (Math.abs(dx) <= w && Math.abs(dy) <= h) {
+                return card
+            }
+        }
+        return null
+    }
+
     addCard(card) {
         if (!card) return
         if (this.addedCards.includes(card) || this.placedCards.includes(card)) return
@@ -262,7 +300,7 @@ class Game {
             card.reset(this.deckLocation)
             this.removedCards = this.removedCards.filter(c => c !== card)
         }
-        this.sounds.play.play()
+        this.playSound('play')
         card.target = this.center
         this.placedCards.push(card)
     }
@@ -271,7 +309,7 @@ class Game {
         if (!card) return
         if (this.removedCards.includes(card)) return
         if (typeof card.break === 'function') card.break()
-        this.sounds.break.play()
+        this.playSound('break')
         this.addedCards = this.addedCards.filter(c => c !== card)
         this.placedCards = this.placedCards.filter(c => c !== card)
         this.removedCards.push(card)
@@ -303,7 +341,7 @@ class Game {
             if (distanceSquared < this.distanceThreshold ** 2)
                 if (card.currentImage === card.backImage) {
                     card.flip()
-                    this.sounds.flip.play()
+                    this.playSound('flip')
                 }
                 else if (!card.flipping) {
                     this.addedCards.push(card)
@@ -350,7 +388,22 @@ async function boot() {
     await game.init()
     const keys = Object.keys(game.cards)
 
-    function addRandomAvailableCard() {
+    function mouseEventGameHandler(e) {
+        // get mouse position
+        const rect = canvas.getBoundingClientRect()
+        const mx = e.clientX - rect.left
+        const my = e.clientY - rect.top
+
+        const hoverCard = game.getHoverCard(mx, my)
+        if (hoverCard) {
+            if (game.addedCards.includes(hoverCard)) {
+                game.removeCard(hoverCard)
+                return
+            }
+            if (game.placedCards.includes(hoverCard)) {
+                return
+            }
+        }
         const available = keys
             .map(k => game.cards[k])
             .filter(c => !game.addedCards.includes(c) && !game.placedCards.includes(c))
@@ -358,14 +411,7 @@ async function boot() {
         const card = available[Math.floor(Math.random() * available.length)]
         game.addCard(card)
     }
-
-    function deleteRandomCard() {
-        for (const card of game.addedCards) game.removeCard(card)
-    }
-
-    const inputHandler = () => addRandomAvailableCard()
-    window.addEventListener('click', inputHandler)
-    window.addEventListener('keydown', deleteRandomCard)
+    window.addEventListener('click', mouseEventGameHandler)
 
     let last = performance.now()
     function loop() {

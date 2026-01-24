@@ -249,9 +249,9 @@ class Game {
         this.cards = await this.loadCards(cardManifest)
 
         const soundManifest = {
-            flip: "assets/tarot/sounds/flip.mp3",
-            play: "assets/tarot/sounds/play.mp3",
-            break: "assets/tarot/sounds/break.mp3"
+            flip: "assets/tarot/sounds/flip.ogg",
+            play: "assets/tarot/sounds/play.ogg",
+            break: "assets/tarot/sounds/break.ogg"
         }
         this.sounds = await this.loadSounds(soundManifest)
     }
@@ -259,11 +259,7 @@ class Game {
     playSound(name) {
         const sound = this.sounds[name]
         if (!sound) return
-
-        if (sound.paused) {
-            sound.play()
-            return
-        }
+        sound.play()
     }
 
     getHoverCard(mx, my) {

@@ -258,22 +258,11 @@ class Game {
 
     playSound(name) {
         const sound = this.sounds[name]
-        if (!sound.paused) {
-            for (let vol = 1; vol > 10; vol -= 0.1) {
-                setTimeout(() => {
-                    sound.volume = max(sound.volume - 0.1, 0)
-                }, 5)
-            }
-            setTimeout(() => {
-                sound.pause()
-                sound.currentTime = 0
-                sound.volume = 1.0
-                sound.play()
-            })
-        } else {
-            sound.currentTime = 0
-            sound.volume = 1.0
+        if (!sound) return
+
+        if (sound.paused) {
             sound.play()
+            return
         }
     }
 

@@ -169,6 +169,7 @@ class Game {
         this.distanceThreshold = 10
         this.maxAddedCards = 9
         this.rotationSpeed = -0.2
+        this.rotationScale = 0.8
         this.rotation = 0.0
         this.sounds = {}
     }
@@ -312,8 +313,8 @@ class Game {
         for (let i = 0; i < n; i++) {
             const ang = ((i / n) * Math.PI * 2 - Math.PI / 2) + this.rotation
             this.addedCards[i].target = {
-                x: this.center.x + Math.cos(ang) * this.radius,
-                y: this.center.y + Math.sin(ang) * this.radius
+                x: this.center.x + Math.cos(ang + n * this.rotationScale) * this.radius,
+                y: this.center.y + Math.sin(ang + n * this.rotationScale) * this.radius
             }
         }
     }

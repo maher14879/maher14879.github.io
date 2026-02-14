@@ -1,9 +1,9 @@
-let height = window.innerHeight
-let width = window.innerWidth
+let height = window.innerHeight - 10;
+let width = window.innerWidth - 10;
 
 window.addEventListener('resize', () => {
-    height = window.innerHeight
-    width = window.innerWidth
+    height = window.innerHeight - 10;
+    width = window.innerWidth - 10;
 })
 
 const mouseMoveDelay = 30;
@@ -79,8 +79,8 @@ class Dot {
             this.posX = width - 1;
         }
     
-        this.dot.style.left = `${this.posX}px`;
-        this.dot.style.top = `${this.posY}px`;
+        this.dot.style.left = `${this.posX + 5}px`;
+        this.dot.style.top = `${this.posY + 5}px`;
     }
 
     add_pos(x, y) {

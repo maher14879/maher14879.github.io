@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'MyFont';
+  src: url('assets/fonts/my_font.woff2') format('truetype');
+  font-display: swap;
+}
+
 * {
   cursor: url('assets/images/curser/curser.png') 10 10, auto;
   box-sizing: border-box;
@@ -8,7 +14,7 @@ a, button, [role="button"], .clickable {
 }
 
 body {
-  font-family: 'Courier New', monospace;
+  font-family: 'MyFont', sans-serif;
   letter-spacing: 0.05em;
   background-color: #000000;
   color: #00ff00;
@@ -69,7 +75,7 @@ body {
 }
 
 h1 {
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   color: #00ff00;
   margin-bottom: 10px;
 }
@@ -77,7 +83,7 @@ h1 {
 a {
   color: #00ff00;
   text-decoration: none;
-  font-size: 0.7rem;
+  font-size: 1 rem;
   position: relative;
   font-weight: bold;
 }
@@ -101,11 +107,11 @@ iframe {
   transform: translateX(-50%);
   padding: 7px 18px;
   color: black;
-  font-size: 16px;
+  font-size: 20px;
   border: none;
   border-radius: 5px;
   cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'MyFont', sans-serif;
   box-shadow: 0 0 10px #00ff00;
   transition: background-color 0.3s ease;
 }
@@ -136,7 +142,7 @@ iframe {
 }
 
 .hover-text a {
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .hover-text span {
@@ -146,7 +152,7 @@ iframe {
   top: 0;
   white-space: nowrap;
   font-style: italic;
-  font-size: 12px;
+  font-size: 18px;
 }
 
 .hover-text a:hover + span {
@@ -165,8 +171,8 @@ img {
 #showAnswerButton {
   margin-top: 20px;
   padding: 5px 12px;
-  font-size: 13px;
-  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px;
+  font-family: 'MyFont', sans-serif;
   color: black;
   background-color: #00ff00;
   border: none;
@@ -186,8 +192,8 @@ img {
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:16px;
-  font-family:'Uncial Antiqua', cursive;
+  font-size:20px;
+  font-family:'MyFont', sans-serif;;
   color:rgba(255, 193, 23, 0.8);
   text-shadow:0 0 9px rgba(160,80,255,0.8);
   z-index:10;

@@ -85,7 +85,7 @@ h1 {
 a {
   color: #00ff00;
   text-decoration: none;
-  font-size: 1.5rem;
+  font-size: 1rem;
   position: relative;
   font-weight: bold;
 }
@@ -144,7 +144,7 @@ iframe {
 }
 
 .hover-text a {
-  font-size: 20px;
+  font-size: 10px;
 }
 
 .hover-text span {
@@ -154,7 +154,7 @@ iframe {
   top: 0;
   white-space: nowrap;
   font-style: italic;
-  font-size: 18px;
+  font-size: 10px;
 }
 
 .hover-text a:hover + span {

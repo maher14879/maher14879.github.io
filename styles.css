@@ -14,7 +14,7 @@ a, button, [role="button"], .clickable {
 }
 
 body {
-  font-family: 'MyFont', sans-serif;
+  font-family: 'MyFont';
   letter-spacing: 0.05em;
   background-color: #000000;
   color: #00ff00;
@@ -113,7 +113,7 @@ iframe {
   border: none;
   border-radius: 5px;
   cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
-  font-family: 'MyFont', sans-serif;
+  font-family: 'MyFont';
   box-shadow: 0 0 10px #00ff00;
   transition: background-color 0.3s ease;
 }
@@ -174,7 +174,7 @@ img {
   margin-top: 20px;
   padding: 5px 12px;
   font-size: 18px;
-  font-family: 'MyFont', sans-serif;
+  font-family: 'MyFont';
   color: black;
   background-color: #00ff00;
   border: none;
@@ -195,7 +195,7 @@ img {
   left:50%;
   transform:translate(-50%,-50%);
   font-size:20px;
-  font-family:'MyFont', sans-serif;;
+  font-family:'MyFont';;
   color:rgba(255, 193, 23, 0.8);
   text-shadow:0 0 9px rgba(160,80,255,0.8);
   z-index:10;

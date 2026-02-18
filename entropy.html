@@ -9,7 +9,32 @@
 <body>
     <script src="script.js"></script>
     <script> function goToMainMenu() {window.location.href = "index.html";}</script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            chtml: {
+                fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2',
+                adaptiveCSS: false
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .MathJax, .MathJax * {
+            font-family: 'STIX Two Math', 'STIX Two Text', serif !important;
+            font-weight: normal !important;
+            color: #00ff00 !important;
+        }
+        mjx-container {
+            font-size: 0.9em !important;
+        }
+    </style>
     <button id="backButton" onclick="goToMainMenu()">Main Menu</button>
     <div class="content">
         <p>

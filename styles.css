@@ -25,12 +25,16 @@ body {
   margin: 20px 0 0 0;
   overflow: hidden;
   z-index: 0;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
 }
 
 .content {
   text-align: left;
-  max-width: 600px;
-  width: 90%;
+  width: 70%;
+  max-width: 70vw;
   padding: 20px;
   background-color: #000000;
   border: 2px solid #00ff00;
@@ -40,15 +44,20 @@ body {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   z-index: 10;
-  font-size: 15px;
+  font-size: 32px;
   line-height: 1;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
 }
 
 @media (max-width: 768px) {
   .content {
-    width: 95%;
-    max-width: 90%;
+    width: 85%;
+    max-width: 85vw;
     padding: 15px;
+    font-size: 28px;
   }
 
   body {
@@ -58,9 +67,10 @@ body {
 
 @media (max-width: 480px) {
   .content {
-    width: 100%;
-    max-width: 100%;
+    width: 95%;
+    max-width: 95vw;
     padding: 10px;
+    font-size: 24px;
   }
 }
 
@@ -77,7 +87,7 @@ body {
 }
 
 h1 {
-  font-size: 1rem;
+  font-size: 32px;
   color: #00ff00;
   margin-bottom: 10px;
 }
@@ -85,14 +95,19 @@ h1 {
 a {
   color: #00ff00;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 28px;
   position: relative;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 a:hover {
   color: #33ff33;
   text-shadow: 0 0 5px #00ff00;
+}
+
+strong, b, em, i {
+  font-weight: normal;
+  font-style: normal;
 }
 
 iframe {
@@ -109,7 +124,7 @@ iframe {
   transform: translateX(-50%);
   padding: 7px 18px;
   color: black;
-  font-size: 20px;
+  font-size: 40px;
   border: none;
   border-radius: 5px;
   cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
@@ -144,7 +159,7 @@ iframe {
 }
 
 .hover-text a {
-  font-size: 10px;
+  font-size: 24px;
 }
 
 .hover-text span {
@@ -153,8 +168,8 @@ iframe {
   left: 100%;
   top: 0;
   white-space: nowrap;
-  font-style: italic;
-  font-size: 10px;
+  font-style: normal;
+  font-size: 24px;
 }
 
 .hover-text a:hover + span {
@@ -173,7 +188,7 @@ img {
 #showAnswerButton {
   margin-top: 20px;
   padding: 5px 12px;
-  font-size: 18px;
+  font-size: 32px;
   font-family: 'MyFont';
   color: black;
   background-color: #00ff00;
@@ -194,8 +209,8 @@ img {
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:20px;
-  font-family:'MyFont';;
+  font-size: 40px;
+  font-family: 'MyFont';
   color:rgba(255, 193, 23, 0.8);
   text-shadow:0 0 9px rgba(160,80,255,0.8);
   z-index:10;
@@ -209,6 +224,32 @@ img {
 }
 
 div.content.index_content a {
-  font-size: 13px;
+  font-size: 28px;
   line-height: 1.4;
+}
+
+.index_comment {
+  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 28px; }
+  a { font-size: 24px; }
+  #backButton { font-size: 36px; }
+  .hover-text a, .hover-text span { font-size: 20px; }
+  #showAnswerButton { font-size: 28px; }
+  #tarot_instructions { font-size: 36px; }
+  div.content.index_content a { font-size: 24px; }
+  .index_comment { font-size: 20px; }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 24px; }
+  a { font-size: 20px; }
+  #backButton { font-size: 32px; }
+  .hover-text a, .hover-text span { font-size: 18px; }
+  #showAnswerButton { font-size: 24px; }
+  #tarot_instructions { font-size: 32px; }
+  div.content.index_content a { font-size: 20px; }
+  .index_comment { font-size: 18px; }
 }

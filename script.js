@@ -1,233 +1,276 @@
 let height = window.innerHeight - 10;
 let width = window.innerWidth - 10;
 
-window.addEventListener('resize', () => {
-    height = window.innerHeight - 10;
-    width = window.innerWidth - 10;
-})
-
 const mouseMoveDelay = 30;
 const mouseSmooth = 0.01;
-const mouseSpeed = 0.1;
-const dotsCount = 40;
+const mouseSpeed = 0.05;
+const dotsCount = 300;
 
-const dotAttract = -4;
-const waveSpeed = 10;
+const dotAttract = -7;
+const waveSpeed = 20;
 const periodScaler = 1.7;
 const minNote = 0.1;
-const max_track = 10;
+const maxTrack = 10;
 
-const scaleX = 100;
-const scaleY = Math.round((height * scaleX) / width);
-
-const mouseAttract = 1;
-const imageAttract = 10;
-const allignDelay = 10;
-
-const thresholdPercent = 0.93
-
-let dots = [];
 let deltaPosition_x = 0;
 let deltaPosition_y = 0;
 let lastMouseMove = 0;
+let mouseX = 0;
+let mouseY = 0;
 
 let tracks = [];
 let isPlaying = false;
 let startTime = 0;
 let endTime = 0;
-let Tone = null;
-let force_x = 0;
-let force_y = 0;
 let audioContext = null;
 
-let isShowing = false;
-let lastAllign = 0;
-let imageDots = [];
-let mouseX = 0;
-let mouseY = 0;
+// --- Canvas rendering (replaces per-dot DOM elements) ---
 
-class Dot {
-    constructor(x, y, scale, color = 'white') {
-        this.scale = scale;
-        this.dot = document.createElement('div');
-        this.dot.style.position = 'absolute';
-        this.dot.style.width = `${this.scale * 3 + 1}px`;
-        this.dot.style.height = `${this.scale * 3 + 1}px`;
-        this.dot.style.backgroundColor = color;
-        this.dot.style.pointerEvents = 'none';
-        this.dot.style.zIndex = '-9999';
-        const grey_scale = `rgb(${255 * (this.scale / 3 + 0.1)}, ${255 * (this.scale / 3 + 0.1)}, ${255 * (this.scale / 3 + 0.1)})`;
-        this.dot.style.boxShadow = `0 0 ${this.scale * 2 + 1}px 1px ${grey_scale}, 0 0 ${this.scale * 2 + 1}px 1px ${grey_scale}`;
+const dotsCanvas = document.createElement('canvas');
+dotsCanvas.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;z-index:-9999';
+document.body.appendChild(dotsCanvas);
+const dotsCtx = dotsCanvas.getContext('2d');
 
-        this.posX = x;
-        this.posY = y;
-
-        document.body.appendChild(this.dot);
-        this.updatePosition();
-    }
-
-    updatePosition() {
-        if (this.posY >= height) {
-            this.posY = 1;
-        } else if (this.posY <= 0) {
-            this.posY = height - 1;
-        }
-    
-        if (this.posX >= width) {
-            this.posX = 1;
-        } else if (this.posX <= 0) {
-            this.posX = width - 1;
-        }
-    
-        this.dot.style.left = `${this.posX + 5}px`;
-        this.dot.style.top = `${this.posY + 5}px`;
-    }
-
-    add_pos(x, y) {
-        this.posX -= x;
-        this.posY -= y;
-        this.updatePosition();
-    }
-    
+function resizeCanvas() {
+    dotsCanvas.width = window.innerWidth;
+    dotsCanvas.height = window.innerHeight;
 }
+resizeCanvas();
+
+window.addEventListener('resize', () => {
+    height = window.innerHeight - 10;
+    width = window.innerWidth - 10;
+    resizeCanvas();
+});
+
+// --- Dot data: Structure-of-Arrays with typed arrays ---
+
+const dotX = new Float64Array(dotsCount);
+const dotY = new Float64Array(dotsCount);
+const dotScale = new Float32Array(dotsCount);
+let dotCount = 0;
+
+function addDot(x, y, s) {
+    dotX[dotCount] = x;
+    dotY[dotCount] = y;
+    dotScale[dotCount] = s;
+    dotCount++;
+}
+
+function wrapDot(i) {
+    if (dotX[i] >= width) dotX[i] = 1;
+    else if (dotX[i] <= 0) dotX[i] = width - 1;
+    if (dotY[i] >= height) dotY[i] = 1;
+    else if (dotY[i] <= 0) dotY[i] = height - 1;
+}
+
+// --- Pre-rendered glow sprites (one per scale bucket) ---
+
+const SPRITE_LEVELS = 32;
+const sprites = [];
+
+(function initSprites() {
+    for (let i = 0; i < SPRITE_LEVELS; i++) {
+        const s = i / (SPRITE_LEVELS - 1);
+        const dotSize = s * 3 + 1;
+        const glowRadius = s * 2 + 1;
+        const padding = Math.max(glowRadius * 4, 8);
+        const size = Math.ceil(dotSize + padding * 2);
+
+        const oc = document.createElement('canvas');
+        oc.width = size;
+        oc.height = size;
+        const octx = oc.getContext('2d');
+
+        const bright = Math.min(255, Math.round(255 * (s / 3 + 0.1)));
+        octx.shadowColor = `rgb(${bright},${bright},${bright})`;
+        octx.shadowBlur = glowRadius;
+        octx.fillStyle = 'white';
+
+        const offset = (size - dotSize) / 2;
+        octx.fillRect(offset, offset, dotSize, dotSize);
+        octx.fillRect(offset, offset, dotSize, dotSize);
+
+        sprites.push({ img: oc, half: size / 2 });
+    }
+})();
+
+function getSpriteIdx(s) {
+    return Math.round(Math.min(s, 1) * (SPRITE_LEVELS - 1));
+}
+
+// --- Spatial grid for neighbor queries ---
+
+const CELL_SIZE = 200;
+let gridCols = 0;
+let gridRows = 0;
+let grid = [];
+
+function buildGrid() {
+    gridCols = Math.max(1, Math.ceil(width / CELL_SIZE) + 1);
+    gridRows = Math.max(1, Math.ceil(height / CELL_SIZE) + 1);
+    const total = gridCols * gridRows;
+    while (grid.length < total) grid.push([]);
+    for (let i = 0; i < total; i++) grid[i].length = 0;
+
+    for (let i = 0; i < dotCount; i++) {
+        const col = Math.max(0, Math.min((dotX[i] / CELL_SIZE) | 0, gridCols - 1));
+        const row = Math.max(0, Math.min((dotY[i] / CELL_SIZE) | 0, gridRows - 1));
+        grid[row * gridCols + col].push(i);
+    }
+}
+
+let repX = 0, repY = 0;
+
+function computeRepulsion(i) {
+    const px = dotX[i], py = dotY[i];
+    const attract = dotAttract / Math.max(0.2, dotScale[i]);
+    const col = Math.max(0, Math.min((px / CELL_SIZE) | 0, gridCols - 1));
+    const row = Math.max(0, Math.min((py / CELL_SIZE) | 0, gridRows - 1));
+    const rMin = Math.max(0, row - 1), rMax = Math.min(gridRows - 1, row + 1);
+    const cMin = Math.max(0, col - 1), cMax = Math.min(gridCols - 1, col + 1);
+
+    let fx = 0, fy = 0;
+    for (let r = rMin; r <= rMax; r++) {
+        for (let c = cMin; c <= cMax; c++) {
+            const cell = grid[r * gridCols + c];
+            for (let k = 0, len = cell.length; k < len; k++) {
+                const j = cell[k];
+                if (j === i) continue;
+                const dx = px - dotX[j];
+                const dy = py - dotY[j];
+                const distSq = Math.max(1, dx * dx + dy * dy);
+                fx += (dx / distSq) * attract;
+                fy += (dy / distSq) * attract;
+            }
+        }
+    }
+    repX = fx;
+    repY = fy;
+}
+
+// --- Note & Track ---
 
 class Note {
     constructor(frequency, time, duration) {
         this.frequency = frequency;
         this.time = time;
         this.duration = duration;
+        this.activeEnd = time + duration * 2 / 3;
     }
 }
 
 class Track {
-    constructor(posX, posY, midi_trackk) {
+    constructor(posX, posY, midiTrack) {
         this.posX = posX;
         this.posY = posY;
-        this.notes = [];
-        
-        for (let note of midi_trackk.notes) {
-            this.notes.push(new Note(440 * Math.pow(2, (note.midi - 69) / 12), note.time, note.duration));
-        }
+        this._cursor = 0;
+        this.notes = midiTrack.notes
+            .map(n => new Note(440 * Math.pow(2, (n.midi - 69) / 12), n.time, n.duration))
+            .sort((a, b) => a.time - b.time);
     }
 
     getCurrentPeriod(nowTime) {
-        for (let note of this.notes) {
-            const start = note.time;
-            const end = note.time + (note.duration * 2/3);
-            if (start <= nowTime && nowTime <= end) {
-                return periodScaler / note.frequency;
+        const notes = this.notes;
+        while (this._cursor < notes.length && notes[this._cursor].activeEnd < nowTime) {
+            this._cursor++;
+        }
+        for (let i = this._cursor; i < notes.length; i++) {
+            if (notes[i].time > nowTime) break;
+            if (nowTime <= notes[i].activeEnd) {
+                return periodScaler / notes[i].frequency;
             }
         }
         return null;
     }
 
-    play(startTime) {
+    play(audioStart) {
         const filter = audioContext.createBiquadFilter();
-        filter.type = "lowpass";
+        filter.type = 'lowpass';
         filter.frequency.value = 1000;
         filter.connect(audioContext.destination);
-        
-        for (let i = 0; i < this.notes.length; i++) {
-            const frequency = this.notes[i].frequency;
-            const time = startTime + this.notes[i].time;
-            const duration = Math.max(this.notes[i].duration * 2, minNote);
-            
+
+        for (const note of this.notes) {
+            const time = audioStart + note.time;
+            const duration = Math.max(note.duration * 2, minNote);
+
             const osc = audioContext.createOscillator();
             osc.type = 'sine';
-            
+            osc.frequency.setValueAtTime(note.frequency, time);
+
             const gain = audioContext.createGain();
             gain.gain.setValueAtTime(0.5, time);
             gain.gain.exponentialRampToValueAtTime(0.0000001, time + duration);
-            
-            osc.frequency.setValueAtTime(frequency, time);
+
             osc.connect(gain);
-            filter.connect(audioContext.destination);
             gain.connect(filter);
-            
             osc.start(time);
             osc.stop(time + duration);
-            
+
             endTime = Math.max(time + duration, endTime);
         }
     }
 }
 
+// --- Dot persistence ---
+
 function createRandomDot() {
-    const randomX = Math.random() * width;
-    const randomY = Math.random() * height;
-    const dot = new Dot(randomX, randomY, Math.random()**2);
-    dots.push(dot);
+    addDot(Math.random() * width, Math.random() * height, Math.random() ** 2);
 }
 
 function saveDotsToStorage() {
-    const dotData = dots.map(dot => ({ 
-        x: dot.posX, 
-        y: dot.posY, 
-        scale: dot.scale 
-    }));
-    localStorage.setItem('dots', JSON.stringify(dotData));
-
-    const deltaData = { x: deltaPosition_x, y: deltaPosition_y };
-    localStorage.setItem('deltaPosition', JSON.stringify(deltaData));
+    const data = [];
+    for (let i = 0; i < dotCount; i++) {
+        data.push({ x: dotX[i], y: dotY[i], scale: dotScale[i] });
+    }
+    localStorage.setItem('dots', JSON.stringify(data));
+    localStorage.setItem('deltaPosition', JSON.stringify({ x: deltaPosition_x, y: deltaPosition_y }));
 }
 
 function loadDotsFromStorage() {
-    const storedDots = JSON.parse(localStorage.getItem('dots') || '[]');
-    if (storedDots.length === 0) {
-        for (let i = 0; i < dotsCount; i++) {
-            createRandomDot();
-        }
-    } else {
-        storedDots.forEach(({ x, y, scale }) => {
-            const dot = new Dot(x, y, scale);
-            dots.push(dot);
-        });
+    const stored = JSON.parse(localStorage.getItem('dots') || '[]');
+    for (const d of stored) {
+        if (dotCount >= dotsCount) break;
+        addDot(d.x, d.y, d.scale);
     }
+    while (dotCount < dotsCount) createRandomDot();
 
-    if (dots.length < dotsCount) {
-        for (let i = dots.length; i < dotsCount; i++) {
-            createRandomDot();
-        }
-    }
-        
-    const storedDelta = JSON.parse(localStorage.getItem('deltaPosition') || '{"x":0,"y":0}');
-    deltaPosition_x = storedDelta.x;
-    deltaPosition_y = storedDelta.y;
+    const delta = JSON.parse(localStorage.getItem('deltaPosition') || '{"x":0,"y":0}');
+    deltaPosition_x = delta.x;
+    deltaPosition_y = delta.y;
 }
 
-window.addEventListener('beforeunload', () => {
-    saveDotsToStorage();
-});
+window.addEventListener('beforeunload', saveDotsToStorage);
+
+// --- Mouse input ---
 
 document.addEventListener('mousemove', (event) => {
-    mouseX = event.clientX
-    mouseY = event.clientY
+    mouseX = event.clientX;
+    mouseY = event.clientY;
     const now = Date.now();
-    if (!(now - lastMouseMove > mouseMoveDelay)) {
-        return
-    };
-    lastMouseMove = now
+    if (now - lastMouseMove <= mouseMoveDelay) return;
+    lastMouseMove = now;
 
-    const targetX = mouseX - width / 2;
-    const targetY = mouseY - height / 2;
-    deltaPosition_x += (targetX - deltaPosition_x) * mouseSmooth;
-    deltaPosition_y += (targetY - deltaPosition_y) * mouseSmooth;
-})
+    deltaPosition_x += (mouseX - width / 2 - deltaPosition_x) * mouseSmooth;
+    deltaPosition_y += (mouseY - height / 2 - deltaPosition_y) * mouseSmooth;
+});
+
+// --- MIDI playback ---
 
 async function playMidi() {
-    const file = document.getElementById('midiInput').files[0] || await fetch('assets/midi/mozart_lacrimosa.mid').then(res => res.blob());
-    const {Midi} = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
-    const arrayBuffer = await file.arrayBuffer();
-    const midi = new Midi(arrayBuffer);
+    const file = document.getElementById('midiInput').files[0]
+        || await fetch('assets/midi/mozart_lacrimosa.mid').then(r => r.blob());
+    const { Midi } = await import('https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/+esm');
+    const midi = new Midi(await file.arrayBuffer());
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     isPlaying = true;
     document.querySelector('.content').remove();
-
     if (audioContext.state === 'suspended') await audioContext.resume();
 
-    let position_index = 0;
-    for (let i = 0; i < midi.tracks.length; i++) {
+    let idx = 0;
+    for (let i = 0; i < midi.tracks.length && idx < maxTrack; i++) {
+        let x, y;
         if (i % 2) {
             x = Math.random() * width;
             y = Math.round(Math.random()) * height;
@@ -238,60 +281,25 @@ async function playMidi() {
         const track = new Track(x, y, midi.tracks[i]);
         if (track.notes.length > 0) {
             tracks.push(track);
-            console.log(`Track ${position_index}: x=${x}, y=${y}`);
-            position_index++;
+            idx++;
         }
-        if (position_index >= max_track) break;
     }
 
     startTime = audioContext.currentTime;
-    for (let track of tracks) track.play(startTime);
+    for (const track of tracks) track.play(startTime);
 }
 
-async function ImageView() {
-    const file = document.getElementById('imageInput').files[0] || await fetch('assets/images/test_image.png').then(res => res.blob())
-    const img = new Image()
-    img.onload = () => {
-        const canvas = document.createElement('canvas')
-        canvas.width = scaleX
-        canvas.height = scaleY
-        const ctx = canvas.getContext('2d')
-        ctx.filter = 'contrast(200%)'
-        ctx.drawImage(img, 0, 0, scaleX, scaleY)
+// --- Rendering ---
 
-        const imageData = ctx.getImageData(0, 0, scaleX, scaleY)
-        const data = imageData.data
-
-        let pixelBrightness = []
-        for (let y = 0; y < scaleY; y++) {
-            for (let x = 0; x < scaleX; x++) {
-                const i = (y * scaleX + x) * 4
-                const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3
-                pixelBrightness.push({x, y, brightness})
-            }
-        }
-        pixelBrightness.sort((a, b) => a.brightness - b.brightness)
-        imageDots = pixelBrightness.slice(Math.floor(pixelBrightness.length * thresholdPercent))
-
-        for (let k = 0; k < imageDots.length; k++) {
-            const {x, y, brightness} = imageDots[k];
-            dot = document.createElement('div');
-            dot.style.position = 'absolute';
-            dot.style.width = '10px';
-            dot.style.height = '10px';
-            dot.style.backgroundColor = 'red';
-            dot.style.left = `${x * width / scaleX - 5}px`;
-            dot.style.top = `${y * height / scaleY - 5}px`;
-            document.body.appendChild(this.dot);
-        }
-
-        console.log("x", scaleX, ", y", scaleY)
-        console.log("total: ", pixelBrightness.length, "of which", imageDots.length)
+function render() {
+    dotsCtx.clearRect(0, 0, dotsCanvas.width, dotsCanvas.height);
+    for (let i = 0; i < dotCount; i++) {
+        const sp = sprites[getSpriteIdx(dotScale[i])];
+        dotsCtx.drawImage(sp.img, dotX[i] + 5 - sp.half, dotY[i] + 5 - sp.half);
     }
-    isShowing = true
-    img.src = URL.createObjectURL(file)
-    document.querySelector('.content').remove()
 }
+
+// --- Animation loop ---
 
 function animateDots() {
     if (isPlaying) {
@@ -300,78 +308,52 @@ function animateDots() {
             isPlaying = false;
             deltaPosition_x = Math.random() * 100;
             deltaPosition_y = Math.random() * 100;
-        }
-    
-        const nowTime = audioContext.currentTime;
-        for (let i = 0; i < dots.length; i++) {
-            const dot = dots[i];
-            force_x = 0;
-            force_y = 0;
-    
+        } else {
+            buildGrid();
+            const nowTime = audioContext.currentTime - startTime;
+            const sinNow = Math.sin(nowTime);
+            const cosNow = Math.cos(nowTime);
+
+            const periods = new Array(tracks.length);
             for (let j = 0; j < tracks.length; j++) {
-                const track = tracks[j];
-                const period = track.getCurrentPeriod(nowTime);
-                if (period != null) {
-                    const term1 = (dot.posX - track.posX) * period;
-                    const term2 = (dot.posY - track.posY) * period;
-                    force_x += term1 * Math.sin(term1) * Math.sin(term2) * waveSpeed * Math.sin(nowTime);
-                    force_y += term2 * Math.cos(term1) * Math.cos(term2) * waveSpeed * Math.cos(nowTime);
+                periods[j] = tracks[j].getCurrentPeriod(nowTime);
+            }
+
+            for (let i = 0; i < dotCount; i++) {
+                let fx = 0, fy = 0;
+
+                for (let j = 0; j < tracks.length; j++) {
+                    if (periods[j] !== null) {
+                        const t1 = (dotX[i] - tracks[j].posX) * periods[j];
+                        const t2 = (dotY[i] - tracks[j].posY) * periods[j];
+                        fx += t1 * Math.sin(t1) * Math.sin(t2) * waveSpeed * sinNow;
+                        fy += t2 * Math.cos(t1) * Math.cos(t2) * waveSpeed * cosNow;
+                    }
                 }
-            }
-    
-            for (let k = 0; k < dots.length; k++) {
-                if (i === k) continue;
-                const dotOther = dots[k];
-                const dx = dot.posX - dotOther.posX;
-                const dy = dot.posY - dotOther.posY;
-                const distSq = Math.max(1, dx * dx + dy * dy);
-                force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
-                force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
-            }
-    
-            dot.add_pos(force_x, force_y);
-        }
-    }    
 
-    if (isShowing) {
-        for (let i = 0; i < dots.length; i++) {
-            const dot = dots[i];
-            force_x = (dot.posX - mouseX) * mouseAttract;
-            force_y = (dot.posY - mouseY) * mouseAttract;
-    
-            for (let j = 0; j < dots.length; j++) {
-                if (i === j) continue;
-                const dx = dot.posX - dots[j].posX;
-                const dy = dot.posY - dots[j].posY;
-                const distSq = Math.max(1, dx * dx + dy * dy);
-                force_x += (dx / distSq) * dotAttract / Math.max(0.2, dot.scale);
-                force_y += (dy / distSq) * dotAttract / Math.max(0.2, dot.scale);
+                computeRepulsion(i);
+                fx += repX;
+                fy += repY;
+
+                dotX[i] -= fx;
+                dotY[i] -= fy;
+                wrapDot(i);
             }
-            
-            let shortest_distance = 1000
-            for (let k = 0; k < imageDots.length; k++) {
-                const {x, y, brightness} = imageDots[k];
-                const dx = dot.posX - (x * width / scaleX);
-                const dy = dot.posY - (y * height / scaleY);
-                const distSq = Math.max(1, dx * dx + dy * dy);
-                force_x += (dx / distSq) * imageAttract;
-                force_y += (dy / distSq) * imageAttract;
-                Math.min(shortest_distance, distSq)
-            }
-            shortest_distance = shortest_distance / 1000
-            dot.add_pos(force_x * shortest_distance, force_y * shortest_distance);
         }
     }
 
-    if (!(isPlaying || isShowing)) {
-        dots.forEach(
-            dot => {dot.add_pos(deltaPosition_x * dot.scale * mouseSpeed, deltaPosition_y * dot.scale * mouseSpeed)
-        });
+    if (!isPlaying) {
+        for (let i = 0; i < dotCount; i++) {
+            dotX[i] -= deltaPosition_x * dotScale[i] * mouseSpeed;
+            dotY[i] -= deltaPosition_y * dotScale[i] * mouseSpeed;
+            wrapDot(i);
+        }
     }
 
+    render();
     requestAnimationFrame(animateDots);
 }
 
-//run
+// --- Run ---
 loadDotsFromStorage();
 animateDots();

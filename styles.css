@@ -4,6 +4,58 @@
   font-display: swap;
 }
 
+#fontToggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 32px;
+  text-align: center;
+  color: #00ff00;
+  background: #000000;
+  border: 1px solid #00ff00;
+  border-radius: 4px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+  cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
+  font-family: 'MyFont';
+}
+
+body.readable-font #fontToggle {
+  font-family: 'Courier New', 'Consolas', monospace;
+}
+
+#fontToggle:hover {
+  opacity: 1;
+  box-shadow: 0 0 6px #00ff00;
+}
+
+body.readable-font,
+body.readable-font *,
+body.readable-font .content,
+body.readable-font #backButton,
+body.readable-font #tp-input,
+body.readable-font #showAnswerButton {
+  font-family: 'Courier New', 'Consolas', monospace !important;
+  font-size: 16px !important;
+  -webkit-font-smoothing: auto !important;
+  -moz-osx-font-smoothing: auto !important;
+  font-smooth: auto !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+body.readable-font h1 {
+  font-size: 20px !important;
+}
+
+body.readable-font #backButton {
+  font-size: 22px !important;
+}
+
 * {
   cursor: url('assets/images/curser/curser.png') 10 10, auto;
   box-sizing: border-box;
@@ -252,4 +304,75 @@ div.content.index_content a {
   #tarot_instructions { font-size: 32px; }
   div.content.index_content a { font-size: 20px; }
   .index_comment { font-size: 18px; }
+}
+
+#tp-lookup {
+  margin-top: 10px;
+  position: relative;
+}
+
+#tp-input {
+  width: 100%;
+  min-height: 200px;
+  padding: 8px 12px;
+  font-family: 'MyFont';
+  font-size: 28px;
+  color: #00ff00;
+  background-color: #000000;
+  border: 2px solid #00ff00;
+  box-shadow: 0 0 6px #00ff00;
+  outline: none;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+
+#tp-input:empty::before {
+  content: "type toki pona here...";
+  color: #007700;
+  pointer-events: none;
+}
+
+.tp-word {
+  color: #ffcc00;
+  text-shadow: 0 0 4px rgba(255, 204, 0, 0.4);
+  cursor: url('assets/images/curser/curser_select.png') 10 10, auto;
+}
+
+#tp-tooltip {
+  position: absolute;
+  background-color: #000000;
+  color: #ffcc00;
+  border: 2px solid #ffcc00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+  padding: 6px 10px;
+  font-size: 22px;
+  font-family: 'MyFont';
+  line-height: 1.3;
+  max-width: 90%;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  white-space: pre-line;
+}
+
+#tp-tooltip.visible {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  #tp-input { font-size: 24px; }
+  #tp-tooltip { font-size: 18px; }
+}
+
+@media (max-width: 480px) {
+  #tp-input { font-size: 20px; }
+  #tp-tooltip { font-size: 16px; }
 }

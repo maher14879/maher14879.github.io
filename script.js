@@ -6,8 +6,8 @@ const mouseSmooth = 0.01;
 const mouseSpeed = 0.05;
 const dotsCount = 300;
 
-const dotAttract = -0.7;   // reduced so cell repulsion has less visual effect
-const waveSpeed = 30;       // lower = flow follows waves more, less pull to corners
+const dotAttract = -1.5;   // reduced so cell repulsion has less visual effect
+const waveSpeed = 40;       // lower = flow follows waves more, less pull to corners
 const periodScaler = 1;
 const minNote = 0.1;
 const maxTrack = 10;
@@ -379,3 +379,22 @@ function animateDots() {
 // --- Run ---
 loadDotsFromStorage();
 animateDots();
+
+// --- Font toggle ---
+(function () {
+    const btn = document.createElement('button');
+    btn.id = 'fontToggle';
+    btn.textContent = 'Aa';
+    btn.title = 'Toggle readable font';
+    document.body.appendChild(btn);
+
+    if (localStorage.getItem('readableFont') === '1') {
+        document.body.classList.add('readable-font');
+    }
+
+    btn.addEventListener('click', function () {
+        document.body.classList.toggle('readable-font');
+        localStorage.setItem('readableFont',
+            document.body.classList.contains('readable-font') ? '1' : '0');
+    });
+})();

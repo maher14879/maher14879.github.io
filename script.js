@@ -6,11 +6,13 @@ const mouseSmooth = 0.01;
 const mouseSpeed = 0.05;
 const dotsCount = 300;
 
-const dotAttract = -7;
-const waveSpeed = 20;
-const periodScaler = 1.7;
+const dotAttract = -0.7;   // reduced so cell repulsion has less visual effect
+const waveSpeed = 30;       // lower = flow follows waves more, less pull to corners
+const periodScaler = 1;
 const minNote = 0.1;
 const maxTrack = 10;
+const flowDistanceFalloff = 0.008;  // soften force at large distance so dots don't rush to corners
+const repulsionMix = 0.25;         // how much cell repulsion affects motion (0–1)
 
 let deltaPosition_x = 0;
 let deltaPosition_y = 0;
@@ -184,11 +186,14 @@ class Track {
         return null;
     }
 
-    play(audioStart) {
+    play(audioStart, destination) {
         const filter = audioContext.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.value = 1000;
-        filter.connect(audioContext.destination);
+        filter.frequency.value = 2000;
+        filter.connect(destination || audioContext.destination);
+
+        const voiceGain = 0.14;   // lower per-voice gain to avoid clipping when many notes
+        const rampIn = 0.015;    // short fade-in to avoid clicks
 
         for (const note of this.notes) {
             const time = audioStart + note.time;
@@ -199,8 +204,9 @@ class Track {
             osc.frequency.setValueAtTime(note.frequency, time);
 
             const gain = audioContext.createGain();
-            gain.gain.setValueAtTime(0.5, time);
-            gain.gain.exponentialRampToValueAtTime(0.0000001, time + duration);
+            gain.gain.setValueAtTime(0.00001, time);
+            gain.gain.exponentialRampToValueAtTime(voiceGain, time + rampIn);
+            gain.gain.exponentialRampToValueAtTime(0.00001, time + duration);
 
             osc.connect(gain);
             gain.connect(filter);
@@ -285,8 +291,16 @@ async function playMidi() {
         }
     }
 
+    const compressor = audioContext.createDynamicsCompressor();
+    compressor.threshold.value = -20;
+    compressor.knee.value = 20;
+    compressor.ratio.value = 8;
+    compressor.attack.value = 0.003;
+    compressor.release.value = 0.15;
+    compressor.connect(audioContext.destination);
+
     startTime = audioContext.currentTime;
-    for (const track of tracks) track.play(startTime);
+    for (const track of tracks) track.play(startTime, compressor);
 }
 
 // --- Rendering ---
@@ -324,16 +338,24 @@ function animateDots() {
 
                 for (let j = 0; j < tracks.length; j++) {
                     if (periods[j] !== null) {
-                        const t1 = (dotX[i] - tracks[j].posX) * periods[j];
-                        const t2 = (dotY[i] - tracks[j].posY) * periods[j];
-                        fx += t1 * Math.sin(t1) * Math.sin(t2) * waveSpeed * sinNow;
-                        fy += t2 * Math.cos(t1) * Math.cos(t2) * waveSpeed * cosNow;
+                        const dx = dotX[i] - tracks[j].posX;
+                        const dy = dotY[i] - tracks[j].posY;
+                        const T = periods[j];
+                        const t1 = dx * T;  // Δx·T
+                        const t2 = dy * T;  // Δy·T
+                        // Formula: ∇f_x = Δx·T·sin(Δx·T)·sin(Δy·T)·sin(t)·s, ∇f_y = Δy·T·cos(Δy·T)·cos(Δx·T)·cos(t)·s
+                        const gx = t1 * Math.sin(t1) * Math.sin(t2) * waveSpeed * sinNow;
+                        const gy = t2 * Math.cos(t2) * Math.cos(t1) * waveSpeed * cosNow;
+                        // Distance falloff: softer force far from source so flow follows waves, not corners
+                        const falloff = 1 / (1 + flowDistanceFalloff * (t1 * t1 + t2 * t2));
+                        fx += gx * falloff;
+                        fy += gy * falloff;
                     }
                 }
 
                 computeRepulsion(i);
-                fx += repX;
-                fy += repY;
+                fx += repX * repulsionMix;
+                fy += repY * repulsionMix;
 
                 dotX[i] -= fx;
                 dotY[i] -= fy;

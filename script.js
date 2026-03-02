@@ -20,6 +20,14 @@ let lastMouseMove = 0;
 let mouseX = 0;
 let mouseY = 0;
 
+// --- Differential equation mode (differential.html) ---
+const differentialMode = /differential\.html$/.test(window.location.pathname) ||
+    (window.location.pathname.endsWith('/') && window.location.pathname.includes('differential'));
+let diffEqDX = null;
+let diffEqDY = null;
+let diffTime = 0;
+const RESPAWN_THRESHOLD = 18;
+
 let tracks = [];
 let isPlaying = false;
 let startTime = 0;
@@ -218,6 +226,56 @@ class Track {
     }
 }
 
+class DifferentialEquation {
+    constructor(equation) {
+        this.compiledEquation = this.compile(equation);
+    }
+
+    compile(equation) {
+        try {
+            return new Function('t', 'x', 'y', 'return ' + equation);
+        } catch (e) {
+            console.error('Failed to compile equation:', e);
+            return () => 0;
+        }
+    }
+
+    solve(t, x, y) {
+        return this.compiledEquation(t, x, y);
+    }
+}
+
+function applyDiffEquations(eqDXStr, eqDYStr) {
+    diffEqDX = new DifferentialEquation(eqDXStr);
+    diffEqDY = new DifferentialEquation(eqDYStr);
+}
+
+function respawnDots() {
+    buildGrid();
+    for (let i = 0; i < dotCount; i++) {
+        const px = dotX[i], py = dotY[i];
+        const col = Math.max(0, Math.min((px / CELL_SIZE) | 0, gridCols - 1));
+        const row = Math.max(0, Math.min((py / CELL_SIZE) | 0, gridRows - 1));
+        const rMin = Math.max(0, row - 1), rMax = Math.min(gridRows - 1, row + 1);
+        const cMin = Math.max(0, col - 1), cMax = Math.min(gridCols - 1, col + 1);
+
+        for (let r = rMin; r <= rMax; r++) {
+            for (let c = cMin; c <= cMax; c++) {
+                for (const j of grid[r * gridCols + c]) {
+                    if (j <= i) continue;
+                    const dx = dotX[j] - px, dy = dotY[j] - py;
+                    if (dx * dx + dy * dy < RESPAWN_THRESHOLD * RESPAWN_THRESHOLD) {
+                        dotX[j] = Math.random() * width;
+                        dotY[j] = Math.random() * height;
+                        dotScale[j] = Math.random() ** 2;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
+
 // --- Dot persistence ---
 
 function createRandomDot() {
@@ -361,14 +419,31 @@ function animateDots() {
                 dotY[i] -= fy;
                 wrapDot(i);
             }
+            respawnDots();
         }
     }
 
     if (!isPlaying) {
-        for (let i = 0; i < dotCount; i++) {
-            dotX[i] -= deltaPosition_x * dotScale[i] * mouseSpeed;
-            dotY[i] -= deltaPosition_y * dotScale[i] * mouseSpeed;
-            wrapDot(i);
+        if (differentialMode && diffEqDX && diffEqDY) {
+            const dt = 1 / 60;
+            diffTime += dt;
+            const cx = width / 2, cy = height / 2;
+            for (let i = 0; i < dotCount; i++) {
+                const x = dotX[i] - cx;
+                const y = cy - dotY[i];
+                const vx = diffEqDX.solve(diffTime, x, y);
+                const vy = diffEqDY.solve(diffTime, x, y);
+                dotX[i] += vx * dt;
+                dotY[i] -= vy * dt;
+                wrapDot(i);
+            }
+            respawnDots();
+        } else {
+            for (let i = 0; i < dotCount; i++) {
+                dotX[i] -= deltaPosition_x * dotScale[i] * mouseSpeed;
+                dotY[i] -= deltaPosition_y * dotScale[i] * mouseSpeed;
+                wrapDot(i);
+            }
         }
     }
 

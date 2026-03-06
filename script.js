@@ -428,13 +428,15 @@ function animateDots() {
             const dt = 1 / 60;
             diffTime += dt;
             const cx = width / 2, cy = height / 2;
+            const scaleX = width / 20;  // screen spans -10..10 in x
+            const scaleY = height / 20; // screen spans -10..10 in y
             for (let i = 0; i < dotCount; i++) {
-                const x = dotX[i] - cx;
-                const y = cy - dotY[i];
+                const x = 20 * (dotX[i] - cx) / width;
+                const y = 20 * (cy - dotY[i]) / height;
                 const vx = diffEqDX.solve(diffTime, x, y);
                 const vy = diffEqDY.solve(diffTime, x, y);
-                dotX[i] += vx * dt;
-                dotY[i] -= vy * dt;
+                dotX[i] += vx * dt * scaleX;
+                dotY[i] -= vy * dt * scaleY;
                 wrapDot(i);
             }
             respawnDots();

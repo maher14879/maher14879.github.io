@@ -74,6 +74,15 @@ function wrapDot(i) {
     else if (dotY[i] <= 0) dotY[i] = height - 1;
 }
 
+function wrapDotDifferential(i) {
+    const dx = dotX[i] - width;
+    const dy = dotY[i] - height;
+    const distX = Math.abs(dx);
+    const distY = Math.abs(dy);
+    if (distX > width) dotX[i] = Math.random() * width;
+    if (distY > height) dotY[i] = Math.random() * height;
+}
+
 // --- Pre-rendered glow sprites (one per scale bucket) ---
 
 const SPRITE_LEVELS = 32;
@@ -437,7 +446,7 @@ function animateDots() {
                 const vy = diffEqDY.solve(diffTime, x, y);
                 dotX[i] += vx * dt * scaleX;
                 dotY[i] -= vy * dt * scaleY;
-                wrapDot(i);
+                wrapDotDifferential(i);
             }
             respawnDots();
         } else {
